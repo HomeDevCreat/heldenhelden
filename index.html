@@ -1,214 +1,70 @@
 <!doctype html>
-<html lang="nl">
-
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Zomerhelden</title>
-  <link href="https://fonts.googleapis.com/css2?family=Bangers&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --bg: #0a0c1c;
-      --red: #e8203a;
-      --yel: #ffd21f;
-      --blue: #1e6bff
-    }
-
-    * {
-      box-sizing: border-box
-    }
-
-    html,
-    body {
-      height: 100%;
-      margin: 0
-    }
-
-    body {
-      background: radial-gradient(#ffffff14 1.5px, transparent 1.6px) 0 0/22px 22px, var(--bg);
-      color: #fff;
-      font-family: system-ui, sans-serif;
-      text-align: center;
-      overflow-x: hidden
-    }
-
-    .h {
-      font-family: Bangers, Impact, sans-serif;
-      letter-spacing: .04em;
-      font-weight: 400
-    }
-
-    #v {
-      min-height: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-      gap: 16px
-    }
-
-    .title {
-      font-size: clamp(2.5rem, 9vw, 6rem);
-      color: var(--yel);
-      text-shadow: 4px 4px 0 var(--red);
-      margin: 0
-    }
-
-    .big {
-      font-size: clamp(1.5rem, 5vw, 2.6rem);
-      margin: 0
-    }
-
-    .num {
-      font-size: clamp(8rem, 38vw, 26rem);
-      line-height: 1;
-      color: var(--yel);
-      text-shadow: 6px 6px 0 var(--red)
-    }
-
-    .num.pulse {
-      animation: p 1s infinite;
-      color: #fff;
-      text-shadow: 6px 6px 0 var(--red), 0 0 60px var(--red)
-    }
-
-    @keyframes p {
-      50% {
-        transform: scale(1.12)
-      }
-    }
-
-    .card {
-      background: #ffffff12;
-      border: 3px solid var(--yel);
-      border-radius: 14px;
-      padding: 18px;
-      max-width: 600px;
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      gap: 12px
-    }
-
-    select,
-    input,
-    textarea,
-    button {
-      font: inherit;
-      font-size: 1.1rem;
-      padding: 12px;
-      border-radius: 10px;
-      border: 2px solid #fff4;
-      background: #161a33;
-      color: #fff;
-      max-width: 100%
-    }
-
-    button {
-      background: var(--red);
-      border: 0;
-      font-family: Bangers, Impact, sans-serif;
-      letter-spacing: .05em;
-      cursor: pointer;
-      font-size: 1.4rem
-    }
-
-    button.b {
-      background: var(--blue)
-    }
-
-    textarea {
-      width: 100%;
-      height: 220px;
-      font-family: monospace;
-      font-size: .95rem;
-      text-align: left
-    }
-
-    .flash {
-      animation: f .9s
-    }
-
-    @keyframes f {
-      0% {
-        background: #fff;
-        color: #fff
-      }
-
-      100% {
-        background: transparent
-      }
-    }
-
-    .dest {
-      font-size: clamp(3rem, 14vw, 9rem);
-      color: var(--yel);
-      text-shadow: 4px 4px 0 var(--red);
-      line-height: 1;
-      animation: pop .6s
-    }
-
-    @keyframes pop {
-      0% {
-        transform: scale(.2) rotate(-8deg);
-        opacity: 0
-      }
-
-      70% {
-        transform: scale(1.15)
-      }
-
-      100% {
-        transform: none;
-        opacity: 1
-      }
-    }
-
-    #cf {
-      position: fixed;
-      inset: 0;
-      pointer-events: none
-    }
-
-    .qrbox {
-      background: #fff;
-      padding: 16px;
-      border-radius: 12px;
-      display: inline-block;
-      line-height: 0
-    }
-
-    .row {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-      justify-content: center;
-      align-items: center
-    }
-
-    .dim {
-      opacity: .55
-    }
-
-    @media (prefers-reduced-motion:reduce) {
-      * {
-        animation: none !important
-      }
-    }
-  </style>
-</head>
-
-<body>
-  <div id="v"></div>
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-  <script>
-    /* ====== 1. VUL HIER JE FIREBASE-GEGEVENS IN ====== */
-    const CFG = {
-      apiKey: "AIzaSyARRd96rg8DPCpkOV9uVYwCMclRlzy48Lg",
+<html lang="nl"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Zomerhelden</title>
+<link href="https://fonts.googleapis.com/css2?family=Bangers&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0c1c;--red:#e8203a;--yel:#ffd21f;--blue:#1e6bff}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{background:radial-gradient(#ffffff14 1.5px,transparent 1.6px) 0 0/22px 22px,var(--bg);color:#fff;font-family:system-ui,sans-serif;text-align:center;overflow-x:hidden}
+.h{font-family:Bangers,Impact,sans-serif;letter-spacing:.04em;font-weight:400}
+#v{min-height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;gap:16px}
+.title{font-size:clamp(2.5rem,9vw,6rem);color:var(--yel);text-shadow:4px 4px 0 var(--red);margin:0}
+.big{font-size:clamp(1.5rem,5vw,2.6rem);margin:0}
+.num{font-size:clamp(8rem,38vw,26rem);line-height:1;color:var(--yel);text-shadow:6px 6px 0 var(--red)}
+.num.pulse{animation:p .5s infinite;color:#fff;text-shadow:6px 6px 0 var(--red),0 0 60px var(--red)}
+@keyframes p{50%{transform:scale(1.15) rotate(-1.5deg)}}
+.card{background:#ffffff12;border:3px solid var(--yel);border-radius:14px;padding:18px;max-width:600px;width:100%;display:flex;flex-direction:column;gap:12px}
+.card.w{max-width:780px;text-align:left}
+select,input,textarea,button{font:inherit;font-size:1.1rem;padding:12px;border-radius:10px;border:2px solid #fff4;background:#161a33;color:#fff;max-width:100%}
+button{background:var(--red);border:0;font-family:Bangers,Impact,sans-serif;letter-spacing:.05em;cursor:pointer;font-size:1.4rem}
+button.b,.opt{background:var(--blue)}
+.opt{display:block;width:100%;margin-top:8px;text-align:left}
+/* sfeer: stralen + hartslag */
+body.ray::before{content:"";position:fixed;inset:-60%;background:repeating-conic-gradient(#ffd21f1c 0 8deg,transparent 8deg 16deg);animation:spin 30s linear infinite;z-index:-1;pointer-events:none}
+@keyframes spin{to{transform:rotate(360deg)}}
+body.hot::after{content:"";position:fixed;inset:0;pointer-events:none;box-shadow:inset 0 0 140px 40px #e8203acc;animation:beat .5s infinite}
+@keyframes beat{50%{opacity:.2}}
+.flash{animation:f .9s}@keyframes f{0%{background:#fff;color:#fff}100%{background:transparent}}
+/* onthulling */
+.rv{width:100%;max-width:640px;display:flex;flex-direction:column;gap:14px;align-items:center;padding:30vh 0 20vh}
+.st{width:100%;animation:pop .6s both}
+.dest{font-size:clamp(2.5rem,11vw,6rem);color:var(--yel);text-shadow:4px 4px 0 var(--red);line-height:1}
+.dest.xl{font-size:clamp(3.2rem,15vw,8rem)}
+@keyframes pop{0%{transform:scale(.2) rotate(-8deg);opacity:0;filter:blur(12px)}70%{transform:scale(1.15)}100%{transform:none;opacity:1;filter:none}}
+.dots{letter-spacing:.4em;font-size:2rem;animation:blink .8s infinite}@keyframes blink{50%{opacity:.15}}
+.mem{display:flex;gap:12px;align-items:center;background:#ffffff14;border-left:8px solid var(--red);border-radius:10px;padding:12px 16px;text-align:left;font-size:1.5rem;animation:sl .5s both}
+.mem:nth-child(even){animation-name:sr}
+@keyframes sl{from{transform:translateX(-120%);opacity:0}}@keyframes sr{from{transform:translateX(120%);opacity:0}}
+.mem .lab{font-family:Bangers,Impact,sans-serif;color:var(--yel);min-width:84px;letter-spacing:.05em}
+.mem.me{border-color:var(--yel);background:#ffd21f33;box-shadow:0 0 24px #ffd21f88}
+.mem .no{opacity:.5;font-style:italic;font-size:1.1rem}
+.chip{border:2px dashed #fff6;border-radius:999px;padding:6px 16px;font-size:1.2rem;animation:pop .5s both}
+#cf{position:fixed;inset:0;pointer-events:none;z-index:5}
+.qrbox{background:#fff;padding:16px;border-radius:12px;display:inline-block;line-height:0}
+.row{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;align-items:center}
+.dim{opacity:.55}
+/* host-editor */
+.vac{border-color:var(--blue)}
+.vac .row input{flex:1;min-width:140px}
+.rr{display:flex;gap:8px;align-items:center}
+.rr input{flex:1;min-width:0}
+.rr .lab{min-width:64px;font-family:Bangers,Impact,sans-serif;color:var(--yel);font-size:1.3rem}
+.x{background:#333;padding:8px 12px;font-size:1rem}
+.sm{font-size:1.1rem;padding:8px 14px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important}}
+</style></head>
+<body><div id="v"></div>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>
+/* ====== VUL HIER JE FIREBASE-GEGEVENS IN (dezelfde als vorige keer) ====== */
+const CFG = {
+  apiKey: "AIzaSyARRd96rg8DPCpkOV9uVYwCMclRlzy48Lg",
       authDomain: "bekendmaking-dfc7b.firebaseapp.com",
       databaseURL: "https://bekendmaking-dfc7b-default-rtdb.europe-west1.firebasedatabase.app",
       projectId: "bekendmaking-dfc7b",
@@ -216,142 +72,259 @@
       messagingSenderId: "482700104043",
       appId: "1:482700104043:web:452d8d9adba1d6cdfefc2e",
       measurementId: "G-7VELX9M8M7"
-    };
-    const TITLE = "ZOMERHELDEN";
-    /* ================================================= */
+};
+const TITLE = "ZOMERHELDEN";
+/* ========================================================================= */
 
-    const $ = s => document.querySelector(s);
-    const ls = {get: k => {try {return localStorage.getItem(k)} catch (e) {return null} }, set: (k, v) => {try {localStorage.setItem(k, v)} catch (e) { } }};
-    const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;'}[c]));
-    const wait = ms => new Promise(r => setTimeout(r, ms));
-    firebase.initializeApp(CFG);
-    const db = firebase.database(), auth = firebase.auth();
-    const mode = location.hash.slice(1), V = $('#v'), URL_ = location.href.split('#')[0];
-    let off = 0, ready = false, S = {}, N = {}, cur = '';
+const $ = s => document.querySelector(s);
+const ls = {get:k=>{try{return localStorage.getItem(k)}catch(e){return null}}, set:(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}}};
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const wait = ms => new Promise(r => setTimeout(r, ms));
+const norm = s => s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+const slug = s => norm(s).replace(/[^a-z0-9]/g, '');
+const arr = x => Object.values(x || []);
+firebase.initializeApp(CFG);
+const db = firebase.database(), auth = firebase.auth();
+const mode = location.hash.slice(1), V = $('#v'), URL_ = location.href.split('#')[0];
+let off = 0, ready = false, S = {}, N = {}, cur = '', lastS = -1;
 
-    // tijd van de Firebase-server => iedereen telt exact gelijk, ook als zijn klok afwijkt
-    db.ref('.info/serverTimeOffset').on('value', s => {off = s.val() || 0; ready = true; tick();});
-    const now = () => Date.now() + off;
-    const phase = () => S.revealAt ? (S.revealAt - now() > 0 ? 'count' : 'reveal') : (S.qr ? 'qr' : 'idle');
-    db.ref('state').on('value', s => {S = s.val() || {}; tick();});
-    db.ref('namen').on('value', s => {N = s.val() || {}; if (mode !== 'host' && mode !== 'screen') {cur = ''; tick();} });
-    window.addEventListener('hashchange', () => location.reload());
+db.ref('.info/serverTimeOffset').on('value', s => { off = s.val() || 0; ready = true; tick(); });
+const now = () => Date.now() + off;
+const phase = () => S.revealAt ? (S.revealAt - now() > 0 ? 'count' : 'reveal') : (S.qr ? 'qr' : 'idle');
+db.ref('state').on('value', s => { S = s.val() || {}; tick(); });
+db.ref('namen').on('value', s => {
+  const first = !Object.keys(N).length; N = s.val() || {};
+  if (mode === 'host' || mode === 'screen') return;
+  if (first) cur = '';
+  tick(); if (!first && $('#who')) who();
+});
+window.addEventListener('hashchange', () => location.reload());
 
-    function tick() {
-      if (!ready) return;
-      const p = phase();
-      if (p !== cur) {cur = p; (R[mode] || R.guest)(p);}
-      const el = $('#num');
-      if (el && S.revealAt) {
-        const s = Math.max(0, Math.ceil((S.revealAt - now()) / 1000));
-        el.textContent = s >= 100 ? Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0') : s;
-        el.classList.toggle('pulse', s <= 10);
-      }
-      hostStatus(p);
-    }
-    setInterval(tick, 100);
+let AC;
+const beep = (f = 880, d = .12) => { try { AC = AC || new AudioContext(); const o = AC.createOscillator(), g = AC.createGain(); o.frequency.value = f; g.gain.value = .15; o.connect(g); g.connect(AC.destination); o.start(); o.stop(AC.currentTime + d); } catch (e) {} };
+const buzz = p => { try { navigator.vibrate && navigator.vibrate(p); } catch (e) {} };
 
-    function mkQR(id, size) {new QRCode($(id), {text: URL_, width: size, height: size});}
+function tick() {
+  if (!ready) return;
+  const p = phase();
+  if (p !== cur) { cur = p; document.body.classList.remove('hot'); (R[mode] || R.guest)(p); }
+  const el = $('#num');
+  if (el && S.revealAt) {
+    const s = Math.max(0, Math.ceil((S.revealAt - now()) / 1000));
+    el.textContent = s >= 100 ? Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0') : s;
+    el.classList.toggle('pulse', s <= 10);
+    document.body.classList.toggle('hot', s <= 10);
+    if (s !== lastS) { lastS = s; if (s <= 10 && s > 0 && mode !== 'host' && mode !== 'screen') { beep(500 + (10 - s) * 70); buzz(60); } }
+  }
+  hostStatus(p);
+}
+setInterval(tick, 100);
 
-    const R = {
-      /* ---- Projectiescherm: open  …/#screen ---- */
-      screen: p => {
-        V.innerHTML =
-          p === 'idle' ? `<h1 class="title h dim">${TITLE}</h1>` :
-            p === 'qr' ? `<h1 class="title h">Scan en kies je naam!</h1><div class="qrbox" id="qr"></div>` :
-              p === 'count' ? `<p class="big h">Jouw zomer wordt onthuld over…</p><div class="num h" id="num"></div>` :
-                `<h1 class="title h flash" style="font-size:clamp(3rem,12vw,9rem)">Kijk op je gsm!</h1>`;
-        if (p === 'qr') mkQR('#qr', Math.min(innerHeight * .65, innerWidth * .8) | 0);
-      },
-      /* ---- Host: open  …/#host ---- */
-      host: () => { },
-      /* ---- Gast: de QR-code opent …/ ---- */
-      guest: p => {
-        const me = ls.get('me');
-        if (p === 'reveal' && me && N[me]) return reveal(me);
-        const opts = Object.entries(N).sort((a, b) => a[1].localeCompare(b[1]))
-          .map(([k, n]) => `<option value="${esc(k)}"${k === me ? ' selected' : ''}>${esc(n)}</option>`).join('');
-        V.innerHTML = `<h1 class="title h">${TITLE}</h1>` +
-          (p === 'count' ? `<div class="num h" id="num"></div>` :
-            p === 'reveal' ? `<p class="big h">Het is zover! Kies je naam</p>` :
-              `<p class="big h">Wacht op het signaal…</p>`) +
-          `<div class="card"><div class="big h">Wie ben jij?</div><select id="sel"><option value="">Kies je naam…</option>${opts}</select></div>`;
-        $('#sel').onchange = e => {ls.set('me', e.target.value); if (cur === 'reveal') {cur = ''; tick();} };
-      }
-    };
+function mkQR(id, size) { new QRCode($(id), {text: URL_, width: size, height: size}); }
 
-    async function reveal(id) {
-      V.innerHTML = `<h1 class="title h flash" style="font-size:clamp(4rem,20vw,10rem)">BOEM!</h1>`;
-      let d = null, ok = false;
-      for (let i = 0; i < 30 && !ok; i++) {   // de database opent pas exact op het onthulmoment
-        try {d = (await db.ref('vakanties/' + id).get()).val(); ok = true;} catch (e) {await wait(400);}
-      }
-      await wait(1200);
-      V.innerHTML = `<p class="big h">Jouw zomermissie is…</p>`;
-      await wait(1800);
-      V.innerHTML = d
-        ? `<p class="big h">${esc(N[id])}, jij gaat naar</p><div class="dest h">${esc(d.b)}</div>${d.x ? `<p class="big h" style="color:#fff">${esc(d.x)}</p>` : ''}`
-        : `<p class="big h">Jouw vakantie werd niet gevonden. Vraag het aan een begeleider!</p>`;
-      confetti();
-    }
+const R = {
+  /* ---- Projectiescherm: …/#screen ---- */
+  screen: p => {
+    document.body.classList.toggle('ray', p === 'count' || p === 'reveal');
+    V.innerHTML =
+      p === 'idle' ? `<h1 class="title h dim">${TITLE}</h1>` :
+      p === 'qr' ? `<h1 class="title h">Scan en zoek je naam!</h1><div class="qrbox" id="qr"></div>` :
+      p === 'count' ? `<p class="big h">Jouw zomer wordt onthuld over…</p><div class="num h" id="num"></div>` :
+      `<h1 class="title h flash" style="font-size:clamp(3rem,12vw,9rem)">Kijk op je gsm!</h1>`;
+    if (p === 'qr') mkQR('#qr', Math.min(innerHeight * .65, innerWidth * .8) | 0);
+  },
+  host: () => {},
+  /* ---- Gast ---- */
+  guest: p => {
+    const me = ls.get('me');
+    if (p === 'reveal' && me && Object.values(N).includes(me)) return reveal(me);
+    document.body.classList.toggle('ray', p === 'count');
+    V.innerHTML = `<h1 class="title h">${TITLE}</h1>` +
+      (p === 'count' ? `<div class="num h" id="num"></div>` :
+       p === 'reveal' ? `<p class="big h">Het is zover! Zoek je naam</p>` :
+       `<p class="big h">Wacht op het signaal…</p>`) + `<div class="card" id="who"></div>`;
+    who();
+  }
+};
 
-    function confetti() {
-      const c = document.createElement('canvas'); c.id = 'cf'; document.body.append(c);
-      const x = c.getContext('2d'); c.width = innerWidth; c.height = innerHeight;
-      const P = Array.from({length: 180}, () => ({x: Math.random() * c.width, y: -Math.random() * c.height, v: 2 + Math.random() * 4, s: 6 + Math.random() * 8, c: ['#ffd21f', '#e8203a', '#1e6bff', '#fff'][Math.random() * 4 | 0]}));
-      (function f() {
-        x.clearRect(0, 0, c.width, c.height);
-        P.forEach(q => {q.y += q.v; x.fillStyle = q.c; x.fillRect(q.x, q.y, q.s, q.s * .6);});
-        P.some(q => q.y < c.height) ? requestAnimationFrame(f) : c.remove();
-      })();
-    }
+// zoekbalk: typ een stuk van je naam, kies uit de lijst (geen typfouten mogelijk)
+function who() {
+  const me = ls.get('me'), c = $('#who'); if (!c) return;
+  if (me && Object.values(N).includes(me)) {
+    c.innerHTML = `<div class="big h">✅ ${esc(me)}</div><button class="b sm" id="chg">Dat ben ik niet</button>`;
+    $('#chg').onclick = () => { ls.set('me', ''); who(); };
+    return;
+  }
+  c.innerHTML = `<div class="big h">Wie ben jij?</div><input id="q" placeholder="Typ je naam…" autocomplete="off"><div id="res"></div>`;
+  $('#q').oninput = e => {
+    const q = norm(e.target.value.trim());
+    const m = q ? Object.values(N).filter(n => norm(n).includes(q)).sort((a, b) => (norm(b).startsWith(q)) - (norm(a).startsWith(q)) || a.localeCompare(b)).slice(0, 6) : [];
+    $('#res').innerHTML = m.map(n => `<button class="opt" data-n="${esc(n)}">${esc(n)}</button>`).join('') || (q ? '<div class="dim">Niemand gevonden, typ een ander stuk van je naam</div>' : '');
+    document.querySelectorAll('.opt').forEach(b => b.onclick = () => {
+      ls.set('me', b.dataset.n); beep(1, .01); try { AC && AC.resume(); } catch (e) {}
+      if (cur === 'reveal') { cur = ''; tick(); } else who();
+    });
+  };
+}
 
-    /* ---------------- HOST ---------------- */
-    function hostStatus(p) {
-      const e = $('#st'); if (!e) return;
-      const t = S.revealAt ? Math.max(0, Math.ceil((S.revealAt - now()) / 1000)) : 0;
-      e.textContent = {idle: '🌑 scherm donker', qr: '📱 QR zichtbaar', count: '⏳ nog ' + t + ' s', reveal: '🎉 onthuld!'}[p];
-    }
-    const slug = s => s.toLowerCase().normalize('NFD').replace(/[^a-z0-9]/g, '');
+const teamOf = (A, me) => Object.values(A || {}).find(x => [x.vv, x.co, ...arr(x.moni), ...arr(x.bc)].includes(me));
 
-    function host(u) {
-      if (!u) {
-        V.innerHTML = `<h1 class="title h">HOST</h1><div class="card"><input id="em" type="email" placeholder="e-mail"><input id="pw" type="password" placeholder="wachtwoord"><button id="go">Inloggen</button></div>`;
-        $('#go').onclick = () => auth.signInWithEmailAndPassword($('#em').value, $('#pw').value).catch(() => alert('Inloggen mislukt'));
-        return;
-      }
-      V.innerHTML = `<h1 class="title h" style="font-size:3rem">HOST</h1>
+async function reveal(me) {
+  let A = null;
+  const load = (async () => { for (let i = 0; i < 40 && !A; i++) { try { A = (await db.ref('vakanties').get()).val() || {}; } catch (e) { await wait(400); } } })();
+  document.body.classList.add('ray');
+  V.innerHTML = `<h1 class="title h flash" style="font-size:clamp(4rem,20vw,10rem)">BOEM!</h1>`;
+  beep(1200, .5); buzz([200, 80, 400]);
+  await Promise.all([load, wait(1400)]);
+  V.innerHTML = `<div class="rv" id="rv"></div>`;
+  const add = async (h, ms = 1600, cls = '') => {
+    const d = document.createElement('div'); d.className = 'st ' + cls; d.innerHTML = h; $('#rv').append(d);
+    d.scrollIntoView({behavior: 'smooth', block: 'center'}); beep(420 + Math.random() * 300, .08); await wait(ms);
+  };
+  const v = teamOf(A, me);
+  if (!v) return add(`<p class="big h">Jouw vakantie werd niet gevonden. Vraag het aan een begeleider!</p>`, 0);
+  await add(`<p class="big h">Jouw zomer begint op…</p>`, 1500);
+  await add(`<div class="dest h">${esc(v.d || 'datum volgt')}</div>`, 2300);
+  await add(`<p class="big h">Je vakantie heet…</p>`, 1500);
+  await add(`<div class="dest h">${esc(v.naam)}</div>`, 2500);
+  await add(`<p class="big h">En je trekt naar…</p><div class="dots">●●●</div>`, 3000);
+  await add(`<div class="dest xl h">${esc(v.b)}</div>`, 700);
+  confetti(); beep(1400, .4); buzz([300, 100, 300]);
+  await wait(2500);
+  await add(`<p class="big h">Dit is je team!</p>`, 1200);
+  const rows = [['VV', v.vv, 'nog geen vv gevonden']];
+  if (v.hasCo) rows.push(['Co-VV', v.co, 'nog geen co-vv gevonden']);
+  arr(v.moni).filter(Boolean).forEach(n => rows.push(['Moni', n]));
+  arr(v.bc).filter(Boolean).forEach(n => rows.push(['BC', n]));
+  for (const [l, n, no] of rows)
+    await add(`<span class="lab">${l}:</span>${n ? esc(n) + (n === me ? ' <span class="h" style="color:var(--yel)">← jij!</span>' : '') : `<span class="no">${no}</span>`}`, 700, 'mem' + (n === me ? ' me' : ''));
+  const mm = arr(v.moni).filter(x => !x).length, bb = arr(v.bc).filter(x => !x).length;
+  if (mm) await add(`+${mm} moni${mm > 1 ? "'s" : ''}`, 500, 'chip');
+  if (bb) await add(`+${bb} bc'er${bb > 1 ? 's' : ''}`, 500, 'chip');
+  await wait(800);
+  await add(`<button id="pdf">📄 Download overzicht van alle vakanties</button>`, 0);
+  $('#pdf').onclick = () => pdf(A);
+  confetti();
+}
+
+function confetti() {
+  const c = document.createElement('canvas'); c.id = 'cf'; document.body.append(c);
+  const x = c.getContext('2d'); c.width = innerWidth; c.height = innerHeight;
+  const P = Array.from({length: 200}, () => ({x: Math.random() * c.width, y: -Math.random() * c.height, v: 2 + Math.random() * 4, s: 6 + Math.random() * 8, c: ['#ffd21f', '#e8203a', '#1e6bff', '#fff'][Math.random() * 4 | 0]}));
+  (function f() {
+    x.clearRect(0, 0, c.width, c.height);
+    P.forEach(q => { q.y += q.v; x.fillStyle = q.c; x.fillRect(q.x, q.y, q.s, q.s * .6); });
+    P.some(q => q.y < c.height) ? requestAnimationFrame(f) : c.remove();
+  })();
+}
+
+/* ---- PDF met alle vakanties ---- */
+function pdf(A) {
+  const d = new window.jspdf.jsPDF(); let y = 20;
+  d.setFontSize(20); d.text(TITLE + ' - overzicht vakanties', 14, y); y += 12;
+  Object.values(A).sort((a, b) => (a.naam || '').localeCompare(b.naam || '')).forEach(v => {
+    const m = arr(v.moni), b = arr(v.bc), L = [`VV: ${v.vv || 'nog niet gevonden'}`];
+    if (v.hasCo) L.push(`Co-VV: ${v.co || 'nog niet gevonden'}`);
+    if (m.some(Boolean)) L.push("Moni's: " + m.filter(Boolean).join(', '));
+    if (m.some(x => !x)) L.push(`+${m.filter(x => !x).length} moni nog te vinden`);
+    if (b.some(Boolean)) L.push("BC'ers: " + b.filter(Boolean).join(', '));
+    if (b.some(x => !x)) L.push(`+${b.filter(x => !x).length} bc'er nog te vinden`);
+    if (y > 250) { d.addPage(); y = 20; }
+    d.setFontSize(13); d.setFont(undefined, 'bold'); d.text(`${v.naam || '?'} - ${v.b || '?'} (${v.d || '?'})`, 14, y); y += 7;
+    d.setFont(undefined, 'normal'); d.setFontSize(10);
+    L.forEach(t => { const w = d.splitTextToSize(t, 180); if (y > 280) { d.addPage(); y = 20; } d.text(w, 14, y); y += 5 * w.length + 1; });
+    y += 6;
+  });
+  d.save('zomerhelden-overzicht.pdf');
+}
+
+/* ---------------- HOST ---------------- */
+function hostStatus(p) {
+  const e = $('#st'); if (!e) return;
+  const t = S.revealAt ? Math.max(0, Math.ceil((S.revealAt - now()) / 1000)) : 0;
+  e.textContent = {idle: '🌑 scherm donker', qr: '📱 QR zichtbaar', count: '⏳ nog ' + t + ' s', reveal: '🎉 onthuld!'}[p];
+}
+let vacs = [], saveT = null, dirty = false;
+const nv = () => ({id: 'v' + Date.now().toString(36) + (Math.random() * 1e3 | 0), naam: '', b: '', d: '', vv: '', hasCo: true, co: '', moni: [''], bc: []});
+const st = t => { const e = $('#sv'); if (e) e.textContent = t; };
+
+const inp = (i, k, val, ph, j) => `<input data-i="${i}" data-k="${k}"${j !== undefined ? ` data-j="${j}"` : ''} value="${esc(val)}" placeholder="${ph}">`;
+const list = (i, k, a, lab) => a.map((n, j) => `<div class="rr"><span class="lab">${lab}</span>${inp(i, k, n, 'nog niet gevonden', j)}<button class="x" data-act="del" data-i="${i}" data-k="${k}" data-j="${j}">✕</button></div>`).join('');
+
+function ed() {
+  $('#ed').innerHTML = vacs.map((v, i) => `<div class="card w vac">
+    <div class="row">${inp(i, 'naam', v.naam, 'Naam vakantie')}${inp(i, 'b', v.b, 'Bestemming')}${inp(i, 'd', v.d, 'Datum (bv. 10–17 juli)')}</div>
+    <div class="rr"><span class="lab">VV</span>${inp(i, 'vv', v.vv, 'nog niet gevonden')}</div>
+    <div class="rr"><span class="lab">Co-VV</span><label style="white-space:nowrap"><input type="checkbox" data-act="co" data-i="${i}" ${v.hasCo ? 'checked' : ''}> aanwezig</label>${v.hasCo ? inp(i, 'co', v.co, 'nog niet gevonden') : ''}</div>
+    ${list(i, 'moni', v.moni, 'Moni')}${list(i, 'bc', v.bc, 'BC')}
+    <div class="row"><button class="b sm" data-act="add" data-i="${i}" data-k="moni">+ moni</button><button class="b sm" data-act="add" data-i="${i}" data-k="bc">+ bc'er</button><button class="x" data-act="rm" data-i="${i}">🗑 vakantie</button></div>
+  </div>`).join('') || '<div class="dim">Nog geen vakanties. Klik op “Vakantie toevoegen”.</div>';
+}
+
+function build() {
+  const vak = {}, namen = {}, seen = {}; let dup = null;
+  vacs.forEach(v => {
+    const m = v.moni.map(s => s.trim()), b = v.bc.map(s => s.trim());
+    vak[v.id] = {naam: v.naam.trim(), b: v.b.trim(), d: v.d.trim(), vv: v.vv.trim(), hasCo: !!v.hasCo, co: v.hasCo ? v.co.trim() : '', moni: m, bc: b};
+    [v.vv, v.hasCo ? v.co : '', ...m, ...b].map(s => s.trim()).filter(Boolean).forEach(n => {
+      const k = slug(n) || 'x' + n.length; if (seen[k]) dup = n; seen[k] = 1; namen[k] = n;
+    });
+  });
+  return {vak, namen, dup};
+}
+async function save() {
+  clearTimeout(saveT);
+  const {vak, namen, dup} = build();
+  if (dup) return st(`⚠️ “${dup}” staat dubbel. Voeg een achternaam toe. NIET opgeslagen.`);
+  st('⏳ Opslaan…');
+  try { await db.ref().update({vakanties: vak, namen}); dirty = false; st('✅ Opgeslagen om ' + new Date().toLocaleTimeString('nl-BE')); }
+  catch (e) { st('❌ Niet opgeslagen: ' + e.message); }
+}
+const queue = () => { dirty = true; st('✏️ Wijzigingen worden opgeslagen…'); clearTimeout(saveT); saveT = setTimeout(save, 800); };
+window.addEventListener('beforeunload', e => { if (dirty) e.preventDefault(); });
+
+function host(u) {
+  if (!u) {
+    V.innerHTML = `<h1 class="title h">HOST</h1><div class="card"><input id="em" type="email" placeholder="e-mail"><input id="pw" type="password" placeholder="wachtwoord"><button id="go">Inloggen</button></div>`;
+    $('#go').onclick = () => auth.signInWithEmailAndPassword($('#em').value, $('#pw').value).catch(() => alert('Inloggen mislukt'));
+    return;
+  }
+  V.style.justifyContent = 'flex-start';
+  V.innerHTML = `<h1 class="title h" style="font-size:3rem">HOST</h1>
   <div class="card"><div class="big h">Status: <span id="st"></span></div></div>
   <div class="card"><div class="big h">Bediening</div>
     <div class="row"><button class="b" id="b0">🔦 Scherm donker</button><button class="b" id="b1">📱 Toon QR</button></div>
     <div class="row"><input id="sec" type="number" value="60" min="5" style="width:90px"> seconden <button id="b2">🚀 START COUNTDOWN</button></div>
     <div class="row"><input id="at" type="datetime-local"><button class="b" id="b3">⏰ Plan op uur</button></div>
     <p class="dim" style="margin:0">Reset = “Scherm donker”. Handig om te testen.</p></div>
-  <div class="card"><div class="big h">Vakanties</div>
-    <div class="dim">Eén lijn per monitor: <b>naam ; bestemming ; extra (optioneel)</b>. Plakken uit Excel (kolommen) kan ook.</div>
-    <textarea id="ta" placeholder="Lotte ; Zuid-Frankrijk ; 10–17 juli&#10;Jan ; Tsjechië"></textarea>
-    <button id="sv">💾 Opslaan</button><div id="msg"></div></div>`;
-      const set = o => db.ref('state').set(o);
-      $('#b0').onclick = () => set({qr: false});
-      $('#b1').onclick = () => set({qr: true});
-      $('#b2').onclick = () => set({qr: true, revealAt: Math.round(now() + (+$('#sec').value || 60) * 1000)});
-      $('#b3').onclick = () => {const t = Date.parse($('#at').value); if (!t) return alert('Kies eerst een tijdstip'); set({qr: true, revealAt: t + off});};
-      const msg = t => $('#msg').textContent = t;
-      Promise.all([db.ref('namen').get(), db.ref('vakanties').get()]).then(([a, b]) => {
-        const n = a.val() || {}, v = b.val() || {};
-        $('#ta').value = Object.keys(n).map(k => [n[k], v[k]?.b || '', v[k]?.x || ''].join(' ; ')).join('\n');
-        cur = ''; tick();
-      }).catch(e => msg('❌ ' + e.message));
-      $('#sv').onclick = () => {
-        const rows = $('#ta').value.split('\n').map(l => l.split(/\t|;/).map(s => s.trim())).filter(r => r[0] && r[1]);
-        const namen = {}, vak = {};
-        rows.forEach((r, i) => {let k = slug(r[0]) || 'p' + i; while (namen[k]) k += i; namen[k] = r[0]; vak[k] = {b: r[1], x: r[2] || null};});
-        db.ref().update({namen, vakanties: vak}).then(() => msg(`✅ ${rows.length} helden opgeslagen`)).catch(e => msg('❌ ' + e.message));
-      };
-      cur = ''; tick();
-    }
-    if (mode === 'host') auth.onAuthStateChanged(host);
-  </script>
-</body>
-
-</html>
+  <div class="card w"><div class="big h">Vakanties</div>
+    <div class="row" style="justify-content:flex-start"><button id="add">➕ Vakantie toevoegen</button><button class="b sm" id="now">💾 Nu opslaan</button><button class="b sm" id="pd">📄 PDF-voorbeeld</button></div>
+    <div id="sv" class="dim">Laden…</div></div>
+  <div id="ed" style="width:100%;display:flex;flex-direction:column;align-items:center;gap:16px"></div>`;
+  const set = o => db.ref('state').set(o);
+  $('#b0').onclick = () => set({qr: false});
+  $('#b1').onclick = () => set({qr: true});
+  $('#b2').onclick = () => set({qr: true, revealAt: Math.round(now() + (+$('#sec').value || 60) * 1000)});
+  $('#b3').onclick = () => { const t = Date.parse($('#at').value); if (!t) return alert('Kies eerst een tijdstip'); set({qr: true, revealAt: t + off}); };
+  $('#add').onclick = () => { vacs.push(nv()); ed(); queue(); const f = document.querySelectorAll('.vac'); f[f.length - 1].querySelector('input').focus(); };
+  $('#now').onclick = save;
+  $('#pd').onclick = () => { const {vak} = build(); pdf(vak); };
+  const E = $('#ed');
+  E.oninput = e => { const {i, k, j} = e.target.dataset; if (i == null || !k) return; j != null ? vacs[i][k][j] = e.target.value : vacs[i][k] = e.target.value; queue(); };
+  E.onclick = e => {
+    const a = e.target.closest('[data-act]'); if (!a) return;
+    const {act, i, k, j} = a.dataset;
+    if (act === 'add') vacs[i][k].push('');
+    else if (act === 'del') vacs[i][k].splice(j, 1);
+    else if (act === 'co') vacs[i].hasCo = a.checked;
+    else if (act === 'rm') { if (!confirm('Deze vakantie verwijderen?')) return; vacs.splice(i, 1); }
+    ed(); queue();
+    if (act === 'add') { const l = E.querySelectorAll(`[data-i="${i}"][data-k="${k}"]`); l[l.length - 1]?.focus(); }
+  };
+  db.ref('vakanties').get().then(s => {
+    vacs = Object.entries(s.val() || {}).map(([id, v]) => ({id, naam: v.naam || '', b: v.b || '', d: v.d || '', vv: v.vv || '', hasCo: !!v.hasCo, co: v.co || '', moni: arr(v.moni), bc: arr(v.bc)}));
+    ed(); st('✅ Geladen'); cur = ''; tick();
+  }).catch(e => st('❌ ' + e.message));
+}
+if (mode === 'host') auth.onAuthStateChanged(host);
+</script></body></html>
