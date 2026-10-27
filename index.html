@@ -32,7 +32,7 @@ body.hot::after{content:"";position:fixed;inset:0;pointer-events:none;box-shadow
 .st{width:100%;animation:pop .6s both;transition:opacity .8s}.st.old{opacity:.25}
 .dest{font-size:clamp(2.5rem,11vw,6rem);color:var(--yel);text-shadow:4px 4px 0 var(--red);line-height:1}
 .dest.sm{font-size:clamp(2rem,9vw,4.5rem)}
-.nm{font-size:clamp(3.4rem,17vw,9.5rem);line-height:1.05;color:#fff;text-shadow:0 0 18px var(--yel),5px 5px 0 var(--red);animation:glow 1s infinite alternate}
+.nm{font-size:clamp(3rem,15vw,9.5rem);line-height:1.05;color:#fff;text-shadow:0 0 18px var(--yel),5px 5px 0 var(--red);animation:glow .8s 4 alternate}
 .nm b{font-weight:400;display:inline-block;animation:slam .55s both}
 @keyframes slam{0%{transform:translateY(-45vh) scale(2.2);opacity:0}70%{transform:none;opacity:1}85%{transform:scale(.92)}100%{transform:none;opacity:1}}
 @keyframes glow{to{text-shadow:0 0 40px var(--yel),0 0 90px var(--red),5px 5px 0 var(--red)}}
@@ -51,6 +51,7 @@ body.hot::after{content:"";position:fixed;inset:0;pointer-events:none;box-shadow
 .qrbox{background:#fff;padding:16px;border-radius:12px;display:inline-block;line-height:0}
 .row{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;align-items:center}
 .dim{opacity:.55}
+.lg{max-height:70px;max-width:60vw;object-fit:contain;background:#fff;border-radius:12px;padding:6px 14px}.lg.lgb{max-height:150px}
 /* host-editor */
 .vac{border-color:var(--blue)}
 .vac .row input{flex:1;min-width:140px}
@@ -93,11 +94,13 @@ const CFG = {
       measurementId: "G-7VELX9M8M7"
 };
 const TITLE = "ZOMERHELDEN";
+const LOGO = "logo.png";   // zet je logo als logo.png naast index.html (of plak hier een data-URI). Leeg laten = geen logo.
 /* ========================================================================= */
 
 const $ = s => document.querySelector(s);
 const ls = {get:k=>{try{return localStorage.getItem(k)}catch(e){return null}}, set:(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}}};
 const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const LG = c => LOGO ? `<img class="lg ${c || ''}" src="${esc(LOGO)}" alt="Kazou" onerror="this.remove()">` : '';
 const wait = ms => new Promise(r => setTimeout(r, ms));
 const norm = s => s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
 const slug = s => norm(s).replace(/[^a-z0-9]/g, '');
@@ -152,14 +155,15 @@ const R = {
       p === 'qr' ? `<h1 class="title h">Scan en zoek je naam!</h1><div class="qrbox" id="qr"></div>` :
       p === 'count' ? `<p class="big h">Jouw zomer wordt onthuld over…</p><div class="num h" id="num"></div>` :
       `<h1 class="title h flash" style="font-size:clamp(3rem,12vw,9rem)">Kijk op je gsm!</h1>`;
-    if (p === 'qr') mkQR('#qr', Math.min(innerHeight * .65, innerWidth * .8) | 0);
+    if (p === 'qr') mkQR('#qr', Math.min(innerHeight * .55, innerWidth * .8) | 0);
+    V.insertAdjacentHTML('afterbegin', LG(p === 'idle' ? 'lgb' : ''));
   },
   host: () => {},
   /* ---- Gast ---- */
   guest: p => {
     const me = ls.get('me');
     if (p === 'reveal' && me && Object.values(N).includes(me)) return reveal(me);
-    V.innerHTML = `<h1 class="title h">${TITLE}</h1>` +
+    V.innerHTML = LG() + `<h1 class="title h">${TITLE}</h1>` +
       (p === 'count' ? `<div class="num h" id="num"></div>` :
        p === 'reveal' ? `<p class="big h">Het is zover! Zoek je naam</p>` :
        `<p class="big h">Wacht op het signaal…</p>`) + `<div class="card" id="who"></div>`;
@@ -192,7 +196,7 @@ const teamOf = (A, me) => Object.values(A || {}).find(x => [x.vv, x.co, ...arr(x
 async function reveal(me) {
   let A = null; lazy(JSPDF, 'jspdf').catch(() => {});
   const load = (async () => { for (let i = 0; i < 40 && !A; i++) { try { A = (await db.ref('vakanties').get()).val() || {}; } catch (e) { await wait(400); } } })();
-  V.innerHTML = `<h1 class="title h flash" style="font-size:clamp(4rem,20vw,10rem)">BOEM!</h1>`;
+  V.innerHTML = `<h1 class="title h flash" style="font-size:clamp(3rem,13vw,8rem)">SPANNEND!</h1>`;
   beep(1200, .5); buzz([200, 80, 400]);
   await Promise.all([load, wait(1400)]);
   V.innerHTML = `<div class="rv" id="rv"></div>`;
@@ -204,7 +208,7 @@ async function reveal(me) {
   if (!v) return add(`<p class="big h">Jouw vakantie werd niet gevonden. Vraag het aan een begeleider!</p>`, 0);
   const letters = t => { let n = 0; return t.split(' ').map(w => `<span style="display:inline-block;white-space:nowrap">${[...w].map(c => `<b style="animation-delay:${(n++ * .07).toFixed(2)}s">${esc(c)}</b>`).join('')}</span>`).join(' '); };
   // 1. de NAAM komt eerst: de tekst begint te trillen, steeds harder, hartslag versnelt
-  await add(`<p class="big h trem" id="tr">Jouw vakantie heet:</p>`, 700);
+  await add(`<p class="big h trem" id="tr">Jouw vakantie is:</p>`, 700);
   const tr = $('#tr'); document.body.classList.add('hot');
   for (let i = 0, t = 520; i < 20; i++, t = Math.max(100, t * .82)) {
     tr.style.setProperty('--a', (1 + i * 1.1).toFixed(1) + 'px'); tr.style.setProperty('--sc', (1 + i * .03).toFixed(2));
@@ -213,7 +217,10 @@ async function reveal(me) {
   document.body.classList.remove('hot'); tr.closest('.st').remove();
   const fl = document.createElement('div'); fl.className = 'fl'; document.body.append(fl); setTimeout(() => fl.remove(), 800);
   $('#rv').classList.add('shake'); setTimeout(() => $('#rv').classList.remove('shake'), 700);
-  await add(`<div class="nm h">${letters(v.naam)}</div>`, 0, 'nmw');
+  const pn = add(`<div class="nm h">${letters(v.naam)}</div>`, 0, 'nmw');
+  { const nm = $('.nm'), W = nm.clientWidth, mw = Math.max(...[...nm.children].map(w => w.offsetWidth));   // langste woord moet passen
+    if (mw > W) nm.style.fontSize = (parseFloat(getComputedStyle(nm).fontSize) * W / mw * .96) + 'px'; }
+  await pn;
   confetti(); beep(1400, .5); beep(1800, .6); buzz([300, 100, 300, 100, 500]);   // enige confetti van de hele onthulling
   await wait(6000);
   // 2. daarna datum en bestemming, rustig
@@ -232,7 +239,7 @@ async function reveal(me) {
   if (mm) await add(`+${mm} moni${mm > 1 ? "'s" : ''}`, 500, 'chip');
   if (bb) await add(`+${bb} bc'er${bb > 1 ? 's' : ''}`, 500, 'chip');
   await wait(800);
-  await add(`<button id="pdf">📄 Download overzicht van alle vakanties</button>`, 0);
+  await add(`${LG('lgb')}<button id="pdf" style="margin-top:14px">📄 Download overzicht van alle vakanties</button>`, 0);
   $('#pdf').onclick = () => pdf(A);
 }
 
