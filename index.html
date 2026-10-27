@@ -1,0 +1,357 @@
+<!doctype html>
+<html lang="nl">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Zomerhelden</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bangers&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0a0c1c;
+      --red: #e8203a;
+      --yel: #ffd21f;
+      --blue: #1e6bff
+    }
+
+    * {
+      box-sizing: border-box
+    }
+
+    html,
+    body {
+      height: 100%;
+      margin: 0
+    }
+
+    body {
+      background: radial-gradient(#ffffff14 1.5px, transparent 1.6px) 0 0/22px 22px, var(--bg);
+      color: #fff;
+      font-family: system-ui, sans-serif;
+      text-align: center;
+      overflow-x: hidden
+    }
+
+    .h {
+      font-family: Bangers, Impact, sans-serif;
+      letter-spacing: .04em;
+      font-weight: 400
+    }
+
+    #v {
+      min-height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      gap: 16px
+    }
+
+    .title {
+      font-size: clamp(2.5rem, 9vw, 6rem);
+      color: var(--yel);
+      text-shadow: 4px 4px 0 var(--red);
+      margin: 0
+    }
+
+    .big {
+      font-size: clamp(1.5rem, 5vw, 2.6rem);
+      margin: 0
+    }
+
+    .num {
+      font-size: clamp(8rem, 38vw, 26rem);
+      line-height: 1;
+      color: var(--yel);
+      text-shadow: 6px 6px 0 var(--red)
+    }
+
+    .num.pulse {
+      animation: p 1s infinite;
+      color: #fff;
+      text-shadow: 6px 6px 0 var(--red), 0 0 60px var(--red)
+    }
+
+    @keyframes p {
+      50% {
+        transform: scale(1.12)
+      }
+    }
+
+    .card {
+      background: #ffffff12;
+      border: 3px solid var(--yel);
+      border-radius: 14px;
+      padding: 18px;
+      max-width: 600px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 12px
+    }
+
+    select,
+    input,
+    textarea,
+    button {
+      font: inherit;
+      font-size: 1.1rem;
+      padding: 12px;
+      border-radius: 10px;
+      border: 2px solid #fff4;
+      background: #161a33;
+      color: #fff;
+      max-width: 100%
+    }
+
+    button {
+      background: var(--red);
+      border: 0;
+      font-family: Bangers, Impact, sans-serif;
+      letter-spacing: .05em;
+      cursor: pointer;
+      font-size: 1.4rem
+    }
+
+    button.b {
+      background: var(--blue)
+    }
+
+    textarea {
+      width: 100%;
+      height: 220px;
+      font-family: monospace;
+      font-size: .95rem;
+      text-align: left
+    }
+
+    .flash {
+      animation: f .9s
+    }
+
+    @keyframes f {
+      0% {
+        background: #fff;
+        color: #fff
+      }
+
+      100% {
+        background: transparent
+      }
+    }
+
+    .dest {
+      font-size: clamp(3rem, 14vw, 9rem);
+      color: var(--yel);
+      text-shadow: 4px 4px 0 var(--red);
+      line-height: 1;
+      animation: pop .6s
+    }
+
+    @keyframes pop {
+      0% {
+        transform: scale(.2) rotate(-8deg);
+        opacity: 0
+      }
+
+      70% {
+        transform: scale(1.15)
+      }
+
+      100% {
+        transform: none;
+        opacity: 1
+      }
+    }
+
+    #cf {
+      position: fixed;
+      inset: 0;
+      pointer-events: none
+    }
+
+    .qrbox {
+      background: #fff;
+      padding: 16px;
+      border-radius: 12px;
+      display: inline-block;
+      line-height: 0
+    }
+
+    .row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center
+    }
+
+    .dim {
+      opacity: .55
+    }
+
+    @media (prefers-reduced-motion:reduce) {
+      * {
+        animation: none !important
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div id="v"></div>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script>
+    /* ====== 1. VUL HIER JE FIREBASE-GEGEVENS IN ====== */
+    const CFG = {
+      apiKey: "AIzaSyARRd96rg8DPCpkOV9uVYwCMclRlzy48Lg",
+      authDomain: "bekendmaking-dfc7b.firebaseapp.com",
+      databaseURL: "https://bekendmaking-dfc7b-default-rtdb.europe-west1.firebasedatabase.app",
+      projectId: "bekendmaking-dfc7b",
+      storageBucket: "bekendmaking-dfc7b.firebasestorage.app",
+      messagingSenderId: "482700104043",
+      appId: "1:482700104043:web:452d8d9adba1d6cdfefc2e",
+      measurementId: "G-7VELX9M8M7"
+    };
+    const TITLE = "ZOMERHELDEN";
+    /* ================================================= */
+
+    const $ = s => document.querySelector(s);
+    const ls = {get: k => {try {return localStorage.getItem(k)} catch (e) {return null} }, set: (k, v) => {try {localStorage.setItem(k, v)} catch (e) { } }};
+    const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;'}[c]));
+    const wait = ms => new Promise(r => setTimeout(r, ms));
+    firebase.initializeApp(CFG);
+    const db = firebase.database(), auth = firebase.auth();
+    const mode = location.hash.slice(1), V = $('#v'), URL_ = location.href.split('#')[0];
+    let off = 0, ready = false, S = {}, N = {}, cur = '';
+
+    // tijd van de Firebase-server => iedereen telt exact gelijk, ook als zijn klok afwijkt
+    db.ref('.info/serverTimeOffset').on('value', s => {off = s.val() || 0; ready = true; tick();});
+    const now = () => Date.now() + off;
+    const phase = () => S.revealAt ? (S.revealAt - now() > 0 ? 'count' : 'reveal') : (S.qr ? 'qr' : 'idle');
+    db.ref('state').on('value', s => {S = s.val() || {}; tick();});
+    db.ref('namen').on('value', s => {N = s.val() || {}; if (mode !== 'host' && mode !== 'screen') {cur = ''; tick();} });
+    window.addEventListener('hashchange', () => location.reload());
+
+    function tick() {
+      if (!ready) return;
+      const p = phase();
+      if (p !== cur) {cur = p; (R[mode] || R.guest)(p);}
+      const el = $('#num');
+      if (el && S.revealAt) {
+        const s = Math.max(0, Math.ceil((S.revealAt - now()) / 1000));
+        el.textContent = s >= 100 ? Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0') : s;
+        el.classList.toggle('pulse', s <= 10);
+      }
+      hostStatus(p);
+    }
+    setInterval(tick, 100);
+
+    function mkQR(id, size) {new QRCode($(id), {text: URL_, width: size, height: size});}
+
+    const R = {
+      /* ---- Projectiescherm: open  …/#screen ---- */
+      screen: p => {
+        V.innerHTML =
+          p === 'idle' ? `<h1 class="title h dim">${TITLE}</h1>` :
+            p === 'qr' ? `<h1 class="title h">Scan en kies je naam!</h1><div class="qrbox" id="qr"></div>` :
+              p === 'count' ? `<p class="big h">Jouw zomer wordt onthuld over…</p><div class="num h" id="num"></div>` :
+                `<h1 class="title h flash" style="font-size:clamp(3rem,12vw,9rem)">Kijk op je gsm!</h1>`;
+        if (p === 'qr') mkQR('#qr', Math.min(innerHeight * .65, innerWidth * .8) | 0);
+      },
+      /* ---- Host: open  …/#host ---- */
+      host: () => { },
+      /* ---- Gast: de QR-code opent …/ ---- */
+      guest: p => {
+        const me = ls.get('me');
+        if (p === 'reveal' && me && N[me]) return reveal(me);
+        const opts = Object.entries(N).sort((a, b) => a[1].localeCompare(b[1]))
+          .map(([k, n]) => `<option value="${esc(k)}"${k === me ? ' selected' : ''}>${esc(n)}</option>`).join('');
+        V.innerHTML = `<h1 class="title h">${TITLE}</h1>` +
+          (p === 'count' ? `<div class="num h" id="num"></div>` :
+            p === 'reveal' ? `<p class="big h">Het is zover! Kies je naam</p>` :
+              `<p class="big h">Wacht op het signaal…</p>`) +
+          `<div class="card"><div class="big h">Wie ben jij?</div><select id="sel"><option value="">Kies je naam…</option>${opts}</select></div>`;
+        $('#sel').onchange = e => {ls.set('me', e.target.value); if (cur === 'reveal') {cur = ''; tick();} };
+      }
+    };
+
+    async function reveal(id) {
+      V.innerHTML = `<h1 class="title h flash" style="font-size:clamp(4rem,20vw,10rem)">BOEM!</h1>`;
+      let d = null, ok = false;
+      for (let i = 0; i < 30 && !ok; i++) {   // de database opent pas exact op het onthulmoment
+        try {d = (await db.ref('vakanties/' + id).get()).val(); ok = true;} catch (e) {await wait(400);}
+      }
+      await wait(1200);
+      V.innerHTML = `<p class="big h">Jouw zomermissie is…</p>`;
+      await wait(1800);
+      V.innerHTML = d
+        ? `<p class="big h">${esc(N[id])}, jij gaat naar</p><div class="dest h">${esc(d.b)}</div>${d.x ? `<p class="big h" style="color:#fff">${esc(d.x)}</p>` : ''}`
+        : `<p class="big h">Jouw vakantie werd niet gevonden. Vraag het aan een begeleider!</p>`;
+      confetti();
+    }
+
+    function confetti() {
+      const c = document.createElement('canvas'); c.id = 'cf'; document.body.append(c);
+      const x = c.getContext('2d'); c.width = innerWidth; c.height = innerHeight;
+      const P = Array.from({length: 180}, () => ({x: Math.random() * c.width, y: -Math.random() * c.height, v: 2 + Math.random() * 4, s: 6 + Math.random() * 8, c: ['#ffd21f', '#e8203a', '#1e6bff', '#fff'][Math.random() * 4 | 0]}));
+      (function f() {
+        x.clearRect(0, 0, c.width, c.height);
+        P.forEach(q => {q.y += q.v; x.fillStyle = q.c; x.fillRect(q.x, q.y, q.s, q.s * .6);});
+        P.some(q => q.y < c.height) ? requestAnimationFrame(f) : c.remove();
+      })();
+    }
+
+    /* ---------------- HOST ---------------- */
+    function hostStatus(p) {
+      const e = $('#st'); if (!e) return;
+      const t = S.revealAt ? Math.max(0, Math.ceil((S.revealAt - now()) / 1000)) : 0;
+      e.textContent = {idle: '🌑 scherm donker', qr: '📱 QR zichtbaar', count: '⏳ nog ' + t + ' s', reveal: '🎉 onthuld!'}[p];
+    }
+    const slug = s => s.toLowerCase().normalize('NFD').replace(/[^a-z0-9]/g, '');
+
+    function host(u) {
+      if (!u) {
+        V.innerHTML = `<h1 class="title h">HOST</h1><div class="card"><input id="em" type="email" placeholder="e-mail"><input id="pw" type="password" placeholder="wachtwoord"><button id="go">Inloggen</button></div>`;
+        $('#go').onclick = () => auth.signInWithEmailAndPassword($('#em').value, $('#pw').value).catch(() => alert('Inloggen mislukt'));
+        return;
+      }
+      V.innerHTML = `<h1 class="title h" style="font-size:3rem">HOST</h1>
+  <div class="card"><div class="big h">Status: <span id="st"></span></div></div>
+  <div class="card"><div class="big h">Bediening</div>
+    <div class="row"><button class="b" id="b0">🔦 Scherm donker</button><button class="b" id="b1">📱 Toon QR</button></div>
+    <div class="row"><input id="sec" type="number" value="60" min="5" style="width:90px"> seconden <button id="b2">🚀 START COUNTDOWN</button></div>
+    <div class="row"><input id="at" type="datetime-local"><button class="b" id="b3">⏰ Plan op uur</button></div>
+    <p class="dim" style="margin:0">Reset = “Scherm donker”. Handig om te testen.</p></div>
+  <div class="card"><div class="big h">Vakanties</div>
+    <div class="dim">Eén lijn per monitor: <b>naam ; bestemming ; extra (optioneel)</b>. Plakken uit Excel (kolommen) kan ook.</div>
+    <textarea id="ta" placeholder="Lotte ; Zuid-Frankrijk ; 10–17 juli&#10;Jan ; Tsjechië"></textarea>
+    <button id="sv">💾 Opslaan</button><div id="msg"></div></div>`;
+      const set = o => db.ref('state').set(o);
+      $('#b0').onclick = () => set({qr: false});
+      $('#b1').onclick = () => set({qr: true});
+      $('#b2').onclick = () => set({qr: true, revealAt: Math.round(now() + (+$('#sec').value || 60) * 1000)});
+      $('#b3').onclick = () => {const t = Date.parse($('#at').value); if (!t) return alert('Kies eerst een tijdstip'); set({qr: true, revealAt: t + off});};
+      const msg = t => $('#msg').textContent = t;
+      Promise.all([db.ref('namen').get(), db.ref('vakanties').get()]).then(([a, b]) => {
+        const n = a.val() || {}, v = b.val() || {};
+        $('#ta').value = Object.keys(n).map(k => [n[k], v[k]?.b || '', v[k]?.x || ''].join(' ; ')).join('\n');
+        cur = ''; tick();
+      }).catch(e => msg('❌ ' + e.message));
+      $('#sv').onclick = () => {
+        const rows = $('#ta').value.split('\n').map(l => l.split(/\t|;/).map(s => s.trim())).filter(r => r[0] && r[1]);
+        const namen = {}, vak = {};
+        rows.forEach((r, i) => {let k = slug(r[0]) || 'p' + i; while (namen[k]) k += i; namen[k] = r[0]; vak[k] = {b: r[1], x: r[2] || null};});
+        db.ref().update({namen, vakanties: vak}).then(() => msg(`✅ ${rows.length} helden opgeslagen`)).catch(e => msg('❌ ' + e.message));
+      };
+      cur = ''; tick();
+    }
+    if (mode === 'host') auth.onAuthStateChanged(host);
+  </script>
+</body>
+
+</html>
