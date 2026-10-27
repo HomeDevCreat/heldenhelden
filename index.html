@@ -76,7 +76,13 @@ body.hot::after{content:"";position:fixed;inset:0;pointer-events:none;box-shadow
 #srch{width:100%}
 .fly{position:fixed;top:30vh;left:-75vw;width:min(70vw,460px);z-index:7;pointer-events:none;animation:fly 1.9s cubic-bezier(.5,0,.9,.6) forwards;filter:drop-shadow(0 0 18px #ffd21f)}
 .fly svg,.fly img{width:100%;height:auto;display:block;animation:bob .25s infinite alternate}
-@keyframes fly{to{transform:translateX(210vw) rotate(-3deg)}}@keyframes bob{to{transform:translateY(-8px)}}
+@keyframes fly{to{transform:translateX(210vw) rotate(-3deg)}}
+.fly.rl{left:auto;right:-75vw;animation-name:flyl}.fly.rl .fi{transform:scaleX(-1)}
+@keyframes flyl{to{transform:translateX(-210vw) rotate(3deg)}}
+.sl.r{left:auto;right:-60vw;background:linear-gradient(270deg,transparent,#fff);animation-name:fly2l}
+@keyframes fly2l{to{transform:translateX(-220vw)}}
+#v{position:relative;z-index:1}
+.act{position:fixed;inset:-25%;z-index:0;pointer-events:none;opacity:var(--o,0);background:repeating-conic-gradient(from var(--r,0deg),#fff 0 var(--w,1deg),transparent var(--w,1deg) 5deg);-webkit-mask:radial-gradient(circle,transparent 14%,#000 62%);mask:radial-gradient(circle,transparent 14%,#000 62%)}@keyframes bob{to{transform:translateY(-8px)}}
 .sl{position:fixed;left:-60vw;height:5px;border-radius:3px;background:linear-gradient(90deg,transparent,#fff);z-index:6;pointer-events:none;animation:fly2 1.3s ease-in forwards}
 @keyframes fly2{to{transform:translateX(220vw)}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important}}
@@ -118,11 +124,15 @@ const HEROSVG = `<svg viewBox="0 0 240 110" xmlns="http://www.w3.org/2000/svg">
 <path d="M155 45Q170 38 186 45L186 55Q170 49 155 55Z" fill="#1b1f3a"/><path d="M156 47L138 40L142 50Z" fill="#1b1f3a"/>
 <ellipse cx="177" cy="49.5" rx="4" ry="2.2" fill="#fff"/></svg>`;
 const whoosh = () => { try { AC = AC || new AudioContext(); const o = AC.createOscillator(), g = AC.createGain(), t = AC.currentTime; o.type = 'sawtooth'; o.frequency.setValueAtTime(150, t); o.frequency.exponentialRampToValueAtTime(900, t + .9); g.gain.setValueAtTime(.001, t); g.gain.linearRampToValueAtTime(.12, t + .4); g.gain.linearRampToValueAtTime(.001, t + 1.2); o.connect(g); g.connect(AC.destination); o.start(); o.stop(t + 1.3); } catch (e) {} };
-function fly() {
-  const d = document.createElement('div'); d.className = 'fly';
-  d.innerHTML = HERO ? `<img src="${esc(HERO)}" alt="" onerror="this.remove()">` : HEROSVG; document.body.append(d);
-  for (let i = 0; i < 8; i++) { const l = document.createElement('i'); l.className = 'sl'; l.style.top = (15 + Math.random() * 65) + 'vh'; l.style.width = (20 + Math.random() * 30) + 'vw'; l.style.animationDelay = (Math.random() * .5) + 's'; document.body.append(l); setTimeout(() => l.remove(), 2200); }
-  setTimeout(() => d.remove(), 2100);
+function fly(n = 3) {
+  for (let i = 0; i < n; i++) setTimeout(() => {
+    const rl = i % 2 === 1, k = i % 3, d = document.createElement('div');
+    d.className = 'fly' + (rl ? ' rl' : ''); d.style.top = [22, 46, 30][k] + 'vh'; d.style.width = `min(${[70, 85, 75][k]}vw,${[460, 560, 500][k]}px)`; d.style.animationDuration = '1.6s';
+    d.innerHTML = `<div class="fi">${HERO ? `<img src="${esc(HERO)}" alt="" onerror="this.remove()">` : HEROSVG}</div>`; document.body.append(d);
+    for (let j = 0; j < 6; j++) { const l = document.createElement('i'); l.className = 'sl' + (rl ? ' r' : ''); l.style.top = (12 + Math.random() * 70) + 'vh'; l.style.width = (20 + Math.random() * 30) + 'vw'; l.style.animationDelay = (Math.random() * .4) + 's'; document.body.append(l); setTimeout(() => l.remove(), 2000); }
+    if (mode !== 'screen') { whoosh(); buzz([200, 40, 300]); }
+    setTimeout(() => d.remove(), 1800);
+  }, i * 1150);
 }
 const LG = c => LOGO ? `<img class="lg ${c || ''}" src="${esc(LOGO)}" alt="Kazou" onerror="this.remove()">` : '';
 const wait = ms => new Promise(r => setTimeout(r, ms));
@@ -222,8 +232,8 @@ async function reveal(me) {
   let A = null; lazy(JSPDF, 'jspdf').catch(() => {});
   const load = (async () => { for (let i = 0; i < 40 && !A; i++) { try { A = (await db.ref('vakanties').get()).val() || {}; } catch (e) { await wait(400); } } })();
   V.innerHTML = `<h1 class="title h flash trem" style="font-size:clamp(3rem,13vw,8rem);--a:4px;--sc:1.05">SPANNEND!</h1>`;
-  whoosh(); buzz([300, 60, 500]); fly();
-  await Promise.all([load, wait(2300)]);
+  fly(3);
+  await Promise.all([load, wait(4300)]);
   V.innerHTML = `<div class="rv" id="rv"></div>`;
   const add = async (h, ms = 1600, cls = '') => {
     const d = document.createElement('div'); d.className = 'st ' + cls; d.innerHTML = h; $('#rv').append(d);
@@ -235,11 +245,13 @@ async function reveal(me) {
   // 1. de NAAM komt eerst: de tekst begint te trillen, steeds harder, hartslag versnelt
   await add(`<p class="big h trem" id="tr">Jouw vakantie is:</p>`, 700);
   const tr = $('#tr'); document.body.classList.add('hot');
+  const act = document.createElement('div'); act.className = 'act'; document.body.append(act);
   for (let i = 0, t = 520; i < 20; i++, t = Math.max(100, t * .82)) {
-    tr.style.setProperty('--a', (1 + i * 1.1).toFixed(1) + 'px'); tr.style.setProperty('--sc', (1 + i * .03).toFixed(2));
+    tr.style.setProperty('--a', (1 + i * 1.1).toFixed(1) + 'px'); tr.style.setProperty('--sc', (1 + i * .02).toFixed(2));
+    act.style.setProperty('--o', Math.min(.75, .2 + i * .04).toFixed(2)); act.style.setProperty('--r', (Math.random() * 5).toFixed(1) + 'deg'); act.style.setProperty('--w', (.5 + Math.random() * 1.8).toFixed(2) + 'deg');
     beep(300 + i * 50, .09); buzz(40 + i * 4); await wait(t);
   }
-  document.body.classList.remove('hot'); tr.closest('.st').remove();
+  document.body.classList.remove('hot'); act.remove(); tr.closest('.st').remove();
   const fl = document.createElement('div'); fl.className = 'fl'; document.body.append(fl); setTimeout(() => fl.remove(), 800);
   $('#rv').classList.add('shake'); setTimeout(() => $('#rv').classList.remove('shake'), 700);
   const pn = add(`<div class="nm h">${letters(v.naam)}</div>`, 0, 'nmw');
