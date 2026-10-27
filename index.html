@@ -28,13 +28,13 @@ body.hot::after{content:"";position:fixed;inset:0;pointer-events:none;box-shadow
 @keyframes beat{50%{opacity:.2}}
 .flash{animation:f .9s}@keyframes f{0%{background:#fff;color:#fff}100%{background:transparent}}
 /* onthulling */
-.rv{width:100%;max-width:640px;display:flex;flex-direction:column;gap:14px;align-items:center;padding:30vh 10px 20vh;overflow:hidden}
+.rv{width:100%;max-width:640px;display:flex;flex-direction:column;gap:14px;align-items:center;padding:30vh 24px 20vh}
 .st{width:100%;animation:pop .6s both;transition:opacity .8s}.st.old{opacity:.25}
 .dest{font-size:clamp(2.5rem,11vw,6rem);color:var(--yel);text-shadow:4px 4px 0 var(--red);line-height:1}
 .dest.sm{font-size:clamp(2rem,9vw,4.5rem)}
 .nm{font-size:clamp(3.4rem,17vw,9.5rem);line-height:1.05;color:#fff;text-shadow:0 0 18px var(--yel),5px 5px 0 var(--red);animation:glow 1s infinite alternate}
 .nm b{font-weight:400;display:inline-block;animation:slam .55s both}
-@keyframes slam{0%{transform:translateY(-60vh) scale(3);opacity:0}70%{transform:none;opacity:1}85%{transform:scale(.92)}100%{transform:none;opacity:1}}
+@keyframes slam{0%{transform:translateY(-45vh) scale(2.2);opacity:0}70%{transform:none;opacity:1}85%{transform:scale(.92)}100%{transform:none;opacity:1}}
 @keyframes glow{to{text-shadow:0 0 40px var(--yel),0 0 90px var(--red),5px 5px 0 var(--red)}}
 .shake{animation:shk .08s 8}@keyframes shk{25%{transform:translate(6px,-4px)}75%{transform:translate(-6px,4px)}}
 .fl{position:fixed;inset:0;background:#fff;z-index:6;pointer-events:none;animation:fo .7s both}@keyframes fo{to{opacity:0}}
@@ -42,7 +42,7 @@ body.hot::after{content:"";position:fixed;inset:0;pointer-events:none;box-shadow
 .dots{letter-spacing:.4em;font-size:2rem;animation:blink .8s infinite}@keyframes blink{50%{opacity:.15}}
 .mem{display:flex;gap:12px;align-items:center;background:#ffffff14;border-left:8px solid var(--red);border-radius:10px;padding:12px 16px;text-align:left;font-size:1.5rem;animation:sl .5s both}
 .mem:nth-child(even){animation-name:sr}
-@keyframes sl{from{transform:translateX(-120%);opacity:0}}@keyframes sr{from{transform:translateX(120%);opacity:0}}
+@keyframes sl{from{transform:translateX(-40px);opacity:0}}@keyframes sr{from{transform:translateX(40px);opacity:0}}
 .mem .lab{font-family:Bangers,Impact,sans-serif;color:var(--yel);min-width:84px;letter-spacing:.05em}
 .mem.me{border-color:var(--yel);background:#ffd21f33;box-shadow:0 0 24px #ffd21f88}
 .mem .no{opacity:.5;font-style:italic;font-size:1.1rem}
@@ -59,6 +59,20 @@ body.hot::after{content:"";position:fixed;inset:0;pointer-events:none;box-shadow
 .rr .lab{min-width:64px;font-family:Bangers,Impact,sans-serif;color:var(--yel);font-size:1.3rem}
 .x{background:#333;padding:8px 12px;font-size:1rem}
 .sm{font-size:1.1rem;padding:8px 14px}
+.st.nmw{animation:none}
+.trem{display:inline-block;animation:trem .07s infinite}
+@keyframes trem{0%,50%,100%{transform:scale(var(--sc,1))}25%{transform:translate(var(--a,1px),calc(var(--a,1px)*-.6)) rotate(.4deg) scale(var(--sc,1))}75%{transform:translate(calc(var(--a,1px)*-1),calc(var(--a,1px)*.6)) rotate(-.4deg) scale(var(--sc,1))}}
+.vc{background:#ffffff0d;border:2px solid #fff3;border-radius:10px;text-align:left;width:100%}
+.vh{display:flex;flex-wrap:wrap;gap:6px 8px;align-items:center;padding:8px 12px;cursor:pointer}
+.vh .tt{flex:1 1 220px;font-weight:600}.vh small{font-weight:400;opacity:.7}
+.ch{font-size:.78rem;padding:2px 9px;border-radius:99px}.ch.ok{background:#1a7f3c}.ch.no{background:#b4570a}
+.vb{padding:8px 12px 12px;border-top:1px solid #fff2;display:flex;flex-direction:column;gap:8px}
+.g{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:6px}
+.f{display:flex;align-items:center;gap:6px;font-size:.85rem}
+.f>span{min-width:62px;color:var(--yel);font-family:Bangers,Impact,sans-serif;font-size:1.05rem;white-space:nowrap}
+.f input[type=text],.f input:not([type]){flex:1;min-width:0;padding:6px 8px;font-size:.95rem}
+.f .x{padding:4px 9px;font-size:.9rem}
+#srch{width:100%}
 @media (prefers-reduced-motion:reduce){*{animation:none!important}}
 </style></head>
 <body><div id="v"></div>
@@ -66,18 +80,14 @@ body.hot::after{content:"";position:fixed;inset:0;pointer-events:none;box-shadow
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script>
 /* ====== VUL HIER JE FIREBASE-GEGEVENS IN (dezelfde als vorige keer) ====== */
 const CFG = {
-  apiKey: "AIzaSyARRd96rg8DPCpkOV9uVYwCMclRlzy48Lg",
-      authDomain: "bekendmaking-dfc7b.firebaseapp.com",
-      databaseURL: "https://bekendmaking-dfc7b-default-rtdb.europe-west1.firebasedatabase.app",
-      projectId: "bekendmaking-dfc7b",
-      storageBucket: "bekendmaking-dfc7b.firebasestorage.app",
-      messagingSenderId: "482700104043",
-      appId: "1:482700104043:web:452d8d9adba1d6cdfefc2e",
-      measurementId: "G-7VELX9M8M7"
+  apiKey: "VUL_IN",
+  authDomain: "VUL_IN.firebaseapp.com",
+  databaseURL: "https://VUL_IN-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "VUL_IN",
+  appId: "VUL_IN"
 };
 const TITLE = "ZOMERHELDEN";
 /* ========================================================================= */
@@ -89,6 +99,8 @@ const wait = ms => new Promise(r => setTimeout(r, ms));
 const norm = s => s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
 const slug = s => norm(s).replace(/[^a-z0-9]/g, '');
 const arr = x => Object.values(x || []);
+const lazy = (u, g) => new Promise((ok, no) => { if (window[g]) return ok(); const t = document.createElement('script'); t.src = u; t.onload = ok; t.onerror = no; document.head.append(t); });
+const JSPDF = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js', SHEETJS = 'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js';
 firebase.initializeApp(CFG);
 const db = firebase.database(), auth = firebase.auth();
 const mode = location.hash.slice(1), V = $('#v'), URL_ = location.href.split('#')[0];
@@ -175,7 +187,7 @@ function who() {
 const teamOf = (A, me) => Object.values(A || {}).find(x => [x.vv, x.co, ...arr(x.moni), ...arr(x.bc)].includes(me));
 
 async function reveal(me) {
-  let A = null;
+  let A = null; lazy(JSPDF, 'jspdf').catch(() => {});
   const load = (async () => { for (let i = 0; i < 40 && !A; i++) { try { A = (await db.ref('vakanties').get()).val() || {}; } catch (e) { await wait(400); } } })();
   V.innerHTML = `<h1 class="title h flash" style="font-size:clamp(4rem,20vw,10rem)">BOEM!</h1>`;
   beep(1200, .5); buzz([200, 80, 400]);
@@ -187,21 +199,24 @@ async function reveal(me) {
   };
   const v = teamOf(A, me);
   if (!v) return add(`<p class="big h">Jouw vakantie werd niet gevonden. Vraag het aan een begeleider!</p>`, 0);
-  const dim = () => document.querySelectorAll('#rv .st').forEach(e => e.classList.add('old'));
   const letters = t => { let n = 0; return t.split(' ').map(w => `<span style="display:inline-block;white-space:nowrap">${[...w].map(c => `<b style="animation-delay:${(n++ * .07).toFixed(2)}s">${esc(c)}</b>`).join('')}</span>`).join(' '); };
-  await add(`<p class="big h">Jouw zomer begint op…</p>`, 1500);
-  await add(`<div class="dest sm h">${esc(v.d || 'datum volgt')}</div>`, 2300);
-  dim();
-  await add(`<p class="big h">Je vakantie heet…</p><div class="dots">●●●</div>`, 400);
-  // tromgeroffel: hartslag die steeds sneller gaat
-  for (let i = 0, t = 520; i < 14; i++, t = Math.max(110, t * .82)) { beep(300 + i * 60, .09); buzz(40); await wait(t); }
+  // 1. de NAAM komt eerst: de tekst begint te trillen, steeds harder, hartslag versnelt
+  await add(`<p class="big h trem" id="tr">Jouw vakantie heet:</p>`, 700);
+  const tr = $('#tr'); document.body.classList.add('hot');
+  for (let i = 0, t = 520; i < 20; i++, t = Math.max(100, t * .82)) {
+    tr.style.setProperty('--a', (1 + i * 1.1).toFixed(1) + 'px'); tr.style.setProperty('--sc', (1 + i * .03).toFixed(2));
+    beep(300 + i * 50, .09); buzz(40 + i * 4); await wait(t);
+  }
+  document.body.classList.remove('hot'); tr.closest('.st').remove();
   const fl = document.createElement('div'); fl.className = 'fl'; document.body.append(fl); setTimeout(() => fl.remove(), 800);
-  document.querySelector('#rv .dots')?.remove(); dim();
   $('#rv').classList.add('shake'); setTimeout(() => $('#rv').classList.remove('shake'), 700);
-  await add(`<div class="nm h">${letters(v.naam)}</div>`, 0);
+  await add(`<div class="nm h">${letters(v.naam)}</div>`, 0, 'nmw');
   confetti(); beep(1400, .5); beep(1800, .6); buzz([300, 100, 300, 100, 500]);   // enige confetti van de hele onthulling
-  await wait(5500);
-  await add(`<p class="big h">Je trekt naar…</p>`, 1500);
+  await wait(6000);
+  // 2. daarna datum en bestemming, rustig
+  await add(`<p class="big h">Jouw zomer begint op</p>`, 1100);
+  await add(`<div class="dest sm h">${esc(v.d || 'datum volgt')}</div>`, 2200);
+  await add(`<p class="big h">Je trekt naar</p>`, 1100);
   await add(`<div class="dest sm h">${esc(v.b)}</div>`, 2500);
   await add(`<p class="big h">Dit is je moniploeg!</p>`, 1200);
   const rows = [['VV', v.vv, 'nog geen vv gevonden']];
@@ -230,7 +245,8 @@ function confetti() {
 }
 
 /* ---- PDF met alle vakanties ---- */
-function pdf(A) {
+async function pdf(A) {
+  try { await lazy(JSPDF, 'jspdf'); } catch (e) { return alert('PDF-bibliotheek kon niet laden. Controleer je internet.'); }
   const d = new window.jspdf.jsPDF(); let y = 20;
   d.setFontSize(20); d.text(TITLE + ' - overzicht vakanties', 14, y); y += 12;
   Object.values(A).sort((a, b) => (a.naam || '').localeCompare(b.naam || '')).forEach(v => {
@@ -255,21 +271,34 @@ function hostStatus(p) {
   const t = S.revealAt ? Math.max(0, Math.ceil((S.revealAt - now()) / 1000)) : 0;
   e.textContent = {idle: '🌑 scherm donker', qr: '📱 QR zichtbaar', count: '⏳ nog ' + t + ' s', reveal: '🎉 onthuld!'}[p];
 }
-let vacs = [], saveT = null, dirty = false;
-const nv = () => ({id: 'v' + Date.now().toString(36) + (Math.random() * 1e3 | 0), naam: '', b: '', d: '', vv: '', hasCo: true, co: '', moni: [''], bc: []});
+let vacs = [], saveT = null, dirty = false, idc = 0, q = '';
+const nv = () => ({id: 'v' + Date.now().toString(36) + (idc++), naam: '', b: '', d: '', vv: '', hasCo: true, co: '', moni: [''], bc: [], _o: false});
 const st = t => { const e = $('#sv'); if (e) e.textContent = t; };
-
-const inp = (i, k, val, ph, j) => `<input data-i="${i}" data-k="${k}"${j !== undefined ? ` data-j="${j}"` : ''} value="${esc(val)}" placeholder="${ph}">`;
-const list = (i, k, a, lab) => a.map((n, j) => `<div class="rr"><span class="lab">${lab}</span>${inp(i, k, n, 'nog niet gevonden', j)}<button class="x" data-act="del" data-i="${i}" data-k="${k}" data-j="${j}">✕</button></div>`).join('');
+const F = (i, k, lab, val, j, x) => `<label class="f"><span>${lab}</span><input type="text" data-i="${i}" data-k="${k}"${j !== undefined ? ` data-j="${j}"` : ''} value="${esc(val)}" placeholder="${['naam', 'b', 'd'].includes(k) ? '' : 'nog niet gevonden'}">${x ? `<button class="x" data-act="del" data-i="${i}" data-k="${k}" data-j="${j}" title="Plek verwijderen">✕</button>` : ''}</label>`;
+const cnt = a => [a.filter(x => x.trim()).length, a.length];
+const ch = (t, ok) => `<span class="ch ${ok ? 'ok' : 'no'}">${t}</span>`;
+function hdr(v) {
+  const [mf, mt] = cnt(v.moni), [bf, bt] = cnt(v.bc);
+  return `${v._o ? '▾' : '▸'} <span class="tt">${esc(v.naam || '(nog geen naam)')} <small>· ${esc(v.b || '?')} · ${esc(v.d || '?')}</small></span>` +
+    ch('VV', !!v.vv.trim()) + (v.hasCo ? ch('Co', !!v.co.trim()) : '') + (mt ? ch(`Moni ${mf}/${mt}`, mf === mt) : '') + (bt ? ch(`BC ${bf}/${bt}`, bf === bt) : '');
+}
+const people = v => [v.vv, v.hasCo ? v.co : '', ...v.moni, ...v.bc].filter(s => s.trim());
+const full = v => norm([v.naam, v.b, v.d, ...people(v)].join(' '));
 
 function ed() {
-  $('#ed').innerHTML = vacs.map((v, i) => `<div class="card w vac">
-    <div class="row">${inp(i, 'naam', v.naam, 'Naam vakantie')}${inp(i, 'b', v.b, 'Bestemming')}${inp(i, 'd', v.d, 'Datum (bv. 10–17 juli)')}</div>
-    <div class="rr"><span class="lab">VV</span>${inp(i, 'vv', v.vv, 'nog niet gevonden')}</div>
-    <div class="rr"><span class="lab">Co-VV</span><label style="white-space:nowrap"><input type="checkbox" data-act="co" data-i="${i}" ${v.hasCo ? 'checked' : ''}> aanwezig</label>${v.hasCo ? inp(i, 'co', v.co, 'nog niet gevonden') : ''}</div>
-    ${list(i, 'moni', v.moni, 'Moni')}${list(i, 'bc', v.bc, 'BC')}
-    <div class="row"><button class="b sm" data-act="add" data-i="${i}" data-k="moni">+ moni</button><button class="b sm" data-act="add" data-i="${i}" data-k="bc">+ bc'er</button><button class="x" data-act="rm" data-i="${i}">🗑 vakantie</button></div>
-  </div>`).join('') || '<div class="dim">Nog geen vakanties. Klik op “Vakantie toevoegen”.</div>';
+  const Q = norm(q.trim()); let shown = 0;
+  $('#ed').innerHTML = vacs.map((v, i) => {
+    const hide = Q && !full(v).includes(Q); if (!hide) shown++;
+    return `<div class="vc"${hide ? ' style="display:none"' : ''}><div class="vh" id="h${i}" data-act="tg" data-i="${i}">${hdr(v)}</div>${v._o ? `<div class="vb">
+      <div class="g">${F(i, 'naam', 'Vakantie', v.naam)}${F(i, 'b', 'Bestemming', v.b)}${F(i, 'd', 'Datum', v.d)}</div>
+      <div class="g">${F(i, 'vv', 'VV', v.vv)}<div class="f"><span><input type="checkbox" data-act="co" data-i="${i}" ${v.hasCo ? 'checked' : ''}> Co-VV</span>${v.hasCo ? `<input type="text" data-i="${i}" data-k="co" value="${esc(v.co)}" placeholder="nog niet gevonden" style="flex:1;min-width:0;padding:6px 8px;font-size:.95rem">` : '<i class="dim">geen co-vv</i>'}</div></div>
+      <div class="g">${v.moni.map((n, j) => F(i, 'moni', 'Moni', n, j, true)).join('')}</div>
+      <div class="g">${v.bc.map((n, j) => F(i, 'bc', 'BC', n, j, true)).join('')}</div>
+      <div class="row" style="justify-content:flex-start"><button class="b sm" data-act="add" data-i="${i}" data-k="moni">+ moni</button><button class="b sm" data-act="add" data-i="${i}" data-k="bc">+ bc'er</button><button class="x" data-act="rm" data-i="${i}">🗑 vakantie verwijderen</button></div>
+    </div>` : ''}</div>`;
+  }).join('') || '<div class="dim">Nog geen vakanties. Klik op “Vakantie” of importeer een Excel.</div>';
+  const tot = vacs.reduce((a, v) => a + people(v).length, 0);
+  $('#cnt').textContent = `${vacs.length} vakanties · ${tot} namen · ${vacs.filter(v => !v.vv.trim()).length} zonder VV` + (Q ? ` · ${shown} gevonden` : '');
 }
 
 function build() {
@@ -277,9 +306,7 @@ function build() {
   vacs.forEach(v => {
     const m = v.moni.map(s => s.trim()), b = v.bc.map(s => s.trim());
     vak[v.id] = {naam: v.naam.trim(), b: v.b.trim(), d: v.d.trim(), vv: v.vv.trim(), hasCo: !!v.hasCo, co: v.hasCo ? v.co.trim() : '', moni: m, bc: b};
-    [v.vv, v.hasCo ? v.co : '', ...m, ...b].map(s => s.trim()).filter(Boolean).forEach(n => {
-      const k = slug(n) || 'x' + n.length; if (seen[k]) dup = n; seen[k] = 1; namen[k] = n;
-    });
+    people(v).map(s => s.trim()).forEach(n => { const k = slug(n) || 'x' + n.length; if (seen[k]) dup = n; seen[k] = 1; namen[k] = n; });
   });
   return {vak, namen, dup};
 }
@@ -293,6 +320,31 @@ async function save() {
 }
 const queue = () => { dirty = true; st('✏️ Wijzigingen worden opgeslagen…'); clearTimeout(saveT); saveT = setTimeout(save, 800); };
 window.addEventListener('beforeunload', e => { if (dirty) e.preventDefault(); });
+
+// Excel: kolommen Vakantie, Bestemming, Datum, VV, Co-VV, Aantal moni, Moni 1.., Aantal bc, BC 1..
+async function importXlsx(file) {
+  try { await lazy(SHEETJS, 'XLSX'); } catch (e) { return alert('Excel-bibliotheek kon niet laden. Controleer je internet.'); }
+  const wb = XLSX.read(await file.arrayBuffer(), {type: 'array'});
+  const rows = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]], {header: 1, defval: '', raw: false});
+  const hd = (rows[0] || []).map(h => norm(String(h)).trim());
+  const one = f => hd.findIndex(f), many = f => hd.map((h, i) => f(h) ? i : -1).filter(i => i >= 0);
+  const C = {naam: one(h => h === 'vakantie' || h === 'naam' || h === 'naam vakantie'), b: one(h => h.startsWith('bestemming')), d: one(h => h.startsWith('datum')),
+    vv: one(h => h === 'vv'), co: one(h => /^co[\s-]?vv$/.test(h)),
+    nm: one(h => h.startsWith('aantal') && h.includes('moni')), nb: one(h => h.startsWith('aantal') && h.includes('bc')),
+    m: many(h => /^moni\s*\d*$/.test(h)), bc: many(h => /^bc/.test(h) && !h.startsWith('aantal'))};
+  if (C.naam < 0) return alert('Kolom “Vakantie” niet gevonden in de eerste rij. Gebruik het voorbeeldbestand als sjabloon.');
+  const list = [];
+  rows.slice(1).forEach(r => {
+    const g = i => i >= 0 ? String(r[i] ?? '').trim() : '';
+    if (!g(C.naam) && !g(C.b)) return;
+    const slots = (idx, n) => { const a = idx.map(g).filter(Boolean); while (a.length < (parseInt(g(n)) || 0)) a.push(''); return a; };
+    const co = g(C.co), noCo = C.co < 0 || ['nee', 'geen', '-', 'x'].includes(co.toLowerCase());
+    list.push({...nv(), naam: g(C.naam), b: g(C.b), d: g(C.d), vv: g(C.vv), hasCo: !noCo, co: noCo ? '' : co, moni: slots(C.m, C.nm), bc: slots(C.bc, C.nb)});
+  });
+  if (!list.length) return alert('Geen vakanties gevonden in het bestand.');
+  if (!confirm(`${list.length} vakanties gevonden.\n\nOK = toevoegen aan de bestaande lijst.\nAnnuleren = niets doen.`)) return;
+  vacs.push(...list); ed(); save();
+}
 
 function host(u) {
   if (!u) {
@@ -309,22 +361,34 @@ function host(u) {
     <div class="row"><input id="at" type="datetime-local"><button class="b" id="b3">⏰ Plan op uur</button></div>
     <p class="dim" style="margin:0">Reset = “Scherm donker”. Handig om te testen.</p></div>
   <div class="card w"><div class="big h">Vakanties</div>
-    <div class="row" style="justify-content:flex-start"><button id="add">➕ Vakantie toevoegen</button><button class="b sm" id="now">💾 Nu opslaan</button><button class="b sm" id="pd">📄 PDF-voorbeeld</button></div>
-    <div id="sv" class="dim">Laden…</div></div>
-  <div id="ed" style="width:100%;display:flex;flex-direction:column;align-items:center;gap:16px"></div>`;
+    <div class="row" style="justify-content:flex-start"><button id="add">➕ Vakantie</button><button class="b sm" id="imp">📥 Excel importeren</button><button class="b sm" id="tgl">⇕ Alles open/dicht</button><button class="b sm" id="now">💾 Opslaan</button><button class="b sm" id="pd">📄 PDF</button><button class="x" id="clr">🗑 Alles wissen</button></div>
+    <input id="srch" type="search" placeholder="🔍 Zoek op vakantie, bestemming of naam…">
+    <div id="cnt" class="dim"></div><div id="sv" class="dim">Laden…</div></div>
+  <div id="ed" style="width:100%;max-width:780px;display:flex;flex-direction:column;gap:8px"></div>
+  <input type="file" id="xl" accept=".xlsx,.xls,.csv" hidden>`;
   const set = o => db.ref('state').set(o);
   $('#b0').onclick = () => set({qr: false});
   $('#b1').onclick = () => set({qr: true});
   $('#b2').onclick = () => set({qr: true, revealAt: Math.round(now() + (+$('#sec').value || 60) * 1000)});
   $('#b3').onclick = () => { const t = Date.parse($('#at').value); if (!t) return alert('Kies eerst een tijdstip'); set({qr: true, revealAt: t + off}); };
-  $('#add').onclick = () => { vacs.push(nv()); ed(); queue(); const f = document.querySelectorAll('.vac'); f[f.length - 1].querySelector('input').focus(); };
-  $('#now').onclick = save;
-  $('#pd').onclick = () => { const {vak} = build(); pdf(vak); };
   const E = $('#ed');
-  E.oninput = e => { const {i, k, j} = e.target.dataset; if (i == null || !k) return; j != null ? vacs[i][k][j] = e.target.value : vacs[i][k] = e.target.value; queue(); };
+  $('#add').onclick = () => { const v = nv(); v._o = true; vacs.push(v); q = ''; $('#srch').value = ''; ed(); queue(); E.lastElementChild.scrollIntoView({block: 'center'}); E.lastElementChild.querySelector('input[type=text]').focus(); };
+  $('#imp').onclick = () => $('#xl').click();
+  $('#xl').onchange = e => { const f = e.target.files[0]; e.target.value = ''; if (f) importXlsx(f); };
+  $('#tgl').onclick = () => { const o = vacs.some(v => !v._o); vacs.forEach(v => v._o = o); ed(); };
+  $('#clr').onclick = () => { if (vacs.length && confirm('ALLE vakanties wissen?') && confirm('Zeker? Dit kan je niet ongedaan maken.')) { vacs = []; ed(); save(); } };
+  $('#now').onclick = save;
+  $('#pd').onclick = async () => { await pdf(build().vak); };
+  $('#srch').oninput = e => { q = e.target.value; ed(); };
+  E.oninput = e => {
+    const {i, k, j} = e.target.dataset; if (i == null || !k) return;
+    j != null ? vacs[i][k][j] = e.target.value : vacs[i][k] = e.target.value;
+    $('#h' + i).innerHTML = hdr(vacs[i]); queue();
+  };
   E.onclick = e => {
     const a = e.target.closest('[data-act]'); if (!a) return;
     const {act, i, k, j} = a.dataset;
+    if (act === 'tg') { vacs[i]._o = !vacs[i]._o; ed(); return; }
     if (act === 'add') vacs[i][k].push('');
     else if (act === 'del') vacs[i][k].splice(j, 1);
     else if (act === 'co') vacs[i].hasCo = a.checked;
@@ -333,7 +397,7 @@ function host(u) {
     if (act === 'add') { const l = E.querySelectorAll(`[data-i="${i}"][data-k="${k}"]`); l[l.length - 1]?.focus(); }
   };
   db.ref('vakanties').get().then(s => {
-    vacs = Object.entries(s.val() || {}).map(([id, v]) => ({id, naam: v.naam || '', b: v.b || '', d: v.d || '', vv: v.vv || '', hasCo: !!v.hasCo, co: v.co || '', moni: arr(v.moni), bc: arr(v.bc)}));
+    vacs = Object.entries(s.val() || {}).map(([id, v]) => ({id, naam: v.naam || '', b: v.b || '', d: v.d || '', vv: v.vv || '', hasCo: !!v.hasCo, co: v.co || '', moni: arr(v.moni), bc: arr(v.bc), _o: false}));
     ed(); st('✅ Geladen'); cur = ''; tick();
   }).catch(e => st('❌ ' + e.message));
 }
