@@ -74,6 +74,11 @@ body.hot::after{content:"";position:fixed;inset:0;pointer-events:none;box-shadow
 .f input[type=text],.f input:not([type]){flex:1;min-width:0;padding:6px 8px;font-size:.95rem}
 .f .x{padding:4px 9px;font-size:.9rem}
 #srch{width:100%}
+.fly{position:fixed;top:30vh;left:-75vw;width:min(70vw,460px);z-index:7;pointer-events:none;animation:fly 1.9s cubic-bezier(.5,0,.9,.6) forwards;filter:drop-shadow(0 0 18px #ffd21f)}
+.fly svg,.fly img{width:100%;height:auto;display:block;animation:bob .25s infinite alternate}
+@keyframes fly{to{transform:translateX(210vw) rotate(-3deg)}}@keyframes bob{to{transform:translateY(-8px)}}
+.sl{position:fixed;left:-60vw;height:5px;border-radius:3px;background:linear-gradient(90deg,transparent,#fff);z-index:6;pointer-events:none;animation:fly2 1.3s ease-in forwards}
+@keyframes fly2{to{transform:translateX(220vw)}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important}}
 </style></head>
 <body><div id="v"></div>
@@ -100,6 +105,25 @@ const LOGO = "logo.png";   // zet je logo als logo.png naast index.html (of plak
 const $ = s => document.querySelector(s);
 const ls = {get:k=>{try{return localStorage.getItem(k)}catch(e){return null}}, set:(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}}};
 const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const HERO = "";   // eigen afbeelding (png, transparante achtergrond, kijkt naar rechts). Leeg = ingebouwde superheld.
+const HEROSVG = `<svg viewBox="0 0 240 110" xmlns="http://www.w3.org/2000/svg">
+<path d="M138 46C104 14 62 38 14 10C38 48 46 70 12 100C68 88 112 78 138 66Z" fill="#e8203a"/>
+<path d="M138 50C108 30 70 46 36 30" fill="none" stroke="#ff7b8c" stroke-width="3" opacity=".8"/>
+<path d="M104 58L40 68L38 78L104 72Z" fill="#1e6bff"/><path d="M106 50L46 50L45 60L106 62Z" fill="#164fc0"/>
+<ellipse cx="36" cy="73" rx="9" ry="6" fill="#ffd21f"/><ellipse cx="42" cy="55" rx="9" ry="6" fill="#ffd21f"/>
+<rect x="96" y="42" width="62" height="30" rx="14" fill="#1e6bff"/><rect x="100" y="58" width="14" height="8" fill="#ffd21f"/>
+<polygon points="130,50 132.4,55.6 138.5,56.2 133.9,60.2 135.3,66.2 130,63 124.7,66.2 126.1,60.2 121.5,56.2 127.6,55.6" fill="#ffd21f"/>
+<path d="M150 46L208 40L210 54L150 62Z" fill="#164fc0"/><circle cx="212" cy="47" r="8" fill="#e8203a"/>
+<circle cx="170" cy="50" r="15" fill="#f2c9a0"/><path d="M156 36Q170 28 184 38L184 42Q170 34 156 42Z" fill="#7a3b10"/>
+<path d="M155 45Q170 38 186 45L186 55Q170 49 155 55Z" fill="#1b1f3a"/><path d="M156 47L138 40L142 50Z" fill="#1b1f3a"/>
+<ellipse cx="177" cy="49.5" rx="4" ry="2.2" fill="#fff"/></svg>`;
+const whoosh = () => { try { AC = AC || new AudioContext(); const o = AC.createOscillator(), g = AC.createGain(), t = AC.currentTime; o.type = 'sawtooth'; o.frequency.setValueAtTime(150, t); o.frequency.exponentialRampToValueAtTime(900, t + .9); g.gain.setValueAtTime(.001, t); g.gain.linearRampToValueAtTime(.12, t + .4); g.gain.linearRampToValueAtTime(.001, t + 1.2); o.connect(g); g.connect(AC.destination); o.start(); o.stop(t + 1.3); } catch (e) {} };
+function fly() {
+  const d = document.createElement('div'); d.className = 'fly';
+  d.innerHTML = HERO ? `<img src="${esc(HERO)}" alt="" onerror="this.remove()">` : HEROSVG; document.body.append(d);
+  for (let i = 0; i < 8; i++) { const l = document.createElement('i'); l.className = 'sl'; l.style.top = (15 + Math.random() * 65) + 'vh'; l.style.width = (20 + Math.random() * 30) + 'vw'; l.style.animationDelay = (Math.random() * .5) + 's'; document.body.append(l); setTimeout(() => l.remove(), 2200); }
+  setTimeout(() => d.remove(), 2100);
+}
 const LG = c => LOGO ? `<img class="lg ${c || ''}" src="${esc(LOGO)}" alt="Kazou" onerror="this.remove()">` : '';
 const wait = ms => new Promise(r => setTimeout(r, ms));
 const norm = s => s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
@@ -157,6 +181,7 @@ const R = {
       `<h1 class="title h flash" style="font-size:clamp(3rem,12vw,9rem)">Kijk op je gsm!</h1>`;
     if (p === 'qr') mkQR('#qr', Math.min(innerHeight * .55, innerWidth * .8) | 0);
     V.insertAdjacentHTML('afterbegin', LG(p === 'idle' ? 'lgb' : ''));
+    if (p === 'reveal') fly();
   },
   host: () => {},
   /* ---- Gast ---- */
@@ -196,9 +221,9 @@ const teamOf = (A, me) => Object.values(A || {}).find(x => [x.vv, x.co, ...arr(x
 async function reveal(me) {
   let A = null; lazy(JSPDF, 'jspdf').catch(() => {});
   const load = (async () => { for (let i = 0; i < 40 && !A; i++) { try { A = (await db.ref('vakanties').get()).val() || {}; } catch (e) { await wait(400); } } })();
-  V.innerHTML = `<h1 class="title h flash" style="font-size:clamp(3rem,13vw,8rem)">SPANNEND!</h1>`;
-  beep(1200, .5); buzz([200, 80, 400]);
-  await Promise.all([load, wait(1400)]);
+  V.innerHTML = `<h1 class="title h flash trem" style="font-size:clamp(3rem,13vw,8rem);--a:4px;--sc:1.05">SPANNEND!</h1>`;
+  whoosh(); buzz([300, 60, 500]); fly();
+  await Promise.all([load, wait(2300)]);
   V.innerHTML = `<div class="rv" id="rv"></div>`;
   const add = async (h, ms = 1600, cls = '') => {
     const d = document.createElement('div'); d.className = 'st ' + cls; d.innerHTML = h; $('#rv').append(d);
