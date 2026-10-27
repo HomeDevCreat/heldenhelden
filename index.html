@@ -6,8 +6,8 @@
 <style>
 :root{--bg:#0a0c1c;--red:#e8203a;--yel:#ffd21f;--blue:#1e6bff}
 *{box-sizing:border-box}
-html,body{height:100%;margin:0}
-body{background:radial-gradient(#ffffff14 1.5px,transparent 1.6px) 0 0/22px 22px,var(--bg);color:#fff;font-family:system-ui,sans-serif;text-align:center;overflow-x:hidden}
+html,body{height:100%;margin:0;overflow-x:clip}
+body{background:radial-gradient(#ffffff14 1.5px,transparent 1.6px) 0 0/22px 22px,var(--bg);color:#fff;font-family:system-ui,sans-serif;text-align:center;overflow-x:clip}
 .h{font-family:Bangers,Impact,sans-serif;letter-spacing:.04em;font-weight:400}
 #v{min-height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;gap:16px}
 .title{font-size:clamp(2.5rem,9vw,6rem);color:var(--yel);text-shadow:4px 4px 0 var(--red);margin:0}
@@ -28,11 +28,17 @@ body.hot::after{content:"";position:fixed;inset:0;pointer-events:none;box-shadow
 @keyframes beat{50%{opacity:.2}}
 .flash{animation:f .9s}@keyframes f{0%{background:#fff;color:#fff}100%{background:transparent}}
 /* onthulling */
-.rv{width:100%;max-width:640px;display:flex;flex-direction:column;gap:14px;align-items:center;padding:30vh 0 20vh}
-.st{width:100%;animation:pop .6s both}
+.rv{width:100%;max-width:640px;display:flex;flex-direction:column;gap:14px;align-items:center;padding:30vh 10px 20vh;overflow:hidden}
+.st{width:100%;animation:pop .6s both;transition:opacity .8s}.st.old{opacity:.25}
 .dest{font-size:clamp(2.5rem,11vw,6rem);color:var(--yel);text-shadow:4px 4px 0 var(--red);line-height:1}
-.dest.xl{font-size:clamp(3.2rem,15vw,8rem)}
-@keyframes pop{0%{transform:scale(.2) rotate(-8deg);opacity:0;filter:blur(12px)}70%{transform:scale(1.15)}100%{transform:none;opacity:1;filter:none}}
+.dest.sm{font-size:clamp(2rem,9vw,4.5rem)}
+.nm{font-size:clamp(3.4rem,17vw,9.5rem);line-height:1.05;color:#fff;text-shadow:0 0 18px var(--yel),5px 5px 0 var(--red);animation:glow 1s infinite alternate}
+.nm b{font-weight:400;display:inline-block;animation:slam .55s both}
+@keyframes slam{0%{transform:translateY(-60vh) scale(3);opacity:0}70%{transform:none;opacity:1}85%{transform:scale(.92)}100%{transform:none;opacity:1}}
+@keyframes glow{to{text-shadow:0 0 40px var(--yel),0 0 90px var(--red),5px 5px 0 var(--red)}}
+.shake{animation:shk .08s 8}@keyframes shk{25%{transform:translate(6px,-4px)}75%{transform:translate(-6px,4px)}}
+.fl{position:fixed;inset:0;background:#fff;z-index:6;pointer-events:none;animation:fo .7s both}@keyframes fo{to{opacity:0}}
+@keyframes pop{0%{transform:scale(.2) rotate(-8deg);opacity:0;filter:blur(12px)}70%{transform:scale(1.15)}100%{transform:none;filter:none}}
 .dots{letter-spacing:.4em;font-size:2rem;animation:blink .8s infinite}@keyframes blink{50%{opacity:.15}}
 .mem{display:flex;gap:12px;align-items:center;background:#ffffff14;border-left:8px solid var(--red);border-radius:10px;padding:12px 16px;text-align:left;font-size:1.5rem;animation:sl .5s both}
 .mem:nth-child(even){animation-name:sr}
@@ -138,7 +144,6 @@ const R = {
   guest: p => {
     const me = ls.get('me');
     if (p === 'reveal' && me && Object.values(N).includes(me)) return reveal(me);
-    document.body.classList.toggle('ray', p === 'count');
     V.innerHTML = `<h1 class="title h">${TITLE}</h1>` +
       (p === 'count' ? `<div class="num h" id="num"></div>` :
        p === 'reveal' ? `<p class="big h">Het is zover! Zoek je naam</p>` :
@@ -172,26 +177,33 @@ const teamOf = (A, me) => Object.values(A || {}).find(x => [x.vv, x.co, ...arr(x
 async function reveal(me) {
   let A = null;
   const load = (async () => { for (let i = 0; i < 40 && !A; i++) { try { A = (await db.ref('vakanties').get()).val() || {}; } catch (e) { await wait(400); } } })();
-  document.body.classList.add('ray');
   V.innerHTML = `<h1 class="title h flash" style="font-size:clamp(4rem,20vw,10rem)">BOEM!</h1>`;
   beep(1200, .5); buzz([200, 80, 400]);
   await Promise.all([load, wait(1400)]);
   V.innerHTML = `<div class="rv" id="rv"></div>`;
   const add = async (h, ms = 1600, cls = '') => {
     const d = document.createElement('div'); d.className = 'st ' + cls; d.innerHTML = h; $('#rv').append(d);
-    d.scrollIntoView({behavior: 'smooth', block: 'center'}); beep(420 + Math.random() * 300, .08); await wait(ms);
+    scrollTo({top: d.getBoundingClientRect().top + scrollY - innerHeight / 2 + d.offsetHeight / 2, behavior: 'smooth'}); beep(420 + Math.random() * 300, .08); await wait(ms);
   };
   const v = teamOf(A, me);
   if (!v) return add(`<p class="big h">Jouw vakantie werd niet gevonden. Vraag het aan een begeleider!</p>`, 0);
+  const dim = () => document.querySelectorAll('#rv .st').forEach(e => e.classList.add('old'));
+  const letters = t => { let n = 0; return t.split(' ').map(w => `<span style="display:inline-block;white-space:nowrap">${[...w].map(c => `<b style="animation-delay:${(n++ * .07).toFixed(2)}s">${esc(c)}</b>`).join('')}</span>`).join(' '); };
   await add(`<p class="big h">Jouw zomer begint op…</p>`, 1500);
-  await add(`<div class="dest h">${esc(v.d || 'datum volgt')}</div>`, 2300);
-  await add(`<p class="big h">Je vakantie heet…</p>`, 1500);
-  await add(`<div class="dest h">${esc(v.naam)}</div>`, 2500);
-  await add(`<p class="big h">En je trekt naar…</p><div class="dots">●●●</div>`, 3000);
-  await add(`<div class="dest xl h">${esc(v.b)}</div>`, 700);
-  confetti(); beep(1400, .4); buzz([300, 100, 300]);
-  await wait(2500);
-  await add(`<p class="big h">Dit is je team!</p>`, 1200);
+  await add(`<div class="dest sm h">${esc(v.d || 'datum volgt')}</div>`, 2300);
+  dim();
+  await add(`<p class="big h">Je vakantie heet…</p><div class="dots">●●●</div>`, 400);
+  // tromgeroffel: hartslag die steeds sneller gaat
+  for (let i = 0, t = 520; i < 14; i++, t = Math.max(110, t * .82)) { beep(300 + i * 60, .09); buzz(40); await wait(t); }
+  const fl = document.createElement('div'); fl.className = 'fl'; document.body.append(fl); setTimeout(() => fl.remove(), 800);
+  document.querySelector('#rv .dots')?.remove(); dim();
+  $('#rv').classList.add('shake'); setTimeout(() => $('#rv').classList.remove('shake'), 700);
+  await add(`<div class="nm h">${letters(v.naam)}</div>`, 0);
+  confetti(); beep(1400, .5); beep(1800, .6); buzz([300, 100, 300, 100, 500]);   // enige confetti van de hele onthulling
+  await wait(5500);
+  await add(`<p class="big h">Je trekt naar…</p>`, 1500);
+  await add(`<div class="dest sm h">${esc(v.b)}</div>`, 2500);
+  await add(`<p class="big h">Dit is je moniploeg!</p>`, 1200);
   const rows = [['VV', v.vv, 'nog geen vv gevonden']];
   if (v.hasCo) rows.push(['Co-VV', v.co, 'nog geen co-vv gevonden']);
   arr(v.moni).filter(Boolean).forEach(n => rows.push(['Moni', n]));
@@ -204,7 +216,6 @@ async function reveal(me) {
   await wait(800);
   await add(`<button id="pdf">📄 Download overzicht van alle vakanties</button>`, 0);
   $('#pdf').onclick = () => pdf(A);
-  confetti();
 }
 
 function confetti() {
