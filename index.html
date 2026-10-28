@@ -53,7 +53,42 @@ body.hot::after{content:"";position:fixed;inset:0;pointer-events:none;box-shadow
 .dim{opacity:.55}
 .dd b{display:inline-block;font-weight:400;animation:dd 1s infinite}.dd b:nth-child(2){animation-delay:.15s}.dd b:nth-child(3){animation-delay:.3s}
 @keyframes dd{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-.15em)}}
-.lg.lgs{max-height:50px}
+.lg.lgs{max-height:32px}
+.eyes{font-size:5rem;animation:look 1.2s ease-in-out infinite}@keyframes look{0%,100%{transform:translateX(-14px)}50%{transform:translateX(14px)}}
+.slide{display:flex;flex-direction:column;align-items:center;gap:3vh;width:100%;animation:sin .7s both}.slide.out{animation:sout .5s both}
+@keyframes sin{from{opacity:0;transform:scale(.92)}}@keyframes sout{to{opacity:0;transform:scale(1.05)}}
+.late{opacity:0;animation:fu .8s both;animation-delay:var(--d,0s)}@keyframes fu{from{opacity:0;transform:translateY(24px)}to{opacity:1}}
+.sts{display:flex;gap:8vw;flex-wrap:wrap;justify-content:center}
+.sx{display:flex;flex-direction:column;align-items:center;animation:pop .8s both}.sx:nth-child(2){animation-delay:.5s}
+.sxi{font-size:clamp(3rem,9vw,7rem);animation:bob .8s ease-in-out infinite alternate}
+.sxn{font-size:clamp(5rem,16vw,14rem);line-height:1;color:var(--yel);text-shadow:5px 5px 0 var(--red)}
+.sxl{font-size:clamp(1.6rem,4vw,3.4rem)}
+.bars{width:min(90vw,1000px);display:flex;flex-direction:column;gap:2vh}
+.br{display:flex;align-items:center;gap:14px;opacity:0;animation:fu .6s both;animation-delay:var(--d)}
+.bfl{font-size:clamp(1.6rem,4vw,3rem)}.bnm{width:clamp(110px,22vw,260px);text-align:left;font-size:clamp(1.3rem,3.4vw,2.6rem)}
+.bt{flex:1;height:clamp(18px,4vh,40px);background:#ffffff18;border-radius:99px;overflow:hidden}
+.bt i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,var(--red),var(--yel));width:0;animation:gr 1.2s ease-out both;animation-delay:var(--d)}
+@keyframes gr{to{width:var(--w)}}
+.br b{font-size:clamp(1.6rem,4vw,3rem);min-width:2ch;color:var(--yel);font-weight:400}
+.arc{height:36vh;max-width:92vw;overflow:visible}
+.arc path{fill:none;stroke:var(--yel);stroke-width:4;stroke-dasharray:10 12;animation:mv 1s linear infinite}@keyframes mv{to{stroke-dashoffset:-22}}
+.tl{display:grid;grid-template-columns:1fr minmax(150px,.7fr) 1fr;gap:2vw;align-items:center;width:min(96vw,1200px)}
+.tlc{background:#ffffff14;border:3px solid var(--yel);border-radius:16px;padding:1.5vh 1.2vw;min-width:0}.tlc .sxi{font-size:clamp(2rem,5vw,4rem)}.tlc .sxl{font-size:clamp(1.1rem,2.4vw,2rem)}
+.tld{font-size:clamp(1.6rem,3.6vw,3rem);color:var(--yel)}.tlv{font-size:clamp(.9rem,1.6vw,1.3rem)}
+.tlm{display:flex;flex-direction:column;align-items:center;gap:1vh;min-width:0}
+.tlb{width:100%;height:10px;background:#ffffff22;border-radius:9px;overflow:hidden}.tlb i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--red),var(--yel));animation:gr3 3s ease-in-out .6s both}@keyframes gr3{to{width:100%}}
+.sun{font-size:clamp(2.5rem,6vw,5rem);animation:spin 8s linear infinite}
+.ch.nt{background:#1e6bff}
+.f select{flex:1;min-width:0;padding:6px 8px;font-size:.95rem}
+.pie{display:flex;align-items:center;justify-content:center;gap:5vw;flex-wrap:wrap}
+.pie svg{height:44vh;max-width:90vw;overflow:visible}
+.pie circle{fill:none;stroke-width:30;transform-origin:50% 50%;animation:seg .9s ease-out both;animation-delay:var(--d)}
+@keyframes seg{from{stroke-dasharray:0 201}}
+.leg{display:flex;flex-direction:column;gap:1.4vh;text-align:left}
+.lg2{display:flex;align-items:center;gap:12px;font-size:clamp(1.2rem,2.6vw,2.2rem);opacity:0;animation:fu .6s both;animation-delay:var(--d)}
+.lg2 i{width:1.1em;height:1.1em;border-radius:50%;display:inline-block}
+.lg2 b{color:var(--yel);font-weight:400;margin-left:auto;padding-left:1.5em}
+.f input[type=date]{flex:1;min-width:0;padding:6px 8px;font-size:.95rem;color-scheme:dark}
 .fin{display:flex;flex-direction:column;align-items:center;gap:10px}
 .ic{width:46px;height:46px;padding:0;border-radius:50%;display:inline-flex;align-items:center;justify-content:center}
 .ic svg{width:22px;height:22px}
@@ -133,6 +168,53 @@ const HEROSVG = `<svg viewBox="0 0 240 110" xmlns="http://www.w3.org/2000/svg">
 <path d="M155 45Q170 38 186 45L186 55Q170 49 155 55Z" fill="#1b1f3a"/><path d="M156 47L138 40L142 50Z" fill="#1b1f3a"/>
 <ellipse cx="177" cy="49.5" rx="4" ry="2.2" fill="#fff"/></svg>`;
 const whoosh = () => { try { AC = AC || new AudioContext(); const o = AC.createOscillator(), g = AC.createGain(), t = AC.currentTime; o.type = 'sawtooth'; o.frequency.setValueAtTime(150, t); o.frequency.exponentialRampToValueAtTime(900, t + .9); g.gain.setValueAtTime(.001, t); g.gain.linearRampToValueAtTime(.12, t + .4); g.gain.linearRampToValueAtTime(.001, t + 1.2); o.connect(g); g.connect(AC.destination); o.start(); o.stop(t + 1.3); } catch (e) {} };
+let lastSl = -1;
+function countUp() {
+  document.querySelectorAll('[data-to]').forEach(el => {
+    const to = +el.dataset.to, ms = +el.dataset.ms || 2200, t0 = performance.now();
+    (function f(t) { const k = Math.min(1, (t - t0) / ms); el.textContent = nf(Math.round(to * (1 - Math.pow(1 - k, 3)))); if (k < 1 && el.isConnected) requestAnimationFrame(f); })(t0);
+  });
+}
+function slideHTML(t) {
+  const T = S.stats || {};
+  if (t === 'ov') return `<p class="big h">Kazou zomer</p><h1 class="title h">WAAS &amp; DENDER 2027</h1><div class="sts">
+    <div class="sx"><div class="sxi">🏕️</div><div class="sxn h" data-to="${T.vac}">0</div><div class="sxl h">vakanties</div></div>
+    <div class="sx"><div class="sxi">🦸</div><div class="sxn h" data-to="${T.vol}">0</div><div class="sxl h">vrijwilligers</div></div></div>`;
+  if (t === 'co') {
+    const L = (T.lands || []).slice(0, 8), mx = Math.max(...L.map(x => x[2]));
+    return `<h1 class="title h" style="font-size:clamp(2rem,6vw,4.5rem)">Waar trekken we naartoe?</h1><div class="bars">${L.map((x, i) => `<div class="br" style="--d:${(.3 + i * .35).toFixed(2)}s"><span class="bfl">${flag(x[1]) || '📍'}</span><span class="bnm h">${esc(x[0])}</span><div class="bt"><i style="--w:${x[2] / mx * 100}%"></i></div><b class="h">${x[2]}</b></div>`).join('')}</div>`;
+  }
+  if (t === 'age') {
+    const A = T.ages || [], tot = A.reduce((a, x) => a + x[1], 0), C = 201.06; let acc = 0;
+    const segs = A.map((x, i) => { const l = Math.max(0, x[1] / tot * C - .8), r = acc / tot * 360 - 90; acc += x[1]; return `<circle cx="50" cy="50" r="32" stroke="${PAL[AGES.indexOf(x[0])]}" style="stroke-dasharray:${l.toFixed(2)} ${C};transform:rotate(${r.toFixed(1)}deg);--d:${(.3 + i * .45).toFixed(2)}s"/>`; }).join('');
+    return `<h1 class="title h" style="font-size:clamp(2rem,6vw,4.5rem)">Voor welke leeftijd?</h1><div class="pie"><svg viewBox="0 0 100 100">${segs}<text x="50" y="49" text-anchor="middle" fill="#fff" font-family="Bangers,Impact" font-size="16" class="late" style="--d:.5s">${tot}</text><text x="50" y="60" text-anchor="middle" fill="#fff" font-size="6" class="late" style="--d:.5s">vakanties</text></svg>
+    <div class="leg">${A.map((x, i) => `<div class="lg2 h" style="--d:${(.5 + i * .45).toFixed(2)}s"><i style="background:${PAL[AGES.indexOf(x[0])]}"></i>${agL(x[0])}<b>${x[1]}</b></div>`).join('')}</div></div>`;
+  }
+  if (t === 'far') {
+    const f = T.far, inner = HEROSVG.replace(/^<svg[^>]*>/, '').replace(/<\/svg>\s*$/, ''), P = 'M50 190 Q300 -60 550 190';
+    return `<p class="big h">Deze vakantie reist het verst</p>
+    <svg class="arc" viewBox="0 0 600 230"><path d="${P}"/>
+      <text x="50" y="222" text-anchor="middle" fill="#fff" font-family="Bangers,Impact" font-size="24">Waas &amp; Dender</text>
+      <text x="550" y="222" text-anchor="middle" fill="#ffd21f" font-family="Bangers,Impact" font-size="24" class="late" style="--d:3.2s">${esc(f.b)}</text>
+      <text x="50" y="175" text-anchor="middle" font-size="34">🏠</text><text x="550" y="175" text-anchor="middle" font-size="34" class="late" style="--d:3.2s">📍</text>
+      <g><animateMotion path="${P}" dur="3.4s" rotate="auto" fill="freeze"/><g transform="translate(-72,-33) scale(.6)">${inner}</g></g></svg>
+    <h1 class="title h late" style="--d:3.4s;font-size:clamp(2rem,6vw,4.5rem)">${esc(f.naam)}</h1>
+    <p class="big h late" style="--d:3.8s">${flag(f.cc)} ${esc(f.land || '')}</p>
+    ${f.km ? `<p class="big h">± <span class="sxn" style="font-size:clamp(2.5rem,7vw,5rem)" data-to="${f.km}" data-ms="3400">0</span> km</p>` : ''}`;
+  }
+  const a = T.first, b = T.last, days = Math.round((new Date(b.dt) - new Date(a.dt)) / 864e5) + 1;
+  return `<h1 class="title h" style="font-size:clamp(2rem,6vw,4.5rem)">Onze zomer in een oogopslag</h1><div class="tl">
+    <div class="tlc late" style="--d:.6s"><div class="sxi">🛫</div><div class="sxl h">Eerste vertrek</div><div class="tld h">${dlong(a.dt)}</div><div class="tlv">${esc(a.naam)} · ${esc(a.b)}</div></div>
+    <div class="tlm"><div class="tlb"><i></i></div><div class="sun">☀️</div><div class="sxl h"><span data-to="${days}" data-ms="3000">0</span> zomerdagen</div></div>
+    <div class="tlc late" style="--d:3.4s"><div class="sxi">🛬</div><div class="sxl h">Laatste thuiskomst</div><div class="tld h">${dlong(b.dt)}</div><div class="tlv">${esc(b.naam)} · ${esc(b.b)}</div></div></div>`;
+}
+function introTick() {
+  const sl = S.slides || []; let e = now() - S.introAt, i = 0, acc = 0;
+  for (; i < sl.length; i++) { if (e < acc + sl[i].ms) break; acc += sl[i].ms; }
+  if (i >= sl.length) return;
+  if (i !== lastSl) { lastSl = i; V.innerHTML = `<div class="slide">${slideHTML(sl[i].t)}</div>`; countUp(); }
+  if (V.firstElementChild) V.firstElementChild.classList.toggle('out', acc + sl[i].ms - e < 500);
+}
 function mkPaths() {
   const W = innerWidth, H = innerHeight, N = 24, X = 210 * W / 100;
   const path = (name, dir, yf) => {
@@ -173,6 +255,26 @@ const wait = ms => new Promise(r => setTimeout(r, ms));
 const norm = s => s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
 const slug = s => norm(s).replace(/[^a-z0-9]/g, '');
 const arr = x => Object.values(x || []);
+const CC = {belgie:'BE',nederland:'NL',frankrijk:'FR',duitsland:'DE',luxemburg:'LU',spanje:'ES',italie:'IT',oostenrijk:'AT',zwitserland:'CH',tsjechie:'CZ',polen:'PL',denemarken:'DK','verenigd koninkrijk':'GB',engeland:'GB',schotland:'GB',kroatie:'HR',slovenie:'SI',portugal:'PT',noorwegen:'NO',zweden:'SE',hongarije:'HU',griekenland:'GR',ierland:'IE',slowakije:'SK'};
+const flag = c => c && c.length === 2 ? String.fromCodePoint(...[...c.toUpperCase()].map(x => 127397 + x.charCodeAt())) : '';
+const AGES = ['7-8', '9-10', '11-12', '13-14', '15-16', '17-18'], PAL = ['#e8203a', '#ffd21f', '#1e6bff', '#22c55e', '#a855f7', '#fb923c'];
+const agL = a => a.replace('-', '–') + ' jaar';
+const ag = x => {   // "7-8", "7 tot 8" of (door Excel omgezet) 7 augustus -> "7-8"
+  const t = x instanceof Date && !isNaN(x) ? (d => `${d.getUTCDate()}-${d.getUTCMonth() + 1}`)(new Date(x.getTime() + 12 * 36e5)) : String(x ?? '').trim();
+  const m = t.match(/(\d{1,2})\D+(\d{1,2})/), k = m ? `${+m[1]}-${+m[2]}` : '';
+  return AGES.includes(k) ? k : '';
+};
+const nf = n => new Intl.NumberFormat('nl-BE').format(n);
+const dm = iso => { const d = new Date(iso + 'T12:00:00'); return {d: d.getDate(), m: d.toLocaleDateString('nl-BE', {month: 'long'})}; };
+const dlong = iso => { const x = dm(iso); return x.d + ' ' + x.m; };
+const rng = (a, b) => { if (!a || !b) return ''; const x = dm(a), y = dm(b); return x.m === y.m ? `${x.d}–${y.d} ${y.m}` : `${x.d} ${x.m} – ${y.d} ${y.m}`; };
+const pd = x => {   // Excel-datum, tekstdatum of Date -> jjjj-mm-dd
+  if (x instanceof Date && !isNaN(x)) return new Date(x.getTime() + 12 * 36e5).toISOString().slice(0, 10);
+  if (typeof x === 'number') return new Date(Math.round((x - 25569) * 864e5)).toISOString().slice(0, 10);
+  const t = String(x || '').trim(), m = t.match(/^(\d{4})-(\d{2})-(\d{2})/); if (m) return m[0];
+  const k = t.match(/^(\d{1,2})[\/\-.](\d{1,2})[\/\-.](\d{2,4})$/); if (k) return `${k[3].length === 2 ? '20' + k[3] : k[3]}-${k[2].padStart(2, '0')}-${k[1].padStart(2, '0')}`;
+  return '';
+};
 const lazy = (u, g) => new Promise((ok, no) => { if (window[g]) return ok(); const t = document.createElement('script'); t.src = u; t.onload = ok; t.onerror = no; document.head.append(t); });
 const JSPDF = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js', SHEETJS = 'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js';
 firebase.initializeApp(CFG);
@@ -182,7 +284,14 @@ let off = 0, ready = false, S = {}, N = {}, cur = '', lastS = -1;
 
 db.ref('.info/serverTimeOffset').on('value', s => { off = s.val() || 0; ready = true; tick(); });
 const now = () => Date.now() + off;
-const phase = () => S.revealAt ? (S.revealAt - now() > 0 ? 'count' : 'reveal') : (S.qr ? 'qr' : 'idle');
+const phase = () => {
+  const n = now();
+  if (S.revealAt) {
+    if (S.introAt && n < S.introAt + S.introMs) return n < S.introAt ? 'qr' : 'intro';
+    return S.revealAt - n > 0 ? 'count' : 'reveal';
+  }
+  return S.qr ? 'qr' : 'idle';
+};
 db.ref('state').on('value', s => { S = s.val() || {}; tick(); });
 db.ref('namen').on('value', s => {
   const first = !Object.keys(N).length; N = s.val() || {};
@@ -200,6 +309,7 @@ function tick() {
   if (!ready) return;
   const p = phase();
   if (p !== cur) { cur = p; document.body.classList.remove('hot'); (R[mode] || R.guest)(p); }
+  if (p === 'intro' && mode === 'screen') introTick();
   const el = $('#num');
   if (el && S.revealAt) {
     const s = Math.max(0, Math.ceil((S.revealAt - now()) / 1000));
@@ -217,15 +327,17 @@ function mkQR(id, size) { new QRCode($(id), {text: URL_, width: size, height: si
 const R = {
   /* ---- Projectiescherm: …/#screen ---- */
   screen: p => {
-    document.body.classList.toggle('ray', p === 'count' || p === 'reveal');
+    document.body.classList.toggle('ray', p === 'count' || p === 'reveal' || p === 'intro');
     V.innerHTML =
       p === 'idle' ? `<h1 class="title h dim">${TITLE}</h1>` :
       p === 'qr' ? `<h1 class="title h">Scan en zoek je naam!</h1><div class="qrbox" id="qr"></div>` :
+      p === 'intro' ? '' :
       p === 'count' ? `<p class="big h">Jouw zomer wordt onthuld over…</p><div class="num h" id="num"></div>` :
       `<h1 class="title h flash" style="font-size:clamp(3rem,12vw,9rem)">Kijk op je gsm!</h1>`;
     if (p === 'qr') mkQR('#qr', Math.min(innerHeight * .55, innerWidth * .8) | 0);
     V.insertAdjacentHTML('afterbegin', LG(p === 'idle' ? 'lgb' : ''));
     if (p === 'reveal') fly();
+    if (p === 'intro') lastSl = -1;
   },
   host: () => {},
   /* ---- Gast ---- */
@@ -233,7 +345,7 @@ const R = {
     const me = ls.get('me');
     if (p === 'reveal' && me && Object.values(N).includes(me)) return reveal(me);
     V.innerHTML = LG() + `<h1 class="title h">${TITLE}</h1>` +
-      (p === 'count' ? `<div class="num h" id="num"></div>` :
+      (p === 'intro' ? `<h2 class="title h" style="font-size:clamp(2.2rem,9vw,4rem)">Je komt het bijna te weten!</h2><div class="eyes">👀</div><p class="big h">Kijk naar het scherm</p>` : p === 'count' ? `<div class="num h" id="num"></div>` :
        p === 'reveal' ? `<p class="big h">Het is zover! Zoek je naam</p>` :
        `<p class="big h" id="wt"></p>`) + `<div class="card" id="who"></div>`;
     who();
@@ -308,6 +420,7 @@ async function reveal(me) {
   await add(`<div class="dest sm h">${esc(v.d || 'datum volgt')}</div>`, 2200);
   await add(`<p class="big h">Je trekt naar</p>`, 1100);
   await add(`<div class="dest sm h">${esc(v.b)}</div>`, 2500);
+  if (v.age) await add(`<p class="big h">Leeftijdsgroep</p><div class="dest sm h">${esc(agL(v.age))}</div>`, 2200);
   await add(`<p class="big h">Dit is je moniploeg!</p>`, 1200);
   const rows = [['VV', v.vv, 'nog geen vv gevonden']];
   if (v.hasCo) rows.push(['Co-VV', v.co, 'nog geen co-vv gevonden']);
@@ -347,7 +460,7 @@ async function pdf(A) {
     if (b.some(Boolean)) L.push("BC'ers: " + b.filter(Boolean).join(', '));
     if (b.some(x => !x)) L.push(`+${b.filter(x => !x).length} bc'er nog te vinden`);
     if (y > 250) { d.addPage(); y = 20; }
-    d.setFontSize(13); d.setFont(undefined, 'bold'); d.text(`${v.naam || '?'} - ${v.b || '?'} (${v.d || '?'})`, 14, y); y += 7;
+    d.setFontSize(13); d.setFont(undefined, 'bold'); d.text(`${v.naam || '?'} - ${v.b || '?'} (${v.d || '?'})${v.age ? ' - ' + agL(v.age) : ''}`, 14, y); y += 7;
     d.setFont(undefined, 'normal'); d.setFontSize(10);
     L.forEach(t => { const w = d.splitTextToSize(t, 180); if (y > 280) { d.addPage(); y = 20; } d.text(w, 14, y); y += 5 * w.length + 1; });
     y += 6;
@@ -359,28 +472,41 @@ async function pdf(A) {
 function hostStatus(p) {
   const e = $('#st'); if (!e) return;
   const t = S.revealAt ? Math.max(0, Math.ceil((S.revealAt - now()) / 1000)) : 0;
-  e.textContent = {idle: '🌑 scherm donker', qr: '📱 QR zichtbaar', count: '⏳ nog ' + t + ' s', reveal: '🎉 onthuld!'}[p];
+  e.textContent = {idle: '🌑 scherm donker', qr: '📱 QR zichtbaar', intro: '📊 statistieken-intro', count: '⏳ nog ' + t + ' s', reveal: '🎉 onthuld!'}[p];
 }
 let vacs = [], saveT = null, dirty = false, idc = 0, q = '';
-const nv = () => ({id: 'v' + Date.now().toString(36) + (idc++), naam: '', b: '', d: '', vv: '', hasCo: true, co: '', moni: [''], bc: [], _o: false});
+const nv = () => ({id: 'v' + Date.now().toString(36) + (idc++), naam: '', b: '', d: '', vv: '', hasCo: true, co: '', moni: [''], bc: [], land: '', cc: '', age: '', far: false, first: false, last: false, km: '', van: '', tot: '', _o: false});
 const st = t => { const e = $('#sv'); if (e) e.textContent = t; };
-const F = (i, k, lab, val, j, x) => `<label class="f"><span>${lab}</span><input type="text" data-i="${i}" data-k="${k}"${j !== undefined ? ` data-j="${j}"` : ''} value="${esc(val)}" placeholder="${['naam', 'b', 'd'].includes(k) ? '' : 'nog niet gevonden'}">${x ? `<button class="x" data-act="del" data-i="${i}" data-k="${k}" data-j="${j}" title="Plek verwijderen">✕</button>` : ''}</label>`;
+const F = (i, k, lab, val, j, x) => `<label class="f"><span>${lab}</span><input type="text" data-i="${i}" data-k="${k}"${j !== undefined ? ` data-j="${j}"` : ''} value="${esc(val)}"${k === 'land' ? ' list="lands"' : ''} placeholder="${['naam', 'b', 'd', 'land'].includes(k) ? '' : 'nog niet gevonden'}">${x ? `<button class="x" data-act="del" data-i="${i}" data-k="${k}" data-j="${j}" title="Plek verwijderen">✕</button>` : ''}</label>`;
+const Fd = (i, k, lab, val) => `<label class="f"><span>${lab}</span><input type="date" data-i="${i}" data-k="${k}" value="${esc(val)}"></label>`;
+const Fs = (i, k, lab, val) => `<label class="f"><span>${lab}</span><select data-i="${i}" data-k="${k}"><option value="">—</option>${AGES.map(a => `<option value="${a}"${a === val ? ' selected' : ''}>${agL(a)}</option>`).join('')}</select></label>`;
 const cnt = a => [a.filter(x => x.trim()).length, a.length];
 const ch = (t, ok) => `<span class="ch ${ok ? 'ok' : 'no'}">${t}</span>`;
 function hdr(v) {
   const [mf, mt] = cnt(v.moni), [bf, bt] = cnt(v.bc);
-  return `${v._o ? '▾' : '▸'} <span class="tt">${esc(v.naam || '(nog geen naam)')} <small>· ${esc(v.b || '?')} · ${esc(v.d || '?')}</small></span>` +
-    ch('VV', !!v.vv.trim()) + (v.hasCo ? ch('Co', !!v.co.trim()) : '') + (mt ? ch(`Moni ${mf}/${mt}`, mf === mt) : '') + (bt ? ch(`BC ${bf}/${bt}`, bf === bt) : '');
+  return `${v._o ? '▾' : '▸'} <span class="tt">${flag(v.cc || CC[norm(v.land)])} ${esc(v.naam || '(nog geen naam)')} <small>· ${esc(v.b || '?')} · ${esc((v.van && v.tot ? rng(v.van, v.tot) : v.d) || '?')}</small></span>` +
+    (v.age ? `<span class="ch nt">${agL(v.age)}</span>` : ch('Leeftijd', false)) + ch('VV', !!v.vv.trim()) + (v.hasCo ? ch('Co', !!v.co.trim()) : '') + (mt ? ch(`Moni ${mf}/${mt}`, mf === mt) : '') + (bt ? ch(`BC ${bf}/${bt}`, bf === bt) : '');
 }
 const people = v => [v.vv, v.hasCo ? v.co : '', ...v.moni, ...v.bc].filter(s => s.trim());
-const full = v => norm([v.naam, v.b, v.d, ...people(v)].join(' '));
+const full = v => norm([v.naam, v.b, v.d, v.land, v.age, ...people(v)].join(' '));
 
+const LANDEN = ['België', 'Nederland', 'Frankrijk', 'Duitsland', 'Luxemburg', 'Spanje', 'Italië', 'Oostenrijk', 'Zwitserland', 'Tsjechië', 'Polen', 'Denemarken', 'Verenigd Koninkrijk', 'Kroatië', 'Slovenië', 'Portugal', 'Noorwegen', 'Zweden', 'Hongarije', 'Griekenland', 'Ierland', 'Slowakije'];
+function statPanel() {
+  const P = $('#sp'); if (!P) return;
+  const sel = k => `<select data-sk="${k}"><option value="">— kies een vakantie —</option>${vacs.map((v, i) => `<option value="${i}"${v[k] ? ' selected' : ''}>${esc(v.naam || '(naamloos)')} · ${esc(v.b || '?')}</option>`).join('')}</select>`;
+  const f = vacs.find(v => v.far), a = vacs.find(v => v.first), z = vacs.find(v => v.last);
+  P.innerHTML = `<div class="big h">📊 Statistieken-intro</div><div class="dim">Kies zelf welke vakantie het verst gaat, als eerste vertrekt en als laatste thuiskomt.</div>
+    <div class="g"><label class="f"><span>Verst</span>${sel('far')}</label><label class="f"><span>Afstand</span><input type="text" id="sk" placeholder="km (optioneel)" value="${esc(f ? f.km : '')}"${f ? '' : ' disabled'}></label></div>
+    <div class="g"><label class="f"><span>Eerste</span>${sel('first')}</label><label class="f"><span>Vertrek</span><input type="date" id="sa" value="${esc(a ? a.van : '')}"${a ? '' : ' disabled'}></label></div>
+    <div class="g"><label class="f"><span>Laatste</span>${sel('last')}</label><label class="f"><span>Terug</span><input type="date" id="sz" value="${esc(z ? z.tot : '')}"${z ? '' : ' disabled'}></label></div>`;
+}
 function ed() {
   const Q = norm(q.trim()); let shown = 0;
   $('#ed').innerHTML = vacs.map((v, i) => {
     const hide = Q && !full(v).includes(Q); if (!hide) shown++;
     return `<div class="vc"${hide ? ' style="display:none"' : ''}><div class="vh" id="h${i}" data-act="tg" data-i="${i}">${hdr(v)}</div>${v._o ? `<div class="vb">
       <div class="g">${F(i, 'naam', 'Vakantie', v.naam)}${F(i, 'b', 'Bestemming', v.b)}${F(i, 'd', 'Datum', v.d)}</div>
+      <div class="g">${F(i, 'land', 'Land', v.land)}${Fs(i, 'age', 'Leeftijd', v.age)}${Fd(i, 'van', 'Vertrek', v.van)}${Fd(i, 'tot', 'Terug', v.tot)}</div>
       <div class="g">${F(i, 'vv', 'VV', v.vv)}<div class="f"><span><input type="checkbox" data-act="co" data-i="${i}" ${v.hasCo ? 'checked' : ''}> Co-VV</span>${v.hasCo ? `<input type="text" data-i="${i}" data-k="co" value="${esc(v.co)}" placeholder="nog niet gevonden" style="flex:1;min-width:0;padding:6px 8px;font-size:.95rem">` : '<i class="dim">geen co-vv</i>'}</div></div>
       <div class="g">${v.moni.map((n, j) => F(i, 'moni', 'Moni', n, j, true)).join('')}</div>
       <div class="g">${v.bc.map((n, j) => F(i, 'bc', 'BC', n, j, true)).join('')}</div>
@@ -388,14 +514,15 @@ function ed() {
     </div>` : ''}</div>`;
   }).join('') || '<div class="dim">Nog geen vakanties. Klik op “Vakantie” of importeer een Excel.</div>';
   const tot = vacs.reduce((a, v) => a + people(v).length, 0);
-  $('#cnt').textContent = `${vacs.length} vakanties · ${tot} namen · ${vacs.filter(v => !v.vv.trim()).length} zonder VV` + (Q ? ` · ${shown} gevonden` : '');
+  $('#cnt').textContent = `${vacs.length} vakanties · ${tot} namen · ${vacs.filter(v => !v.vv.trim()).length} zonder VV · ${vacs.filter(v => !v.land.trim()).length} zonder land · ${vacs.filter(v => !v.age).length} zonder leeftijd · ${vacs.filter(v => !v.van || !v.tot).length} zonder datums` + (Q ? ` · ${shown} gevonden` : '');
+  statPanel();
 }
 
 function build() {
   const vak = {}, namen = {}, seen = {}; let dup = null;
   vacs.forEach(v => {
     const m = v.moni.map(s => s.trim()), b = v.bc.map(s => s.trim());
-    vak[v.id] = {naam: v.naam.trim(), b: v.b.trim(), d: v.d.trim(), vv: v.vv.trim(), hasCo: !!v.hasCo, co: v.hasCo ? v.co.trim() : '', moni: m, bc: b};
+    vak[v.id] = {naam: v.naam.trim(), b: v.b.trim(), d: v.van && v.tot ? rng(v.van, v.tot) : v.d.trim(), land: v.land.trim(), cc: v.cc || CC[norm(v.land)] || '', age: v.age || '', far: !!v.far, first: !!v.first, last: !!v.last, km: String(v.km || '').trim(), van: v.van || '', tot: v.tot || '', vv: v.vv.trim(), hasCo: !!v.hasCo, co: v.hasCo ? v.co.trim() : '', moni: m, bc: b};
     people(v).map(s => s.trim()).forEach(n => { const k = slug(n) || 'x' + n.length; if (seen[k]) dup = n; seen[k] = 1; namen[k] = n; });
   });
   return {vak, namen, dup};
@@ -414,11 +541,12 @@ window.addEventListener('beforeunload', e => { if (dirty) e.preventDefault(); })
 // Excel: kolommen Vakantie, Bestemming, Datum, VV, Co-VV, Aantal moni, Moni 1.., Aantal bc, BC 1..
 async function importXlsx(file) {
   try { await lazy(SHEETJS, 'XLSX'); } catch (e) { return alert('Excel-bibliotheek kon niet laden. Controleer je internet.'); }
-  const wb = XLSX.read(await file.arrayBuffer(), {type: 'array'});
-  const rows = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]], {header: 1, defval: '', raw: false});
+  const wb = XLSX.read(await file.arrayBuffer(), {type: 'array', cellDates: true});
+  const rows = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]], {header: 1, defval: '', raw: true});
   const hd = (rows[0] || []).map(h => norm(String(h)).trim());
   const one = f => hd.findIndex(f), many = f => hd.map((h, i) => f(h) ? i : -1).filter(i => i >= 0);
   const C = {naam: one(h => h === 'vakantie' || h === 'naam' || h === 'naam vakantie'), b: one(h => h.startsWith('bestemming')), d: one(h => h.startsWith('datum')),
+    land: one(h => h === 'land'), age: one(h => h.startsWith('leeftijd')), van: one(h => h.startsWith('vertrek') || h === 'van'), tot: one(h => h.startsWith('terug') || h === 'tot'),
     vv: one(h => h === 'vv'), co: one(h => /^co[\s-]?vv$/.test(h)),
     nm: one(h => h.startsWith('aantal') && h.includes('moni')), nb: one(h => h.startsWith('aantal') && h.includes('bc')),
     m: many(h => /^moni\s*\d*$/.test(h)), bc: many(h => /^bc/.test(h) && !h.startsWith('aantal'))};
@@ -429,13 +557,37 @@ async function importXlsx(file) {
     if (!g(C.naam) && !g(C.b)) return;
     const slots = (idx, n) => { const a = idx.map(g).filter(Boolean); while (a.length < (parseInt(g(n)) || 0)) a.push(''); return a; };
     const co = g(C.co), noCo = C.co < 0 || ['nee', 'geen', '-', 'x'].includes(co.toLowerCase());
-    list.push({...nv(), naam: g(C.naam), b: g(C.b), d: g(C.d), vv: g(C.vv), hasCo: !noCo, co: noCo ? '' : co, moni: slots(C.m, C.nm), bc: slots(C.bc, C.nb)});
+    list.push({...nv(), naam: g(C.naam), b: g(C.b), d: g(C.d), land: g(C.land), cc: CC[norm(g(C.land))] || '', age: ag(r[C.age]), van: pd(r[C.van]), tot: pd(r[C.tot]), vv: g(C.vv), hasCo: !noCo, co: noCo ? '' : co, moni: slots(C.m, C.nm), bc: slots(C.bc, C.nb)});
   });
   if (!list.length) return alert('Geen vakanties gevonden in het bestand.');
   if (!confirm(`${list.length} vakanties gevonden.\n\nOK = toevoegen aan de bestaande lijst.\nAnnuleren = niets doen.`)) return;
   vacs.push(...list); ed(); save();
 }
 
+function calcStats() {
+  const L = {}; vacs.forEach(v => { const l = v.land.trim(); if (!l) return; const k = norm(l); L[k] = L[k] || {l, cc: v.cc || CC[k] || '', n: 0}; L[k].n++; });
+  const lands = Object.values(L).sort((x, y) => y.n - x.n || x.l.localeCompare(y.l)).map(x => [x.l, x.cc, x.n]);
+  const ages = AGES.map(a => [a, vacs.filter(v => v.age === a).length]).filter(x => x[1]);
+  const T = {vac: vacs.length, vol: vacs.reduce((a, v) => a + people(v).length, 0), lands, ages}, sl = [{t: 'ov', ms: 7000}], warn = [];
+  if (ages.length) sl.push({t: 'age', ms: 4000 + 500 * ages.length}); else warn.push('Geen enkele vakantie heeft een leeftijd: de taartgrafiek wordt overgeslagen.');
+  if (lands.length) sl.push({t: 'co', ms: 5000 + 700 * Math.min(8, lands.length)}); else warn.push('Geen enkele vakantie heeft een land: de landenslide wordt overgeslagen.');
+  const far = vacs.find(v => v.far), first = vacs.find(v => v.first), last = vacs.find(v => v.last);
+  if (far) { T.far = {naam: far.naam, b: far.b, land: far.land, cc: far.cc || CC[norm(far.land)] || '', km: Math.round(parseFloat(String(far.km).replace(',', '.')) || 0)}; sl.push({t: 'far', ms: 8500}); } else warn.push('Geen "verste vakantie" gekozen: die slide wordt overgeslagen.');
+  if (first && last && first.van && last.tot) { T.first = {naam: first.naam, b: first.b, dt: first.van}; T.last = {naam: last.naam, b: last.b, dt: last.tot}; sl.push({t: 'tl', ms: 9000}); }
+  else warn.push('Voor de tijdlijn ontbreekt een eerste vertrek of laatste thuiskomst (of de datum ervan): die slide wordt overgeslagen.');
+  return {stats: JSON.parse(JSON.stringify(T)), slides: sl, warn};
+}
+function start(at) {   // at = vast tijdstip van de onthulling (optioneel)
+  const sec = +$('#sec').value || 60, n = Math.round(now());
+  let o = {qr: true};
+  if ($('#intro').checked && vacs.length) {
+    const {stats, slides, warn} = calcStats();
+    if (warn.length && !confirm('Let op:\n' + warn.join('\n') + '\n\nToch starten?')) return;
+    const ms = slides.reduce((a, x) => a + x.ms, 0), rev = at || n + ms + sec * 1000;
+    o = {qr: true, stats, slides, introMs: ms, introAt: rev - sec * 1000 - ms, revealAt: rev};
+  } else o.revealAt = at || n + sec * 1000;
+  db.ref('state').set(o);
+}
 function host(u) {
   if (!u) {
     V.innerHTML = `<h1 class="title h">HOST</h1><div class="card"><input id="em" type="email" placeholder="e-mail"><input id="pw" type="password" placeholder="wachtwoord"><button id="go">Inloggen</button></div>`;
@@ -447,20 +599,23 @@ function host(u) {
   <div class="card"><div class="big h">Status: <span id="st"></span></div></div>
   <div class="card"><div class="big h">Bediening</div>
     <div class="row"><button class="b" id="b0">🔦 Scherm donker</button><button class="b" id="b1">📱 Toon QR</button></div>
-    <div class="row"><input id="sec" type="number" value="60" min="5" style="width:90px"> seconden <button id="b2">🚀 START COUNTDOWN</button></div>
+    <label class="row" style="gap:8px"><input type="checkbox" id="intro" style="width:auto"> 📊 Statistieken tonen vóór de countdown</label>
+    <div class="row"><input id="sec" type="number" value="60" min="5" style="width:90px"> seconden countdown <button id="b2">🚀 START</button></div>
     <div class="row"><input id="at" type="datetime-local"><button class="b" id="b3">⏰ Plan op uur</button></div>
     <p class="dim" style="margin:0">Reset = “Scherm donker”. Handig om te testen.</p></div>
+  <div class="card w" id="sp"></div>
   <div class="card w"><div class="big h">Vakanties</div>
     <div class="row" style="justify-content:flex-start"><button id="add">➕ Vakantie</button><button class="b sm" id="imp">📥 Excel importeren</button><button class="b sm" id="tgl">⇕ Alles open/dicht</button><button class="b sm" id="now">💾 Opslaan</button><button class="b sm" id="pd">📄 PDF</button><button class="x" id="clr">🗑 Alles wissen</button></div>
     <input id="srch" type="search" placeholder="🔍 Zoek op vakantie, bestemming of naam…">
     <div id="cnt" class="dim"></div><div id="sv" class="dim">Laden…</div></div>
   <div id="ed" style="width:100%;max-width:780px;display:flex;flex-direction:column;gap:8px"></div>
-  <input type="file" id="xl" accept=".xlsx,.xls,.csv" hidden>`;
+  <input type="file" id="xl" accept=".xlsx,.xls,.csv" hidden><datalist id="lands">${LANDEN.map(l => `<option value="${l}">`).join('')}</datalist>`;
   const set = o => db.ref('state').set(o);
   $('#b0').onclick = () => set({qr: false});
   $('#b1').onclick = () => set({qr: true});
-  $('#b2').onclick = () => set({qr: true, revealAt: Math.round(now() + (+$('#sec').value || 60) * 1000)});
-  $('#b3').onclick = () => { const t = Date.parse($('#at').value); if (!t) return alert('Kies eerst een tijdstip'); set({qr: true, revealAt: t + off}); };
+  $('#intro').checked = ls.get('intro') !== '0'; $('#intro').onchange = e => ls.set('intro', e.target.checked ? '1' : '0');
+  $('#b2').onclick = () => start();
+  $('#b3').onclick = () => { const t = Date.parse($('#at').value); if (!t) return alert('Kies eerst een tijdstip'); start(t + off); };
   const E = $('#ed');
   $('#add').onclick = () => { const v = nv(); v._o = true; vacs.push(v); q = ''; $('#srch').value = ''; ed(); queue(); E.lastElementChild.scrollIntoView({block: 'center'}); E.lastElementChild.querySelector('input[type=text]').focus(); };
   $('#imp').onclick = () => $('#xl').click();
@@ -468,12 +623,19 @@ function host(u) {
   $('#tgl').onclick = () => { const o = vacs.some(v => !v._o); vacs.forEach(v => v._o = o); ed(); };
   $('#clr').onclick = () => { if (vacs.length && confirm('ALLE vakanties wissen?') && confirm('Zeker? Dit kan je niet ongedaan maken.')) { vacs = []; ed(); save(); } };
   $('#now').onclick = save;
+  $('#sp').onchange = e => {
+    const t = e.target, one = k => vacs.find(v => v[k]);
+    if (t.dataset.sk) { vacs.forEach(v => v[t.dataset.sk] = false); if (t.value !== '') vacs[t.value][t.dataset.sk] = true; statPanel(); queue(); }
+    else if (t.id === 'sk' && one('far')) { one('far').km = t.value; queue(); }
+    else if (t.id === 'sa' && one('first')) { one('first').van = t.value; ed(); queue(); }
+    else if (t.id === 'sz' && one('last')) { one('last').tot = t.value; ed(); queue(); }
+  };
   $('#pd').onclick = async () => { await pdf(build().vak); };
   $('#srch').oninput = e => { q = e.target.value; ed(); };
   E.oninput = e => {
     const {i, k, j} = e.target.dataset; if (i == null || !k) return;
     j != null ? vacs[i][k][j] = e.target.value : vacs[i][k] = e.target.value;
-    $('#h' + i).innerHTML = hdr(vacs[i]); queue();
+    $('#h' + i).innerHTML = hdr(vacs[i]); if (['naam', 'b', 'van', 'tot'].includes(k)) statPanel(); queue();
   };
   E.onclick = e => {
     const a = e.target.closest('[data-act]'); if (!a) return;
@@ -487,7 +649,7 @@ function host(u) {
     if (act === 'add') { const l = E.querySelectorAll(`[data-i="${i}"][data-k="${k}"]`); l[l.length - 1]?.focus(); }
   };
   db.ref('vakanties').get().then(s => {
-    vacs = Object.entries(s.val() || {}).map(([id, v]) => ({id, naam: v.naam || '', b: v.b || '', d: v.d || '', vv: v.vv || '', hasCo: !!v.hasCo, co: v.co || '', moni: arr(v.moni), bc: arr(v.bc), _o: false}));
+    vacs = Object.entries(s.val() || {}).map(([id, v]) => ({id, naam: v.naam || '', b: v.b || '', d: v.d || '', land: v.land || '', cc: v.cc || '', age: v.age || '', far: !!v.far, first: !!v.first, last: !!v.last, km: v.km || '', van: v.van || '', tot: v.tot || '', vv: v.vv || '', hasCo: !!v.hasCo, co: v.co || '', moni: arr(v.moni), bc: arr(v.bc), _o: false}));
     ed(); st('✅ Geladen'); cur = ''; tick();
   }).catch(e => st('❌ ' + e.message));
 }
