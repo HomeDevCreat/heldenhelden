@@ -51,6 +51,9 @@ body.hot::after{content:"";position:fixed;inset:0;pointer-events:none;box-shadow
 .qrbox{background:#fff;padding:16px;border-radius:12px;display:inline-block;line-height:0}
 .row{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;align-items:center}
 .dim{opacity:.55}
+.dd b{display:inline-block;font-weight:400;animation:dd 1s infinite}.dd b:nth-child(2){animation-delay:.15s}.dd b:nth-child(3){animation-delay:.3s}
+@keyframes dd{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-.4em)}}
+.lg.lgs{max-height:44px}
 button:disabled{opacity:.4;cursor:not-allowed}
 .lg{max-height:70px;max-width:60vw;object-fit:contain}.lg.lgb{max-height:150px}
 /* host-editor */
@@ -140,7 +143,7 @@ function mkPaths() {
   const st = document.createElement('style');
   st.textContent = path('fly', 1, t => 12 - 28 * t - 12 * Math.sin(t * 6.283)) +
     path('flyl', -1, t => -8 + 22 * t + 10 * Math.sin(t * 6.283)) +
-    path('flyc', 1, t => 30 - 50 * t - 5 * Math.sin(t * 9.42));
+    path('flyc', 1, t => 18 - 50 * t - 5 * Math.sin(t * 9.42));
   document.head.append(st);
 }
 mkPaths();
@@ -228,7 +231,7 @@ const R = {
     V.innerHTML = LG() + `<h1 class="title h">${TITLE}</h1>` +
       (p === 'count' ? `<div class="num h" id="num"></div>` :
        p === 'reveal' ? `<p class="big h">Het is zover! Zoek je naam</p>` :
-       `<p class="big h">Wacht op het signaal…</p>`) + `<div class="card" id="who"></div>`;
+       `<p class="big h" id="wt"></p>`) + `<div class="card" id="who"></div>`;
     who();
   }
 };
@@ -237,8 +240,10 @@ const R = {
 let pick = null;
 function who() {
   const me = ls.get('me'), c = $('#who'); if (!c) return;
-  if (me && Object.values(N).includes(me)) {
-    c.innerHTML = `<div class="big h">✅ ${esc(me)}</div><div class="dim">Ingediend! Wacht op het signaal.</div><button class="b sm" id="chg">Dat ben ik niet</button>`;
+  const done = !!(me && Object.values(N).includes(me)), w = $('#wt');
+  if (w) w.innerHTML = done ? 'Wacht op de countdown<span class="dd"><b>.</b><b>.</b><b>.</b></span>' : '';
+  if (done) {
+    c.innerHTML = `<div class="big h">✅ ${esc(me)}</div><div class="dim">Ingediend!</div><button class="b sm" id="chg">Dat ben ik niet</button>`;
     $('#chg').onclick = () => { ls.set('me', ''); pick = null; who(); };
     return;
   }
@@ -295,7 +300,7 @@ async function reveal(me) {
   confetti(); beep(1400, .5); beep(1800, .6); buzz([300, 100, 300, 100, 500]);   // enige confetti van de hele onthulling
   await wait(6000);
   // 2. daarna datum en bestemming, rustig
-  await add(`<p class="big h">Jouw zomer begint op</p>`, 1100);
+  await add(`<p class="big h">Jouw kazou zomer begint op</p>`, 1100);
   await add(`<div class="dest sm h">${esc(v.d || 'datum volgt')}</div>`, 2200);
   await add(`<p class="big h">Je trekt naar</p>`, 1100);
   await add(`<div class="dest sm h">${esc(v.b)}</div>`, 2500);
@@ -310,7 +315,7 @@ async function reveal(me) {
   if (mm) await add(`+${mm} moni${mm > 1 ? "'s" : ''}`, 500, 'chip');
   if (bb) await add(`+${bb} bc'er${bb > 1 ? 's' : ''}`, 500, 'chip');
   await wait(800);
-  await add(`${LG('lgb')}<button id="pdf" style="margin-top:14px">📄 Download overzicht van alle vakanties</button>`, 0);
+  await add(`${LG('lgs')}<button id="pdf" class="sm" style="margin-top:14px">📄 Download overzicht van alle vakanties</button>`, 0);
   $('#pdf').onclick = () => pdf(A);
 }
 
