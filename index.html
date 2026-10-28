@@ -52,8 +52,12 @@ body.hot::after{content:"";position:fixed;inset:0;pointer-events:none;box-shadow
 .row{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;align-items:center}
 .dim{opacity:.55}
 .dd b{display:inline-block;font-weight:400;animation:dd 1s infinite}.dd b:nth-child(2){animation-delay:.15s}.dd b:nth-child(3){animation-delay:.3s}
-@keyframes dd{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-.4em)}}
-.lg.lgs{max-height:44px}
+@keyframes dd{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-.15em)}}
+.lg.lgs{max-height:32px}
+.fin{display:flex;flex-direction:column;align-items:center;gap:10px}
+.ic{width:46px;height:46px;padding:0;border-radius:50%;display:inline-flex;align-items:center;justify-content:center}
+.ic svg{width:22px;height:22px}
+.cap{margin:0;font-size:.85rem;opacity:.75;max-width:260px}
 button:disabled{opacity:.4;cursor:not-allowed}
 .lg{max-height:70px;max-width:60vw;object-fit:contain}.lg.lgb{max-height:150px}
 /* host-editor */
@@ -315,7 +319,7 @@ async function reveal(me) {
   if (mm) await add(`+${mm} moni${mm > 1 ? "'s" : ''}`, 500, 'chip');
   if (bb) await add(`+${bb} bc'er${bb > 1 ? 's' : ''}`, 500, 'chip');
   await wait(800);
-  await add(`${LG('lgs')}<button id="pdf" class="sm" style="margin-top:14px">📄 Download overzicht van alle vakanties</button>`, 0);
+  await add(`<div class="fin">${LG('lgs')}<button id="pdf" class="ic" aria-label="Download overzicht van alle vakanties"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m0 0l-5-5m5 5l5-5M4 20h16"/></svg></button><p class="cap">Download hier het overzicht van alle vakanties</p></div>`, 0);
   $('#pdf').onclick = () => pdf(A);
 }
 
