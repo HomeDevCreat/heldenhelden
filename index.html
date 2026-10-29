@@ -53,42 +53,7 @@ body.hot::after{content:"";position:fixed;inset:0;pointer-events:none;box-shadow
 .dim{opacity:.55}
 .dd b{display:inline-block;font-weight:400;animation:dd 1s infinite}.dd b:nth-child(2){animation-delay:.15s}.dd b:nth-child(3){animation-delay:.3s}
 @keyframes dd{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-.15em)}}
-.lg.lgs{max-height:32px}
-.eyes{font-size:5rem;animation:look 1.2s ease-in-out infinite}@keyframes look{0%,100%{transform:translateX(-14px)}50%{transform:translateX(14px)}}
-.slide{display:flex;flex-direction:column;align-items:center;gap:3vh;width:100%;animation:sin .7s both}.slide.out{animation:sout .5s both}
-@keyframes sin{from{opacity:0;transform:scale(.92)}}@keyframes sout{to{opacity:0;transform:scale(1.05)}}
-.late{opacity:0;animation:fu .8s both;animation-delay:var(--d,0s)}@keyframes fu{from{opacity:0;transform:translateY(24px)}to{opacity:1}}
-.sts{display:flex;gap:8vw;flex-wrap:wrap;justify-content:center}
-.sx{display:flex;flex-direction:column;align-items:center;animation:pop .8s both}.sx:nth-child(2){animation-delay:.5s}
-.sxi{font-size:clamp(3rem,9vw,7rem);animation:bob .8s ease-in-out infinite alternate}
-.sxn{font-size:clamp(5rem,16vw,14rem);line-height:1;color:var(--yel);text-shadow:5px 5px 0 var(--red)}
-.sxl{font-size:clamp(1.6rem,4vw,3.4rem)}
-.bars{width:min(90vw,1000px);display:flex;flex-direction:column;gap:2vh}
-.br{display:flex;align-items:center;gap:14px;opacity:0;animation:fu .6s both;animation-delay:var(--d)}
-.bfl{font-size:clamp(1.6rem,4vw,3rem)}.bnm{width:clamp(110px,22vw,260px);text-align:left;font-size:clamp(1.3rem,3.4vw,2.6rem)}
-.bt{flex:1;height:clamp(18px,4vh,40px);background:#ffffff18;border-radius:99px;overflow:hidden}
-.bt i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,var(--red),var(--yel));width:0;animation:gr 1.2s ease-out both;animation-delay:var(--d)}
-@keyframes gr{to{width:var(--w)}}
-.br b{font-size:clamp(1.6rem,4vw,3rem);min-width:2ch;color:var(--yel);font-weight:400}
-.arc{height:36vh;max-width:92vw;overflow:visible}
-.arc path{fill:none;stroke:var(--yel);stroke-width:4;stroke-dasharray:10 12;animation:mv 1s linear infinite}@keyframes mv{to{stroke-dashoffset:-22}}
-.tl{display:grid;grid-template-columns:1fr minmax(150px,.7fr) 1fr;gap:2vw;align-items:center;width:min(96vw,1200px)}
-.tlc{background:#ffffff14;border:3px solid var(--yel);border-radius:16px;padding:1.5vh 1.2vw;min-width:0}.tlc .sxi{font-size:clamp(2rem,5vw,4rem)}.tlc .sxl{font-size:clamp(1.1rem,2.4vw,2rem)}
-.tld{font-size:clamp(1.6rem,3.6vw,3rem);color:var(--yel)}.tlv{font-size:clamp(.9rem,1.6vw,1.3rem)}
-.tlm{display:flex;flex-direction:column;align-items:center;gap:1vh;min-width:0}
-.tlb{width:100%;height:10px;background:#ffffff22;border-radius:9px;overflow:hidden}.tlb i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--red),var(--yel));animation:gr3 3s ease-in-out .6s both}@keyframes gr3{to{width:100%}}
-.sun{font-size:clamp(2.5rem,6vw,5rem);animation:spin 8s linear infinite}
-.ch.nt{background:#1e6bff}
-.f select{flex:1;min-width:0;padding:6px 8px;font-size:.95rem}
-.pie{display:flex;align-items:center;justify-content:center;gap:5vw;flex-wrap:wrap}
-.pie svg{height:44vh;max-width:90vw;overflow:visible}
-.pie circle{fill:none;stroke-width:30;transform-origin:50% 50%;animation:seg .9s ease-out both;animation-delay:var(--d)}
-@keyframes seg{from{stroke-dasharray:0 201}}
-.leg{display:flex;flex-direction:column;gap:1.4vh;text-align:left}
-.lg2{display:flex;align-items:center;gap:12px;font-size:clamp(1.2rem,2.6vw,2.2rem);opacity:0;animation:fu .6s both;animation-delay:var(--d)}
-.lg2 i{width:1.1em;height:1.1em;border-radius:50%;display:inline-block}
-.lg2 b{color:var(--yel);font-weight:400;margin-left:auto;padding-left:1.5em}
-.f input[type=date]{flex:1;min-width:0;padding:6px 8px;font-size:.95rem;color-scheme:dark}
+.lg.lgs{max-height:50px}
 .fin{display:flex;flex-direction:column;align-items:center;gap:10px}
 .ic{width:46px;height:46px;padding:0;border-radius:50%;display:inline-flex;align-items:center;justify-content:center}
 .ic svg{width:22px;height:22px}
@@ -115,6 +80,7 @@ button:disabled{opacity:.4;cursor:not-allowed}
 .f{display:flex;align-items:center;gap:6px;font-size:.85rem}
 .f>span{min-width:62px;color:var(--yel);font-family:Bangers,Impact,sans-serif;font-size:1.05rem;white-space:nowrap}
 .f input[type=text],.f input:not([type]){flex:1;min-width:0;padding:6px 8px;font-size:.95rem}
+.f select{flex:1;min-width:0;padding:6px 8px;font-size:.95rem}
 .f .x{padding:4px 9px;font-size:.9rem}
 #srch{width:100%}
 .fly{position:fixed;top:30vh;left:-75vw;width:min(70vw,460px);z-index:7;pointer-events:none;animation:fly 1.9s linear forwards;filter:drop-shadow(0 0 18px #ffd21f)}
@@ -129,6 +95,136 @@ button:disabled{opacity:.4;cursor:not-allowed}
 .carry{animation:carry .8s cubic-bezier(.5,0,1,1) forwards}@keyframes carry{to{transform:translateX(150vw) rotate(10deg)}}@keyframes bob{to{transform:translateY(-5px)}}
 .sl{position:fixed;left:-60vw;height:5px;border-radius:3px;background:linear-gradient(90deg,transparent,#fff);z-index:6;pointer-events:none;animation:fly2 1.3s ease-in forwards}
 @keyframes fly2{to{transform:translateX(220vw)}}
+.eyes{font-size:5rem;animation:eyes 1s ease-in-out infinite alternate}
+@keyframes eyes{from{transform:translateX(-14px)}to{transform:translateX(14px)}}
+
+/* ================= PRESENTATIE (alleen grote scherm) ================= */
+.pres{position:fixed;inset:0;overflow:hidden;text-align:center;color:#fff}
+.pv{z-index:50;background:radial-gradient(#ffffff14 1.5px,transparent 1.6px) 0 0/22px 22px,var(--bg)}
+.pvx{position:fixed;top:10px;right:10px;z-index:60;font-size:1rem}
+.fogbg{position:absolute;inset:0;overflow:hidden;pointer-events:none;transition:opacity 3s}
+.pres.clear .fogbg{opacity:.3}
+.fogbg i{position:absolute;left:var(--x);top:var(--y);width:90vmax;height:60vmax;margin:-30vmax 0 0 -45vmax;border-radius:50%;background:radial-gradient(closest-side,#b8c6ff66,#8fa3e033 55%,transparent);filter:blur(30px);animation:drift var(--d) ease-in-out infinite alternate}
+@keyframes drift{from{transform:translate(-12vw,3vh) scale(1)}to{transform:translate(14vw,-4vh) scale(1.2)}}
+#pst{position:absolute;inset:0}
+.p-head{position:absolute;top:0;left:0;right:0;padding:2vmin 3vw;z-index:3;font-size:clamp(1.3rem,4.4vmin,3.4rem);line-height:1.1;color:var(--yel);text-shadow:3px 3px 0 var(--red);opacity:0;transform:translateY(-130%);font-family:Bangers,Impact,sans-serif;letter-spacing:.04em}
+.p-head small{display:block;font-size:.58em;color:#dfe8ff;text-shadow:2px 2px 0 #1e2a6b;letter-spacing:.14em}
+.p-head.on{opacity:1;transform:none;transition:transform .8s cubic-bezier(.2,1.4,.4,1),opacity .4s}
+.sc{position:absolute;inset:0;z-index:1;padding:14vmin 4vw 4vmin;display:flex;flex-direction:column;justify-content:center;align-items:center;animation:scin .7s both}
+.sc.out{animation:scout .6s both}
+@keyframes scin{from{opacity:0;transform:translateX(8vw) scale(.96);filter:blur(10px)}}
+@keyframes scout{to{opacity:0;transform:translateX(-8vw) scale(.96);filter:blur(10px)}}
+.leave>*{animation:scout .5s both}
+/* intro: waas en dender */
+.p-intro{position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2vmin;padding:3vw}
+.p-i1{font-size:clamp(2.6rem,12vmin,9rem);color:var(--yel);text-shadow:5px 5px 0 var(--red),0 0 40px #ffd21f88;opacity:0;line-height:1}
+.p-i1.on{opacity:1;animation:fogin 2.4s both}
+@keyframes fogin{0%{opacity:0;filter:blur(40px);letter-spacing:.35em;transform:scale(1.2)}100%{opacity:1;filter:blur(0);letter-spacing:.04em;transform:none}}
+.p-i2{font-size:clamp(2rem,9vmin,7rem);line-height:1.1;display:flex;gap:.3em;flex-wrap:wrap;justify-content:center;align-items:baseline}
+.p-i2>span{opacity:0}
+.p-i2>span.on{opacity:1}
+.p-i2 .bij,.p-i2 .en{font-size:.6em;color:#dfe8ff}
+.p-i2 .waas{color:#e8eeff;text-shadow:0 0 30px #aebcff,0 0 70px #7f94ff}
+.p-i2 .dender{color:var(--yel);text-shadow:4px 4px 0 var(--red),0 0 40px #ffd21f}
+.p-i2 .bij.on,.p-i2 .en.on{animation:pop .6s both}
+.p-i2 .waas.on{animation:fogin 1.8s both}
+.p-i2 .dender.on{animation:thud .7s both,glow2 .5s .7s 6 alternate}
+@keyframes thud{0%{transform:translateY(-40vh) scale(3);opacity:0;filter:blur(8px)}60%{transform:none;opacity:1;filter:none}80%{transform:scale(.9)}100%{transform:none;opacity:1}}
+@keyframes glow2{to{text-shadow:4px 4px 0 var(--red),0 0 90px #fff,0 0 140px #ffd21f}}
+.p-i3{font-size:clamp(1.3rem,5vmin,3.4rem);opacity:0;margin-top:3vmin}
+.p-i3.on{opacity:1;animation:pop .7s both,blink2 1.2s .8s infinite}
+@keyframes blink2{50%{opacity:.35}}
+.p-intro.gone{animation:introout .8s both}
+@keyframes introout{to{opacity:0;transform:scale(.6) translateY(-30vh);filter:blur(12px)}}
+.p-zap{position:fixed;inset:0;z-index:8;background:#fff;pointer-events:none;animation:zap .9s both}
+@keyframes zap{0%{opacity:0}5%{opacity:.95}12%{opacity:.1}20%{opacity:.8}30%{opacity:0}45%{opacity:.4}60%,100%{opacity:0}}
+.p-bolt{position:absolute;left:50%;top:0;height:70%;width:30vmin;margin-left:-15vmin;z-index:7;pointer-events:none;animation:boltf .9s both;filter:drop-shadow(0 0 12px #ffd21f) drop-shadow(0 0 30px #fff)}
+@keyframes boltf{0%{opacity:1}10%{opacity:.2}25%{opacity:1}35%,100%{opacity:0}}
+/* dia 1 */
+.p-s1{width:100%;height:100%;display:grid;grid-template-columns:1fr 1fr;gap:3vw;align-items:center}
+.p-stats{display:flex;flex-direction:column;gap:2.4vmin;align-items:center;transform:translateX(25vw);transition:transform 1.1s cubic-bezier(.6,0,.2,1)}
+.p-s1.pie .p-stats{transform:none}
+.p-stat{opacity:0;background:#ffffff12;border:.5vmin solid var(--yel);border-radius:2.2vmin;padding:2vmin 3vmin;min-width:min(34vw,520px);box-shadow:0 0 40px #ffd21f33}
+.p-stat.on{opacity:1;animation:pop .7s both}
+.p-stat .ic2{font-size:clamp(2rem,7vmin,5rem);line-height:1}
+.p-stat .sn{font-size:clamp(3.4rem,15vmin,11rem);line-height:1;color:var(--yel);text-shadow:.7vmin .7vmin 0 var(--red)}
+.p-stat .sl3{font-size:clamp(1.2rem,4.2vmin,3rem)}
+.p-piebox{opacity:0;transform:scale(.5) rotate(-40deg);transition:all 1s cubic-bezier(.2,1.3,.4,1);display:flex;flex-direction:column;align-items:center;gap:2vmin}
+.p-s1.pie .p-piebox{opacity:1;transform:none}
+.p-piebox svg{width:min(40vw,52vmin);height:auto;overflow:visible}
+.p-piebox text{font-family:Bangers,Impact,sans-serif;text-anchor:middle}
+.p-piebox .pl{opacity:0;transition:opacity .5s;fill:#fff;stroke:#0a0c1c;stroke-width:3px;paint-order:stroke;font-size:18px}
+.p-leg{display:grid;grid-template-columns:repeat(3,auto);gap:1vmin 2vw;justify-content:center;text-align:left}
+.p-li{display:flex;align-items:center;gap:.8vmin;font-size:clamp(1rem,3vmin,2rem);opacity:0}
+.p-li.on{opacity:1;animation:pop .5s both}
+.p-li i{width:2.4vmin;height:2.4vmin;border-radius:50%;background:var(--c);flex:none}
+.p-li b{font-family:Bangers,Impact,sans-serif;font-weight:400;color:var(--yel);letter-spacing:.04em}
+@media (max-aspect-ratio:1/1){.p-s1{grid-template-columns:1fr;align-content:center}.p-stats{transform:none!important;flex-direction:row}.p-stat{min-width:0}.p-s2{grid-template-columns:1fr!important}}
+/* dia 2: kaart */
+.p-s2{width:100%;height:100%;display:grid;grid-template-columns:1.5fr 1fr;gap:2vw;align-items:center}
+.p-s2.nomap{grid-template-columns:1fr}
+.p-map{width:100%;height:100%;min-height:0;display:flex;align-items:center;justify-content:center;min-width:0}
+.p-map svg{width:100%;height:100%;max-height:100%;overflow:hidden;border-radius:2vmin;background:#0d1230;border:.4vmin solid #ffffff22;opacity:0;transform:scale(.9);transition:all .9s}
+.p-map svg.on{opacity:1;transform:none}
+.ct{fill:#1c2455;stroke:#3a4688;stroke-width:.6;transition:fill .6s,opacity .8s}
+.ct.hit{stroke:#fff;stroke-width:1}
+.ct.tgt{fill:var(--red)!important;stroke:#fff}
+.p-map.far .ct:not(.tgt){opacity:.35}
+.p-map.far .bub{opacity:0!important}
+.bub{opacity:0;transition:opacity .8s}
+.bub.on{opacity:1}
+.bi{transform:scale(0);transition:transform .5s cubic-bezier(.2,1.6,.4,1)}
+.bub.on .bi{transform:scale(1)}
+.bub .bi circle{fill:#fff;stroke:#e8203a;stroke-width:3}
+.bub text{font-family:Bangers,Impact,sans-serif;fill:#0a0c1c;text-anchor:middle}
+.ld{stroke:#fff;stroke-width:1.5;fill:#fff}
+.ping{fill:none;stroke:#e8203a;stroke-width:2.5;animation:pingf 1.7s ease-out infinite}
+.ping.p2{animation-delay:.85s}
+@keyframes pingf{from{transform:scale(1);opacity:.9}to{transform:scale(4.5);opacity:0}}
+.snl{font:700 14px system-ui,sans-serif;fill:#fff;stroke:#0d1230;stroke-width:4px;paint-order:stroke;text-anchor:end}
+.arc{fill:none;stroke:#fff;stroke-width:3.5;stroke-linecap:round;filter:drop-shadow(0 0 5px #ffd21f)}
+.hero{filter:drop-shadow(0 0 6px #ffd21f)}
+.p-side{display:flex;flex-direction:column;gap:1.4vmin;align-items:stretch;text-align:left;min-width:0}
+.p-bars{display:flex;flex-direction:column;gap:1.4vmin}
+.p-sh{font-size:clamp(1.6rem,5.2vmin,3.6rem);color:var(--yel);text-shadow:3px 3px 0 var(--red);margin-bottom:1vmin;text-align:center;line-height:1.05}
+.p-bar{display:grid;grid-template-columns:minmax(0,30%) 1fr auto;gap:1.2vmin;align-items:center;opacity:0;transform:translateX(6vw);transition:all .6s cubic-bezier(.2,1.2,.4,1)}
+.p-bar.on{opacity:1;transform:none}
+.p-bar .bl{font-size:clamp(1.1rem,3.4vmin,2.4rem);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.p-bt{height:3.6vmin;background:#ffffff14;border-radius:99px;overflow:hidden}
+.p-bt i{display:block;height:100%;width:0;border-radius:99px;background:linear-gradient(90deg,var(--yel),var(--red));transition:width 1.1s cubic-bezier(.2,.9,.3,1)}
+.p-bar .bn{font-size:clamp(1.3rem,4vmin,2.8rem);color:var(--yel);min-width:2.2ch;text-align:right}
+.p-more{font-size:clamp(.9rem,2.6vmin,1.6rem);opacity:.7;text-align:center}
+.p-far{display:flex;flex-direction:column;gap:1.6vmin;align-items:center;text-align:center;animation:pop .8s both;background:#ffffff12;border:.5vmin solid var(--red);border-radius:2.2vmin;padding:3vmin;box-shadow:0 0 50px #e8203a55}
+.p-far .fn{font-size:clamp(2rem,7.5vmin,5.5rem);line-height:1;text-shadow:0 0 18px var(--yel),4px 4px 0 var(--red);overflow-wrap:anywhere}
+.p-far .fd{font-size:clamp(1.2rem,4vmin,2.8rem)}
+.p-far .km{font-size:clamp(3rem,12vmin,9rem);color:var(--yel);text-shadow:.6vmin .6vmin 0 var(--red);line-height:1}
+/* dia 3 */
+.p-s3{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4vmin;position:relative}
+.p-sn{font-size:clamp(1.4rem,5vmin,3.6rem);opacity:0}
+.p-sn.on{opacity:1;animation:pop .7s both}
+.p-sn b{color:var(--yel);text-shadow:3px 3px 0 var(--red);font-weight:400}
+.p-cards{display:grid;grid-template-columns:1fr 1fr;gap:3vw;width:100%;max-width:1500px}
+.p-c2{opacity:0;background:#ffffff12;border:.5vmin solid var(--yel);border-radius:2.2vmin;padding:3vmin 2vmin;display:flex;flex-direction:column;gap:1.2vmin;align-items:center;min-width:0}
+.p-c2.b{border-color:var(--blue)}
+.p-c2.l.on{opacity:1;animation:inL .9s cubic-bezier(.2,1.2,.4,1) both}
+.p-c2.r.on{opacity:1;animation:inR .9s cubic-bezier(.2,1.2,.4,1) both}
+@keyframes inL{from{transform:translateX(-60vw) rotate(-6deg)}}@keyframes inR{from{transform:translateX(60vw) rotate(6deg)}}
+.p-c2 .ci{font-size:clamp(3rem,11vmin,8rem);line-height:1}
+.p-c2 .ck{font-size:clamp(1.3rem,4.4vmin,3rem);color:var(--yel)}
+.p-c2 .cn{font-size:clamp(2rem,8vmin,6rem);line-height:1.05;text-shadow:0 0 18px var(--yel),4px 4px 0 var(--red);overflow-wrap:anywhere}
+.p-c2 .cd{font-size:clamp(1.1rem,3.6vmin,2.6rem);opacity:.85}
+.p-c2 .cdt{font-size:clamp(1.5rem,5vmin,3.6rem);color:var(--yel);background:#0006;border-radius:99px;padding:.4vmin 2.4vmin}
+.p-road{position:absolute;left:-4vw;right:-4vw;bottom:-2vmin;height:7vmin;border-bottom:.6vmin dashed #ffffff55;overflow:hidden}
+.p-bus{position:absolute;bottom:.4vmin;font-size:clamp(2.4rem,8vmin,6rem);left:0;animation:drive 7s linear infinite}
+@keyframes drive{from{transform:translateX(-12vw)}to{transform:translateX(110vw)}}
+/* outro */
+.p-end{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3vmin;width:100%;height:100%}
+.p-q1{font-size:clamp(1.6rem,6vmin,4.2rem);opacity:0}
+.p-q1.on{opacity:1;animation:pop .8s both}
+.p-q2{font-size:clamp(2.6rem,11vmin,8rem);line-height:1.05;text-shadow:0 0 18px var(--yel),5px 5px 0 var(--red)}
+.p-q2 b{font-weight:400;display:inline-block;animation:slam .55s both}
+.p-q2 .qq{color:var(--yel);display:inline-block;animation:p .5s infinite}
+.pres .rs{z-index:0}
 @media (prefers-reduced-motion:reduce){*{animation:none!important}}
 </style></head>
 <body><div id="v"></div>
@@ -168,53 +264,6 @@ const HEROSVG = `<svg viewBox="0 0 240 110" xmlns="http://www.w3.org/2000/svg">
 <path d="M155 45Q170 38 186 45L186 55Q170 49 155 55Z" fill="#1b1f3a"/><path d="M156 47L138 40L142 50Z" fill="#1b1f3a"/>
 <ellipse cx="177" cy="49.5" rx="4" ry="2.2" fill="#fff"/></svg>`;
 const whoosh = () => { try { AC = AC || new AudioContext(); const o = AC.createOscillator(), g = AC.createGain(), t = AC.currentTime; o.type = 'sawtooth'; o.frequency.setValueAtTime(150, t); o.frequency.exponentialRampToValueAtTime(900, t + .9); g.gain.setValueAtTime(.001, t); g.gain.linearRampToValueAtTime(.12, t + .4); g.gain.linearRampToValueAtTime(.001, t + 1.2); o.connect(g); g.connect(AC.destination); o.start(); o.stop(t + 1.3); } catch (e) {} };
-let lastSl = -1;
-function countUp() {
-  document.querySelectorAll('[data-to]').forEach(el => {
-    const to = +el.dataset.to, ms = +el.dataset.ms || 2200, t0 = performance.now();
-    (function f(t) { const k = Math.min(1, (t - t0) / ms); el.textContent = nf(Math.round(to * (1 - Math.pow(1 - k, 3)))); if (k < 1 && el.isConnected) requestAnimationFrame(f); })(t0);
-  });
-}
-function slideHTML(t) {
-  const T = S.stats || {};
-  if (t === 'ov') return `<p class="big h">Kazou zomer</p><h1 class="title h">WAAS &amp; DENDER 2027</h1><div class="sts">
-    <div class="sx"><div class="sxi">🏕️</div><div class="sxn h" data-to="${T.vac}">0</div><div class="sxl h">vakanties</div></div>
-    <div class="sx"><div class="sxi">🦸</div><div class="sxn h" data-to="${T.vol}">0</div><div class="sxl h">vrijwilligers</div></div></div>`;
-  if (t === 'co') {
-    const L = (T.lands || []).slice(0, 8), mx = Math.max(...L.map(x => x[2]));
-    return `<h1 class="title h" style="font-size:clamp(2rem,6vw,4.5rem)">Waar trekken we naartoe?</h1><div class="bars">${L.map((x, i) => `<div class="br" style="--d:${(.3 + i * .35).toFixed(2)}s"><span class="bfl">${flag(x[1]) || '📍'}</span><span class="bnm h">${esc(x[0])}</span><div class="bt"><i style="--w:${x[2] / mx * 100}%"></i></div><b class="h">${x[2]}</b></div>`).join('')}</div>`;
-  }
-  if (t === 'age') {
-    const A = T.ages || [], tot = A.reduce((a, x) => a + x[1], 0), C = 201.06; let acc = 0;
-    const segs = A.map((x, i) => { const l = Math.max(0, x[1] / tot * C - .8), r = acc / tot * 360 - 90; acc += x[1]; return `<circle cx="50" cy="50" r="32" stroke="${PAL[AGES.indexOf(x[0])]}" style="stroke-dasharray:${l.toFixed(2)} ${C};transform:rotate(${r.toFixed(1)}deg);--d:${(.3 + i * .45).toFixed(2)}s"/>`; }).join('');
-    return `<h1 class="title h" style="font-size:clamp(2rem,6vw,4.5rem)">Voor welke leeftijd?</h1><div class="pie"><svg viewBox="0 0 100 100">${segs}<text x="50" y="49" text-anchor="middle" fill="#fff" font-family="Bangers,Impact" font-size="16" class="late" style="--d:.5s">${tot}</text><text x="50" y="60" text-anchor="middle" fill="#fff" font-size="6" class="late" style="--d:.5s">vakanties</text></svg>
-    <div class="leg">${A.map((x, i) => `<div class="lg2 h" style="--d:${(.5 + i * .45).toFixed(2)}s"><i style="background:${PAL[AGES.indexOf(x[0])]}"></i>${agL(x[0])}<b>${x[1]}</b></div>`).join('')}</div></div>`;
-  }
-  if (t === 'far') {
-    const f = T.far, inner = HEROSVG.replace(/^<svg[^>]*>/, '').replace(/<\/svg>\s*$/, ''), P = 'M50 190 Q300 -60 550 190';
-    return `<p class="big h">Deze vakantie reist het verst</p>
-    <svg class="arc" viewBox="0 0 600 230"><path d="${P}"/>
-      <text x="50" y="222" text-anchor="middle" fill="#fff" font-family="Bangers,Impact" font-size="24">Waas &amp; Dender</text>
-      <text x="550" y="222" text-anchor="middle" fill="#ffd21f" font-family="Bangers,Impact" font-size="24" class="late" style="--d:3.2s">${esc(f.b)}</text>
-      <text x="50" y="175" text-anchor="middle" font-size="34">🏠</text><text x="550" y="175" text-anchor="middle" font-size="34" class="late" style="--d:3.2s">📍</text>
-      <g><animateMotion path="${P}" dur="3.4s" rotate="auto" fill="freeze"/><g transform="translate(-72,-33) scale(.6)">${inner}</g></g></svg>
-    <h1 class="title h late" style="--d:3.4s;font-size:clamp(2rem,6vw,4.5rem)">${esc(f.naam)}</h1>
-    <p class="big h late" style="--d:3.8s">${flag(f.cc)} ${esc(f.land || '')}</p>
-    ${f.km ? `<p class="big h">± <span class="sxn" style="font-size:clamp(2.5rem,7vw,5rem)" data-to="${f.km}" data-ms="3400">0</span> km</p>` : ''}`;
-  }
-  const a = T.first, b = T.last, days = Math.round((new Date(b.dt) - new Date(a.dt)) / 864e5) + 1;
-  return `<h1 class="title h" style="font-size:clamp(2rem,6vw,4.5rem)">Onze zomer in een oogopslag</h1><div class="tl">
-    <div class="tlc late" style="--d:.6s"><div class="sxi">🛫</div><div class="sxl h">Eerste vertrek</div><div class="tld h">${dlong(a.dt)}</div><div class="tlv">${esc(a.naam)} · ${esc(a.b)}</div></div>
-    <div class="tlm"><div class="tlb"><i></i></div><div class="sun">☀️</div><div class="sxl h"><span data-to="${days}" data-ms="3000">0</span> zomerdagen</div></div>
-    <div class="tlc late" style="--d:3.4s"><div class="sxi">🛬</div><div class="sxl h">Laatste thuiskomst</div><div class="tld h">${dlong(b.dt)}</div><div class="tlv">${esc(b.naam)} · ${esc(b.b)}</div></div></div>`;
-}
-function introTick() {
-  const sl = S.slides || []; let e = now() - S.introAt, i = 0, acc = 0;
-  for (; i < sl.length; i++) { if (e < acc + sl[i].ms) break; acc += sl[i].ms; }
-  if (i >= sl.length) return;
-  if (i !== lastSl) { lastSl = i; V.innerHTML = `<div class="slide">${slideHTML(sl[i].t)}</div>`; countUp(); }
-  if (V.firstElementChild) V.firstElementChild.classList.toggle('out', acc + sl[i].ms - e < 500);
-}
 function mkPaths() {
   const W = innerWidth, H = innerHeight, N = 24, X = 210 * W / 100;
   const path = (name, dir, yf) => {
@@ -233,11 +282,12 @@ function mkPaths() {
   document.head.append(st);
 }
 mkPaths();
-function rays(n) {
+function rays(n, par) {
+  par = par || document.body;
   for (let k = 0; k < n; k++) {
     const e = document.createElement('i'); e.className = 'rs'; e.style.color = ['#fff', '#fff', '#ffd21f'][Math.random() * 3 | 0];
     e.style.setProperty('--g', (Math.random() * 360).toFixed(0) + 'deg'); e.style.setProperty('--l', (14 + Math.random() * 26).toFixed(0) + 'vmax'); e.style.height = (2 + Math.random() * 3).toFixed(1) + 'px';
-    document.body.append(e); setTimeout(() => e.remove(), 1000);
+    par.append(e); setTimeout(() => e.remove(), 1000);
   }
 }
 function fly(n = 3) {
@@ -255,42 +305,248 @@ const wait = ms => new Promise(r => setTimeout(r, ms));
 const norm = s => s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
 const slug = s => norm(s).replace(/[^a-z0-9]/g, '');
 const arr = x => Object.values(x || []);
-const CC = {belgie:'BE',nederland:'NL',frankrijk:'FR',duitsland:'DE',luxemburg:'LU',spanje:'ES',italie:'IT',oostenrijk:'AT',zwitserland:'CH',tsjechie:'CZ',polen:'PL',denemarken:'DK','verenigd koninkrijk':'GB',engeland:'GB',schotland:'GB',kroatie:'HR',slovenie:'SI',portugal:'PT',noorwegen:'NO',zweden:'SE',hongarije:'HU',griekenland:'GR',ierland:'IE',slowakije:'SK'};
-const flag = c => c && c.length === 2 ? String.fromCodePoint(...[...c.toUpperCase()].map(x => 127397 + x.charCodeAt())) : '';
-const AGES = ['7-8', '9-10', '11-12', '13-14', '15-16', '17-18'], PAL = ['#e8203a', '#ffd21f', '#1e6bff', '#22c55e', '#a855f7', '#fb923c'];
-const agL = a => a.replace('-', '–') + ' jaar';
-const ag = x => {   // "7-8", "7 tot 8" of (door Excel omgezet) 7 augustus -> "7-8"
-  const t = x instanceof Date && !isNaN(x) ? (d => `${d.getUTCDate()}-${d.getUTCMonth() + 1}`)(new Date(x.getTime() + 12 * 36e5)) : String(x ?? '').trim();
-  const m = t.match(/(\d{1,2})\D+(\d{1,2})/), k = m ? `${+m[1]}-${+m[2]}` : '';
-  return AGES.includes(k) ? k : '';
-};
-const nf = n => new Intl.NumberFormat('nl-BE').format(n);
-const dm = iso => { const d = new Date(iso + 'T12:00:00'); return {d: d.getDate(), m: d.toLocaleDateString('nl-BE', {month: 'long'})}; };
-const dlong = iso => { const x = dm(iso); return x.d + ' ' + x.m; };
-const rng = (a, b) => { if (!a || !b) return ''; const x = dm(a), y = dm(b); return x.m === y.m ? `${x.d}–${y.d} ${y.m}` : `${x.d} ${x.m} – ${y.d} ${y.m}`; };
-const pd = x => {   // Excel-datum, tekstdatum of Date -> jjjj-mm-dd
-  if (x instanceof Date && !isNaN(x)) return new Date(x.getTime() + 12 * 36e5).toISOString().slice(0, 10);
-  if (typeof x === 'number') return new Date(Math.round((x - 25569) * 864e5)).toISOString().slice(0, 10);
-  const t = String(x || '').trim(), m = t.match(/^(\d{4})-(\d{2})-(\d{2})/); if (m) return m[0];
-  const k = t.match(/^(\d{1,2})[\/\-.](\d{1,2})[\/\-.](\d{2,4})$/); if (k) return `${k[3].length === 2 ? '20' + k[3] : k[3]}-${k[2].padStart(2, '0')}-${k[1].padStart(2, '0')}`;
-  return '';
-};
 const lazy = (u, g) => new Promise((ok, no) => { if (window[g]) return ok(); const t = document.createElement('script'); t.src = u; t.onload = ok; t.onerror = no; document.head.append(t); });
 const JSPDF = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js', SHEETJS = 'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js';
+
+/* ================= PRESENTATIE: data + hulpfuncties ================= */
+const AGES = ['7-8', '9-10', '11-12', '13-14', '15-16', '17-18'];
+const AGC = ['#e8203a', '#ffd21f', '#1e6bff', '#19c37d', '#ff7a1a', '#b266ff'];
+const normAge = s => { const m = String(s).match(/(\d+)\D+(\d+)/); const a = m ? m[1] + '-' + m[2] : ''; return AGES.includes(a) ? a : ''; };
+// [Nederlandse naam, naam op de kaart, ...alternatieve schrijfwijzen]
+const COUNTRIES = [
+  ['België', 'Belgium', 'belgie'], ['Nederland', 'Netherlands', 'holland'], ['Luxemburg', 'Luxembourg'], ['Frankrijk', 'France'], ['Duitsland', 'Germany'],
+  ['Oostenrijk', 'Austria'], ['Zwitserland', 'Switzerland'], ['Italië', 'Italy', 'italie'], ['Spanje', 'Spain'], ['Portugal', 'Portugal'],
+  ['Verenigd Koninkrijk', 'United Kingdom', 'engeland', 'schotland', 'wales', 'groot-brittannie', 'groot brittannie', 'uk', 'vk'], ['Ierland', 'Ireland'], ['IJsland', 'Iceland', 'ijsland'],
+  ['Noorwegen', 'Norway'], ['Zweden', 'Sweden'], ['Finland', 'Finland'], ['Denemarken', 'Denmark'], ['Polen', 'Poland'],
+  ['Tsjechië', 'Czechia', 'tsjechie', 'tsjechische republiek'], ['Slowakije', 'Slovakia'], ['Hongarije', 'Hungary'], ['Slovenië', 'Slovenia', 'slovenie'],
+  ['Kroatië', 'Croatia', 'kroatie'], ['Bosnië', 'Bosnia and Herz.', 'bosnie', 'bosnie en herzegovina'], ['Servië', 'Serbia', 'servie'], ['Montenegro', 'Montenegro'],
+  ['Albanië', 'Albania', 'albanie'], ['Noord-Macedonië', 'North Macedonia', 'macedonie', 'noord macedonie'], ['Griekenland', 'Greece'], ['Bulgarije', 'Bulgaria'],
+  ['Roemenië', 'Romania', 'roemenie'], ['Estland', 'Estonia'], ['Letland', 'Latvia'], ['Litouwen', 'Lithuania'], ['Turkije', 'Turkey'],
+  ['Oekraïne', 'Ukraine', 'oekraine'], ['Cyprus', 'Cyprus'], ['Malta', 'Malta']
+];
+const CT = {}; COUNTRIES.forEach(([nl, en, ...al]) => [nl, ...al].forEach(k => CT[norm(k)] = {nl, en}));
+// betere plek voor bolletjes bij landen met overzeese gebieden / vreemde vorm [lon,lat]
+const CEN = {'France': [2.3, 46.7], 'Norway': [8.5, 61.2], 'United Kingdom': [-2, 53.5], 'Netherlands': [5.4, 52.3], 'Italy': [12.4, 42.8], 'Sweden': [15.5, 60.5], 'Finland': [26, 63.5], 'Spain': [-3.7, 40.3], 'Denmark': [9.4, 56.1], 'Greece': [22.5, 39.3], 'Turkey': [32.5, 39], 'Croatia': [16, 45.2]};
+const SNK = [4.1437, 51.1565];   // Sint-Niklaas [lon,lat]
+const SCN = [0, 8900, 18800, 32800, 43300], PRES_MS = 51500;   // starttijden van de scenes + totale duur (ms)
+const HEROMAP = HERO ? `<image href="${esc(HERO)}" x="-55" y="-25" width="110" height="50"/>` : HEROSVG.replace('<svg ', '<svg x="-55" y="-25" width="110" height="50" overflow="visible" ');
+const mk = h => { const t = document.createElement('template'); t.innerHTML = h.trim(); return t.content.firstElementChild; };
+const lettersH = (t, d0 = 0) => { let n = 0; return t.split(' ').map(w => `<span style="display:inline-block;white-space:nowrap">${[...w].map(c => `<b style="animation-delay:${(d0 + n++ * .06).toFixed(2)}s">${esc(c)}</b>`).join('')}</span>`).join(' '); };
+let GEOP = null;
+const loadGeo = () => GEOP || (GEOP = (async () => {
+  await lazy('https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js', 'd3');
+  await lazy('https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js', 'topojson');
+  const t = await (await fetch('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json')).json();
+  return topojson.feature(t, t.objects.countries).features;
+})().catch(() => { GEOP = null; return null; }));
+
+function pdata(A, P) {
+  P = P || {};
+  const L = Object.entries(A || {}).map(([id, v]) => ({...v, id}));
+  const slots = v => 1 + (v.hasCo ? 1 : 0) + arr(v.moni).length + arr(v.bc).length;
+  const cm = {};
+  L.forEach(v => {
+    const raw = (v.land || '').trim(); if (!raw) return;
+    const c = CT[norm(raw)], key = c ? c.nl : raw;
+    (cm[key] = cm[key] || {nl: key, en: c && c.en, n: 0}).n++;
+  });
+  const byId = id => L.find(v => v.id === id);
+  return {
+    L, n: L.length, vol: L.reduce((a, v) => a + slots(v), 0),
+    ages: AGES.map(a => ({a, n: L.filter(v => v.lf === a).length})),
+    cs: Object.values(cm).sort((a, b) => b.n - a.n || a.nl.localeCompare(b.nl)),
+    far: {v: byId(P.verste?.id), t: P.verste?.km || ''},
+    first: {v: byId(P.eerste?.id), t: P.eerste?.txt || ''},
+    last: {v: byId(P.laatste?.id), t: P.laatste?.txt || ''}
+  };
+}
+
+/* De presentatie zelf. root = element waarin getekend wordt, getD = () => ({A: vakanties, P: presentatie-gegevens}),
+   e0 = hoeveel ms de presentatie al bezig is (voor wie later binnenkomt). Geeft een stop-functie terug. */
+function runPres(root, getD, e0, onEnd) {
+  e0 = e0 || 0;
+  let dead = false, skip = 0, mapApi = null; const T = [];
+  const q = s => root.querySelector(s);
+  const later = (ms, fn) => { const m = ms - skip; if (m <= 0) { if (!dead) fn(); return; } T.push(setTimeout(() => { if (!dead) fn(); }, m)); };
+  const D = () => { const g = getD(); return pdata(g.A, g.P); };
+  const on = s => { const e = q(s); if (e) e.classList.add('on'); };
+  const geoP = loadGeo();
+  const cu = (el, to, ms, f) => { if (!el) return; const t0 = performance.now(); const st = t => { if (dead) return; const k = Math.min(1, (t - t0) / ms); el.textContent = f(Math.round(to * (1 - Math.pow(1 - k, 3)))); if (k < 1) requestAnimationFrame(st); }; requestAnimationFrame(st); };
+
+  root.classList.add('pres'); root.classList.remove('clear');
+  root.innerHTML = `<div class="fogbg">${[[10, 30, 26], [80, 20, 31], [45, 75, 23], [90, 85, 29], [15, 90, 34]].map(([x, y, d]) => `<i style="--x:${x}%;--y:${y}%;--d:${d}s"></i>`).join('')}</div><div class="p-head">KAZOU ZOMER 2027<small>⚡ bij Waas en Dender ⚡</small></div><div id="pst"></div>`;
+  const pst = q('#pst');
+  const show = (h, c) => { const o = q('#pst .sc'); if (o) { o.classList.add('out'); setTimeout(() => o.remove(), 650); } const d = mk(`<div class="sc ${c || ''}">${h}</div>`); pst.append(d); return d; };
+  const zap = () => {
+    const w = document.createElement('div');
+    w.innerHTML = `<div class="p-zap"></div><svg class="p-bolt" viewBox="0 0 100 300" preserveAspectRatio="none"><polyline points="55,0 38,90 62,100 30,200 52,208 20,300" fill="none" stroke="#fff" stroke-width="5" stroke-linejoin="round"/></svg>`;
+    [...w.children].forEach(c => { root.append(c); setTimeout(() => c.remove(), 1000); });
+    pst.classList.add('shake'); setTimeout(() => pst.classList.remove('shake'), 700);
+  };
+
+  /* --- intro: Kazou zomer 2027 bij Waas en Dender --- */
+  const sIntro = () => {
+    pst.append(mk(`<div class="p-intro h"><div class="p-i1">KAZOU ZOMER 2027</div><div class="p-i2"><span class="bij">bij</span><span class="waas">WAAS</span><span class="en">en</span><span class="dender">DENDER</span></div><div class="p-i3">Het aftellen kan bijna beginnen!</div></div>`));
+    later(300, () => on('.p-i1'));
+    later(2800, () => on('.p-i2 .bij'));
+    later(3100, () => on('.p-i2 .waas'));
+    later(4400, () => on('.p-i2 .en'));
+    later(4900, () => { on('.p-i2 .dender'); later(420, zap); });
+    later(5800, () => root.classList.add('clear'));
+    later(6300, () => on('.p-i3'));
+    later(8000, () => { const i = q('.p-intro'); if (i) i.classList.add('gone'); });
+    later(8500, () => on('.p-head'));
+    later(8850, () => { const i = q('.p-intro'); if (i) i.remove(); });
+  };
+
+  /* --- dia 1: aantallen + taartdiagram --- */
+  const drawPie = d => {
+    const svg = q('.p-piebox svg'), tot = d.ages.reduce((a, x) => a + x.n, 0), C = 2 * Math.PI * 70; let acc = 0;
+    const sl = d.ages.map((x, i) => { const f = tot ? x.n / tot : 0, o = acc; acc += f; return {x, i, f, o}; }).filter(s => s.f > 0);
+    svg.innerHTML = `<circle r="70" fill="none" stroke="#ffffff14" stroke-width="40"/>` +
+      sl.map(s => `<circle class="pc" data-i="${s.i}" r="70" fill="none" stroke="${AGC[s.i]}" stroke-width="40" transform="rotate(-90)" stroke-dasharray="0 ${C}" stroke-dashoffset="${-s.o * C}" style="transition:stroke-dasharray .9s ease"/>`).join('') +
+      sl.map(s => { const a = (s.o + s.f / 2) * 2 * Math.PI - Math.PI / 2; return `<text class="pl" data-i="${s.i}" x="${(70 * Math.cos(a)).toFixed(1)}" y="${(70 * Math.sin(a) + 6).toFixed(1)}">${s.x.n}</text>`; }).join('') +
+      `<text y="-2" font-size="22" fill="#ffd21f">PER</text><text y="20" font-size="22" fill="#ffd21f">LEEFTIJD</text>`;
+    sl.forEach((s, k) => later(150 + k * 350, () => {
+      const c = svg.querySelector(`.pc[data-i="${s.i}"]`), t = svg.querySelector(`.pl[data-i="${s.i}"]`);
+      if (c) c.style.strokeDasharray = `${Math.max(0, s.f * C - 2)} ${C}`;
+      later(600, () => { if (t) t.style.opacity = 1; });
+    }));
+    const leg = q('.p-leg');
+    leg.innerHTML = d.ages.map((x, i) => `<div class="p-li" style="--c:${AGC[i]}"><i></i>${x.a} jaar <b>${x.n}</b></div>`).join('');
+    leg.querySelectorAll('.p-li').forEach((e, i) => later(500 + i * 250, () => e.classList.add('on')));
+  };
+  const s1 = () => {
+    on('.p-head'); root.classList.add('clear'); const i0 = q('.p-intro'); if (i0) i0.remove();
+    const d = D();
+    const sc = show(`<div class="p-s1"><div class="p-stats">
+      <div class="p-stat" id="pa"><div class="ic2">🙋</div><div class="sn h">0</div><div class="sl3 h">vrijwilligers gaan mee</div></div>
+      <div class="p-stat" id="pb"><div class="ic2">🏕️</div><div class="sn h">0</div><div class="sl3 h">vakanties in totaal</div></div></div>
+      <div class="p-piebox"><svg viewBox="-110 -110 220 220"></svg><div class="p-leg"></div></div></div>`);
+    const w = sc.firstElementChild;
+    later(600, () => { on('#pa'); cu(q('#pa .sn'), d.vol, 2000, n => n.toLocaleString('nl-BE')); });
+    later(2100, () => { on('#pb'); cu(q('#pb .sn'), d.n, 1500, n => n); });
+    later(4100, () => { w.classList.add('pie'); drawPie(d); });
+  };
+
+  /* --- dia 2: kaart van Europa + verste reis --- */
+  const drawMap = (mp, feats, d) => {
+    const W = 800, H = 640, pr = d3.geoMercator().fitExtent([[6, 6], [W - 6, H - 6]], {type: 'MultiPoint', coordinates: [[-11, 35], [33, 35], [33, 66], [-11, 66]]}), pg = d3.geoPath(pr);
+    const mx = d.cs[0] ? d.cs[0].n : 1, col = d3.interpolateRgb('#ffd21f', '#e8203a');
+    const fe = {}; feats.forEach(f => fe[f.properties.name] = f);
+    const items = d.cs.filter(c => c.en && fe[c.en]).map(c => { const p = pr(CEN[c.en] || d3.geoCentroid(fe[c.en])); return {c, x: p[0], y: p[1], ox: p[0], oy: p[1], r: 11 + 13 * Math.sqrt(c.n / mx)}; });
+    const sn = pr(SNK);
+    for (let it = 0; it < 90; it++) items.forEach((a, i) => {
+      items.forEach((b, j) => { if (j <= i) return; const dx = b.x - a.x, dy = b.y - a.y, dd = Math.hypot(dx, dy) || .01, m = a.r + b.r + 3; if (dd < m) { const k = (m - dd) / 2 / dd; a.x -= dx * k; a.y -= dy * k; b.x += dx * k; b.y += dy * k; } });
+      const dx = a.x - sn[0], dy = a.y - sn[1], dd = Math.hypot(dx, dy) || .01, m = a.r + 9; if (dd < m) { const k = (m - dd) / dd; a.x += dx * k; a.y += dy * k; }
+      a.x = Math.max(a.r, Math.min(W - a.r, a.x)); a.y = Math.max(a.r, Math.min(H - a.r, a.y));
+    });
+    const paths = feats.filter(f => f.properties.name !== 'Antarctica').map(f => `<path class="ct" data-n="${esc(f.properties.name)}" d="${pg(f) || ''}"/>`).join('');
+    const bub = items.map(a => { const far = Math.hypot(a.x - a.ox, a.y - a.oy) > 6; return `<g class="bub" transform="translate(${a.x.toFixed(1)},${a.y.toFixed(1)})">${far ? `<line class="ld" x1="${(a.ox - a.x).toFixed(1)}" y1="${(a.oy - a.y).toFixed(1)}" x2="0" y2="0"/><circle class="ld" cx="${(a.ox - a.x).toFixed(1)}" cy="${(a.oy - a.y).toFixed(1)}" r="2.5"/>` : ''}<g class="bi"><circle r="${a.r.toFixed(1)}"/><text y="${(a.r * .36).toFixed(1)}" font-size="${(a.r * 1.1).toFixed(1)}">${a.c.n}</text></g></g>`; }).join('');
+    mp.innerHTML = `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid meet"><g>${paths}</g><g class="arcg"></g>${bub}<g transform="translate(${sn[0].toFixed(1)},${sn[1].toFixed(1)})"><circle class="ping" r="5"/><circle class="ping p2" r="5"/><circle r="6" fill="#e8203a" stroke="#fff" stroke-width="2.5"/><text class="snl" x="-10" y="-10">Sint-Niklaas</text></g></svg>`;
+    const s = mp.firstElementChild; requestAnimationFrame(() => s.classList.add('on'));
+    const pe = {}; s.querySelectorAll('path.ct').forEach(p => pe[p.dataset.n] = p);
+    const be = {}, pos = {}; s.querySelectorAll('.bub').forEach((b, i) => { be[items[i].c.en] = b; pos[items[i].c.en] = [items[i].ox, items[i].oy]; });
+    return {s, fe, pe, pos, sn, hit: c => { const p = pe[c.en], b = be[c.en]; if (p) { p.style.fill = col(c.n / mx); p.classList.add('hit'); } if (b) b.classList.add('on'); }};
+  };
+  const flyArc = (api, en) => {
+    const [x1, y1] = api.sn, [x2, y2] = api.pos[en] || [x1, y1], L = Math.hypot(x2 - x1, y2 - y1), g = api.s.querySelector('.arcg');
+    g.innerHTML = `<path class="arc" d="M${x1},${y1} Q${(x1 + x2) / 2},${(y1 + y2) / 2 - L * .5} ${x2},${y2}"/><g class="hero">${HEROMAP}</g>`;
+    const p = g.querySelector('.arc'), h = g.querySelector('.hero'), len = p.getTotalLength(), t0 = performance.now(), DUR = 2800;
+    p.style.strokeDasharray = len; p.style.strokeDashoffset = len;
+    const st = t => {
+      if (dead) return;
+      const k = Math.min(1, (t - t0) / DUR), e = k < .5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2, pos = len * e;
+      p.style.strokeDashoffset = len * (1 - e);
+      const a = p.getPointAtLength(Math.max(0, pos - 1)), b = p.getPointAtLength(Math.min(len, pos + 3)), c = p.getPointAtLength(pos);
+      const ang = Math.atan2(b.y - a.y, b.x - a.x) * 180 / Math.PI;
+      h.setAttribute('transform', b.x >= a.x ? `translate(${c.x},${c.y}) rotate(${ang})` : `translate(${c.x},${c.y}) rotate(${((ang - 180 + 540) % 360) - 180}) scale(-1,1)`);
+      if (k < 1) requestAnimationFrame(st);
+      else g.insertAdjacentHTML('beforeend', `<g transform="translate(${x2},${y2})"><circle class="ping" r="6" style="stroke:#fff"/><circle class="ping p2" r="6" style="stroke:#fff"/></g>`);
+    };
+    requestAnimationFrame(st);
+  };
+  const s2 = () => {
+    on('.p-head'); root.classList.add('clear'); mapApi = null;
+    const d = D(), mx = d.cs[0] ? d.cs[0].n : 1, gap = Math.min(450, 4200 / Math.max(1, d.cs.length));
+    const sc = show(`<div class="p-s2"><div class="p-map"></div><div class="p-side"><div class="p-sh h">Waar trekken we naartoe?</div><div class="p-bars"></div></div></div>`);
+    const wrap = sc.firstElementChild, mp = wrap.querySelector('.p-map'), side = wrap.querySelector('.p-side'), bars = wrap.querySelector('.p-bars');
+    const rows = d.cs.slice(0, 8).map(c => { const r = mk(`<div class="p-bar"><span class="bl h">${esc(c.nl)}</span><div class="p-bt"><i></i></div><b class="bn h">0</b></div>`); bars.append(r); return r; });
+    if (d.cs.length > 8) bars.append(mk(`<div class="p-more">+ ${d.cs.length - 8} andere landen</div>`));
+    if (!d.cs.length) bars.append(mk(`<div class="p-more">nog geen landen ingevuld</div>`));
+    const done = [];
+    d.cs.forEach((c, i) => later(600 + i * gap, () => {
+      const r = rows[i]; if (r) { r.classList.add('on'); r.querySelector('i').style.width = (c.n / mx * 100) + '%'; cu(r.querySelector('.bn'), c.n, 900, n => n); }
+      done.push(c); if (mapApi) mapApi.hit(c);
+    }));
+    geoP.then(feats => {
+      if (dead) return;
+      if (!feats) { wrap.classList.add('nomap'); mp.remove(); return; }
+      mapApi = drawMap(mp, feats, d); done.forEach(c => mapApi.hit(c));
+    });
+    // verste reis
+    later(7800, () => {
+      const f = d.far; side.classList.add('leave');
+      later(550, () => {
+        side.classList.remove('leave');
+        if (!f.v) { side.innerHTML = `<div class="p-sh h">🚀 Verste reis</div><div class="p-far"><div class="fn h">nog niet ingevuld</div></div>`; return; }
+        const m = String(f.t).replace(/\./g, '').replace(',', '.').match(/\d+(\.\d+)?/), kmN = m ? +m[0] : null;
+        side.innerHTML = `<div class="p-sh h">🚀 Verste reis</div><div class="p-far"><div class="fn h">${esc(f.v.naam)}</div><div class="fd">📍 ${esc(f.v.b)}${f.v.land ? ' · ' + esc(f.v.land) : ''}</div><div class="km h">${kmN == null ? esc(f.t) : '0 km'}</div></div>`;
+        if (kmN != null) later(500, () => cu(side.querySelector('.km'), kmN, 2400, n => n.toLocaleString('nl-BE') + ' km'));
+      });
+      const en = f.v && f.v.land ? (CT[norm(f.v.land)] || {}).en : null;
+      if (mapApi && en && mapApi.pe[en]) { mp.classList.add('far'); mapApi.pe[en].classList.add('tgt'); later(300, () => flyArc(mapApi, en)); }
+    });
+  };
+
+  /* --- dia 3: eerste vertrek + laatste terugkomst --- */
+  const s3 = () => {
+    on('.p-head'); root.classList.add('clear');
+    const d = D();
+    const card = (o, ico, lab, cls, fb) => { const t = o.t || (fb && o.v && o.v.d) || ''; return `<div class="p-c2 ${cls}"><div class="ci">${ico}</div><div class="ck h">${lab}</div><div class="cn h">${o.v ? esc(o.v.naam) : 'nog niet ingevuld'}</div>${o.v ? `<div class="cd">📍 ${esc(o.v.b)}</div>` : ''}${t ? `<div class="cdt h">${esc(t)}</div>` : ''}</div>`; };
+    show(`<div class="p-s3"><div class="p-sn h">📍 Alle vakanties vertrekken in <b>Sint-Niklaas</b></div><div class="p-cards">${card(d.first, '🛫', 'Als eerste op pad', 'l', true)}${card(d.last, '🏁', 'Als laatste terug in Sint-Niklaas', 'r b', false)}</div><div class="p-road"><span class="p-bus">🚌</span></div></div>`);
+    later(500, () => on('.p-sn'));
+    later(1800, () => on('.p-c2.l'));
+    later(5500, () => on('.p-c2.r'));
+  };
+
+  /* --- slot: de vraag --- */
+  const s4 = () => {
+    on('.p-head'); root.classList.add('clear');
+    show(`<div class="p-end"><div class="p-q1 h">Nu blijft er nog 1 vraag over…</div><div class="p-q2 h"></div></div>`);
+    later(300, () => on('.p-q1'));
+    later(2800, () => {
+      const e = q('.p-q2'); if (!e) return;
+      e.innerHTML = lettersH('Welke vakantie heb jij deze') + ' ' + `<span style="display:inline-block;white-space:nowrap">${[...'zomer'].map((c, i) => `<b style="animation-delay:${((23 + i) * .06).toFixed(2)}s">${c}</b>`).join('')}<span class="qq">???</span></span>`;
+      rays(16, root);
+    });
+    later(5500, () => document.body.classList.add('hot'));
+    later(7600, () => { const f = document.createElement('div'); f.className = 'fl'; document.body.append(f); setTimeout(() => f.remove(), 800); });
+  };
+
+  const SC = [sIntro, s1, s2, s3, s4];
+  let ci = 0; SCN.forEach((t, i) => { if (t <= e0) ci = i; });
+  SC.forEach((fn, i) => { if (i > ci) later(SCN[i] - e0, fn); });
+  skip = e0 - SCN[ci]; SC[ci](); skip = 0;
+  later(PRES_MS - e0, () => { if (onEnd) onEnd(); });
+  return () => { dead = true; T.forEach(clearTimeout); document.body.classList.remove('hot'); };
+}
+
 firebase.initializeApp(CFG);
 const db = firebase.database(), auth = firebase.auth();
 const mode = location.hash.slice(1), V = $('#v'), URL_ = location.href.split('#')[0];
-let off = 0, ready = false, S = {}, N = {}, cur = '', lastS = -1;
+let off = 0, ready = false, S = {}, N = {}, cur = '', lastS = -1, STOP = null, VAK = {}, VAKP = Promise.resolve();
+if (mode === 'screen') { VAKP = new Promise(ok => db.ref('vakanties').on('value', s => { VAK = s.val() || {}; ok(); })); loadGeo(); }
 
 db.ref('.info/serverTimeOffset').on('value', s => { off = s.val() || 0; ready = true; tick(); });
 const now = () => Date.now() + off;
+// fases: idle (donker) · qr · intro (presentatie) · count (aftellen) · reveal
 const phase = () => {
+  if (!S.revealAt) return S.qr ? 'qr' : 'idle';
   const n = now();
-  if (S.revealAt) {
-    if (S.introAt && n < S.introAt + S.introMs) return n < S.introAt ? 'qr' : 'intro';
-    return S.revealAt - n > 0 ? 'count' : 'reveal';
-  }
-  return S.qr ? 'qr' : 'idle';
+  if (S.introAt && n < S.introAt) return 'qr';
+  if (S.introAt && n < S.introAt + PRES_MS) return 'intro';
+  return S.revealAt - n > 0 ? 'count' : 'reveal';
 };
 db.ref('state').on('value', s => { S = s.val() || {}; tick(); });
 db.ref('namen').on('value', s => {
@@ -308,8 +564,7 @@ const buzz = p => { try { navigator.vibrate && navigator.vibrate(p); } catch (e)
 function tick() {
   if (!ready) return;
   const p = phase();
-  if (p !== cur) { cur = p; document.body.classList.remove('hot'); (R[mode] || R.guest)(p); }
-  if (p === 'intro' && mode === 'screen') introTick();
+  if (p !== cur) { cur = p; document.body.classList.remove('hot'); if (STOP) { STOP(); STOP = null; } (R[mode] || R.guest)(p); }
   const el = $('#num');
   if (el && S.revealAt) {
     const s = Math.max(0, Math.ceil((S.revealAt - now()) / 1000));
@@ -327,17 +582,20 @@ function mkQR(id, size) { new QRCode($(id), {text: URL_, width: size, height: si
 const R = {
   /* ---- Projectiescherm: …/#screen ---- */
   screen: p => {
-    document.body.classList.toggle('ray', p === 'count' || p === 'reveal' || p === 'intro');
+    document.body.classList.toggle('ray', p === 'count' || p === 'reveal');
+    if (p === 'intro') {
+      V.innerHTML = `<div class="pres" id="pres"></div>`;
+      VAKP.then(() => { if (cur === 'intro' && !STOP) STOP = runPres($('#pres'), () => ({A: VAK, P: S.pres}), Math.max(0, now() - S.introAt)); });
+      return;
+    }
     V.innerHTML =
       p === 'idle' ? `<h1 class="title h dim">${TITLE}</h1>` :
       p === 'qr' ? `<h1 class="title h">Scan en zoek je naam!</h1><div class="qrbox" id="qr"></div>` :
-      p === 'intro' ? '' :
       p === 'count' ? `<p class="big h">Jouw zomer wordt onthuld over…</p><div class="num h" id="num"></div>` :
       `<h1 class="title h flash" style="font-size:clamp(3rem,12vw,9rem)">Kijk op je gsm!</h1>`;
     if (p === 'qr') mkQR('#qr', Math.min(innerHeight * .55, innerWidth * .8) | 0);
     V.insertAdjacentHTML('afterbegin', LG(p === 'idle' ? 'lgb' : ''));
     if (p === 'reveal') fly();
-    if (p === 'intro') lastSl = -1;
   },
   host: () => {},
   /* ---- Gast ---- */
@@ -345,7 +603,8 @@ const R = {
     const me = ls.get('me');
     if (p === 'reveal' && me && Object.values(N).includes(me)) return reveal(me);
     V.innerHTML = LG() + `<h1 class="title h">${TITLE}</h1>` +
-      (p === 'intro' ? `<h2 class="title h" style="font-size:clamp(2.2rem,9vw,4rem)">Je komt het bijna te weten!</h2><div class="eyes">👀</div><p class="big h">Kijk naar het scherm</p>` : p === 'count' ? `<div class="num h" id="num"></div>` :
+      (p === 'intro' ? `<div class="eyes">👀</div><p class="big h">Je komt het bijna te weten!</p><p class="big h" style="color:var(--yel)">Kijk op het scherm</p>` :
+       p === 'count' ? `<div class="num h" id="num"></div>` :
        p === 'reveal' ? `<p class="big h">Het is zover! Zoek je naam</p>` :
        `<p class="big h" id="wt"></p>`) + `<div class="card" id="who"></div>`;
     who();
@@ -420,7 +679,6 @@ async function reveal(me) {
   await add(`<div class="dest sm h">${esc(v.d || 'datum volgt')}</div>`, 2200);
   await add(`<p class="big h">Je trekt naar</p>`, 1100);
   await add(`<div class="dest sm h">${esc(v.b)}</div>`, 2500);
-  if (v.age) await add(`<p class="big h">Leeftijdsgroep</p><div class="dest sm h">${esc(agL(v.age))}</div>`, 2200);
   await add(`<p class="big h">Dit is je moniploeg!</p>`, 1200);
   const rows = [['VV', v.vv, 'nog geen vv gevonden']];
   if (v.hasCo) rows.push(['Co-VV', v.co, 'nog geen co-vv gevonden']);
@@ -460,7 +718,7 @@ async function pdf(A) {
     if (b.some(Boolean)) L.push("BC'ers: " + b.filter(Boolean).join(', '));
     if (b.some(x => !x)) L.push(`+${b.filter(x => !x).length} bc'er nog te vinden`);
     if (y > 250) { d.addPage(); y = 20; }
-    d.setFontSize(13); d.setFont(undefined, 'bold'); d.text(`${v.naam || '?'} - ${v.b || '?'} (${v.d || '?'})${v.age ? ' - ' + agL(v.age) : ''}`, 14, y); y += 7;
+    d.setFontSize(13); d.setFont(undefined, 'bold'); d.text(`${v.naam || '?'} - ${v.b || '?'} (${v.d || '?'})`, 14, y); y += 7;
     d.setFont(undefined, 'normal'); d.setFontSize(10);
     L.forEach(t => { const w = d.splitTextToSize(t, 180); if (y > 280) { d.addPage(); y = 20; } d.text(w, 14, y); y += 5 * w.length + 1; });
     y += 6;
@@ -469,44 +727,35 @@ async function pdf(A) {
 }
 
 /* ---------------- HOST ---------------- */
+const fmtS = s => s >= 100 ? Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0') : s + ' s';
 function hostStatus(p) {
   const e = $('#st'); if (!e) return;
   const t = S.revealAt ? Math.max(0, Math.ceil((S.revealAt - now()) / 1000)) : 0;
-  e.textContent = {idle: '🌑 scherm donker', qr: '📱 QR zichtbaar', intro: '📊 statistieken-intro', count: '⏳ nog ' + t + ' s', reveal: '🎉 onthuld!'}[p];
+  const pend = S.revealAt && S.introAt && now() < S.introAt ? ' · presentatie start over ' + fmtS(Math.ceil((S.introAt - now()) / 1000)) : '';
+  e.textContent = {idle: '🌑 scherm donker', qr: '📱 QR zichtbaar' + pend, intro: '🎬 presentatie loopt', count: '⏳ nog ' + fmtS(t), reveal: '🎉 onthuld!'}[p];
 }
 let vacs = [], saveT = null, dirty = false, idc = 0, q = '';
-const nv = () => ({id: 'v' + Date.now().toString(36) + (idc++), naam: '', b: '', d: '', vv: '', hasCo: true, co: '', moni: [''], bc: [], land: '', cc: '', age: '', far: false, first: false, last: false, km: '', van: '', tot: '', _o: false});
+const nv = () => ({id: 'v' + Date.now().toString(36) + (idc++), naam: '', b: '', d: '', land: '', lf: '', vv: '', hasCo: true, co: '', moni: [''], bc: [], _o: false});
 const st = t => { const e = $('#sv'); if (e) e.textContent = t; };
-const F = (i, k, lab, val, j, x) => `<label class="f"><span>${lab}</span><input type="text" data-i="${i}" data-k="${k}"${j !== undefined ? ` data-j="${j}"` : ''} value="${esc(val)}"${k === 'land' ? ' list="lands"' : ''} placeholder="${['naam', 'b', 'd', 'land'].includes(k) ? '' : 'nog niet gevonden'}">${x ? `<button class="x" data-act="del" data-i="${i}" data-k="${k}" data-j="${j}" title="Plek verwijderen">✕</button>` : ''}</label>`;
-const Fd = (i, k, lab, val) => `<label class="f"><span>${lab}</span><input type="date" data-i="${i}" data-k="${k}" value="${esc(val)}"></label>`;
-const Fs = (i, k, lab, val) => `<label class="f"><span>${lab}</span><select data-i="${i}" data-k="${k}"><option value="">—</option>${AGES.map(a => `<option value="${a}"${a === val ? ' selected' : ''}>${agL(a)}</option>`).join('')}</select></label>`;
+const F = (i, k, lab, val, j, x) => `<label class="f"><span>${lab}</span><input type="text" data-i="${i}" data-k="${k}"${j !== undefined ? ` data-j="${j}"` : ''}${k === 'land' ? ' list="lnd"' : ''} value="${esc(val)}" placeholder="${['naam', 'b', 'd', 'land'].includes(k) ? '' : 'nog niet gevonden'}">${x ? `<button class="x" data-act="del" data-i="${i}" data-k="${k}" data-j="${j}" title="Plek verwijderen">✕</button>` : ''}</label>`;
+const SEL = (i, v) => `<label class="f"><span>Leeftijd</span><select data-i="${i}" data-k="lf">${['', ...AGES].map(a => `<option value="${a}"${a === v.lf ? ' selected' : ''}>${a || 'kies…'}</option>`).join('')}</select></label>`;
 const cnt = a => [a.filter(x => x.trim()).length, a.length];
 const ch = (t, ok) => `<span class="ch ${ok ? 'ok' : 'no'}">${t}</span>`;
 function hdr(v) {
   const [mf, mt] = cnt(v.moni), [bf, bt] = cnt(v.bc);
-  return `${v._o ? '▾' : '▸'} <span class="tt">${flag(v.cc || CC[norm(v.land)])} ${esc(v.naam || '(nog geen naam)')} <small>· ${esc(v.b || '?')} · ${esc((v.van && v.tot ? rng(v.van, v.tot) : v.d) || '?')}</small></span>` +
-    (v.age ? `<span class="ch nt">${agL(v.age)}</span>` : ch('Leeftijd', false)) + ch('VV', !!v.vv.trim()) + (v.hasCo ? ch('Co', !!v.co.trim()) : '') + (mt ? ch(`Moni ${mf}/${mt}`, mf === mt) : '') + (bt ? ch(`BC ${bf}/${bt}`, bf === bt) : '');
+  return `${v._o ? '▾' : '▸'} <span class="tt">${esc(v.naam || '(nog geen naam)')} <small>· ${esc(v.b || '?')} · ${esc(v.d || '?')}</small></span>` +
+    ch('VV', !!v.vv.trim()) + (v.hasCo ? ch('Co', !!v.co.trim()) : '') + (mt ? ch(`Moni ${mf}/${mt}`, mf === mt) : '') + (bt ? ch(`BC ${bf}/${bt}`, bf === bt) : '') +
+    ch('Land', !!v.land.trim()) + ch('Lft', !!v.lf);
 }
 const people = v => [v.vv, v.hasCo ? v.co : '', ...v.moni, ...v.bc].filter(s => s.trim());
-const full = v => norm([v.naam, v.b, v.d, v.land, v.age, ...people(v)].join(' '));
+const full = v => norm([v.naam, v.b, v.d, v.land, ...people(v)].join(' '));
 
-const LANDEN = ['België', 'Nederland', 'Frankrijk', 'Duitsland', 'Luxemburg', 'Spanje', 'Italië', 'Oostenrijk', 'Zwitserland', 'Tsjechië', 'Polen', 'Denemarken', 'Verenigd Koninkrijk', 'Kroatië', 'Slovenië', 'Portugal', 'Noorwegen', 'Zweden', 'Hongarije', 'Griekenland', 'Ierland', 'Slowakije'];
-function statPanel() {
-  const P = $('#sp'); if (!P) return;
-  const sel = k => `<select data-sk="${k}"><option value="">— kies een vakantie —</option>${vacs.map((v, i) => `<option value="${i}"${v[k] ? ' selected' : ''}>${esc(v.naam || '(naamloos)')} · ${esc(v.b || '?')}</option>`).join('')}</select>`;
-  const f = vacs.find(v => v.far), a = vacs.find(v => v.first), z = vacs.find(v => v.last);
-  P.innerHTML = `<div class="big h">📊 Statistieken-intro</div><div class="dim">Kies zelf welke vakantie het verst gaat, als eerste vertrekt en als laatste thuiskomt.</div>
-    <div class="g"><label class="f"><span>Verst</span>${sel('far')}</label><label class="f"><span>Afstand</span><input type="text" id="sk" placeholder="km (optioneel)" value="${esc(f ? f.km : '')}"${f ? '' : ' disabled'}></label></div>
-    <div class="g"><label class="f"><span>Eerste</span>${sel('first')}</label><label class="f"><span>Vertrek</span><input type="date" id="sa" value="${esc(a ? a.van : '')}"${a ? '' : ' disabled'}></label></div>
-    <div class="g"><label class="f"><span>Laatste</span>${sel('last')}</label><label class="f"><span>Terug</span><input type="date" id="sz" value="${esc(z ? z.tot : '')}"${z ? '' : ' disabled'}></label></div>`;
-}
 function ed() {
   const Q = norm(q.trim()); let shown = 0;
   $('#ed').innerHTML = vacs.map((v, i) => {
     const hide = Q && !full(v).includes(Q); if (!hide) shown++;
     return `<div class="vc"${hide ? ' style="display:none"' : ''}><div class="vh" id="h${i}" data-act="tg" data-i="${i}">${hdr(v)}</div>${v._o ? `<div class="vb">
-      <div class="g">${F(i, 'naam', 'Vakantie', v.naam)}${F(i, 'b', 'Bestemming', v.b)}${F(i, 'd', 'Datum', v.d)}</div>
-      <div class="g">${F(i, 'land', 'Land', v.land)}${Fs(i, 'age', 'Leeftijd', v.age)}${Fd(i, 'van', 'Vertrek', v.van)}${Fd(i, 'tot', 'Terug', v.tot)}</div>
+      <div class="g">${F(i, 'naam', 'Vakantie', v.naam)}${F(i, 'b', 'Bestemming', v.b)}${F(i, 'land', 'Land', v.land)}${F(i, 'd', 'Datum', v.d)}${SEL(i, v)}</div>
       <div class="g">${F(i, 'vv', 'VV', v.vv)}<div class="f"><span><input type="checkbox" data-act="co" data-i="${i}" ${v.hasCo ? 'checked' : ''}> Co-VV</span>${v.hasCo ? `<input type="text" data-i="${i}" data-k="co" value="${esc(v.co)}" placeholder="nog niet gevonden" style="flex:1;min-width:0;padding:6px 8px;font-size:.95rem">` : '<i class="dim">geen co-vv</i>'}</div></div>
       <div class="g">${v.moni.map((n, j) => F(i, 'moni', 'Moni', n, j, true)).join('')}</div>
       <div class="g">${v.bc.map((n, j) => F(i, 'bc', 'BC', n, j, true)).join('')}</div>
@@ -514,15 +763,15 @@ function ed() {
     </div>` : ''}</div>`;
   }).join('') || '<div class="dim">Nog geen vakanties. Klik op “Vakantie” of importeer een Excel.</div>';
   const tot = vacs.reduce((a, v) => a + people(v).length, 0);
-  $('#cnt').textContent = `${vacs.length} vakanties · ${tot} namen · ${vacs.filter(v => !v.vv.trim()).length} zonder VV · ${vacs.filter(v => !v.land.trim()).length} zonder land · ${vacs.filter(v => !v.age).length} zonder leeftijd · ${vacs.filter(v => !v.van || !v.tot).length} zonder datums` + (Q ? ` · ${shown} gevonden` : '');
-  statPanel();
+  $('#cnt').textContent = `${vacs.length} vakanties · ${tot} namen · ${vacs.filter(v => !v.vv.trim()).length} zonder VV` + (Q ? ` · ${shown} gevonden` : '');
+  optP();
 }
 
 function build() {
   const vak = {}, namen = {}, seen = {}; let dup = null;
   vacs.forEach(v => {
     const m = v.moni.map(s => s.trim()), b = v.bc.map(s => s.trim());
-    vak[v.id] = {naam: v.naam.trim(), b: v.b.trim(), d: v.van && v.tot ? rng(v.van, v.tot) : v.d.trim(), land: v.land.trim(), cc: v.cc || CC[norm(v.land)] || '', age: v.age || '', far: !!v.far, first: !!v.first, last: !!v.last, km: String(v.km || '').trim(), van: v.van || '', tot: v.tot || '', vv: v.vv.trim(), hasCo: !!v.hasCo, co: v.hasCo ? v.co.trim() : '', moni: m, bc: b};
+    vak[v.id] = {naam: v.naam.trim(), b: v.b.trim(), d: v.d.trim(), land: v.land.trim(), lf: v.lf || '', vv: v.vv.trim(), hasCo: !!v.hasCo, co: v.hasCo ? v.co.trim() : '', moni: m, bc: b};
     people(v).map(s => s.trim()).forEach(n => { const k = slug(n) || 'x' + n.length; if (seen[k]) dup = n; seen[k] = 1; namen[k] = n; });
   });
   return {vak, namen, dup};
@@ -538,15 +787,15 @@ async function save() {
 const queue = () => { dirty = true; st('✏️ Wijzigingen worden opgeslagen…'); clearTimeout(saveT); saveT = setTimeout(save, 800); };
 window.addEventListener('beforeunload', e => { if (dirty) e.preventDefault(); });
 
-// Excel: kolommen Vakantie, Bestemming, Datum, VV, Co-VV, Aantal moni, Moni 1.., Aantal bc, BC 1..
+// Excel: kolommen Vakantie, Bestemming, Land, Leeftijd, Datum, VV, Co-VV, Aantal moni, Moni 1.., Aantal bc, BC 1..
 async function importXlsx(file) {
   try { await lazy(SHEETJS, 'XLSX'); } catch (e) { return alert('Excel-bibliotheek kon niet laden. Controleer je internet.'); }
-  const wb = XLSX.read(await file.arrayBuffer(), {type: 'array', cellDates: true});
-  const rows = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]], {header: 1, defval: '', raw: true});
+  const wb = XLSX.read(await file.arrayBuffer(), {type: 'array'});
+  const rows = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]], {header: 1, defval: '', raw: false});
   const hd = (rows[0] || []).map(h => norm(String(h)).trim());
   const one = f => hd.findIndex(f), many = f => hd.map((h, i) => f(h) ? i : -1).filter(i => i >= 0);
   const C = {naam: one(h => h === 'vakantie' || h === 'naam' || h === 'naam vakantie'), b: one(h => h.startsWith('bestemming')), d: one(h => h.startsWith('datum')),
-    land: one(h => h === 'land'), age: one(h => h.startsWith('leeftijd')), van: one(h => h.startsWith('vertrek') || h === 'van'), tot: one(h => h.startsWith('terug') || h === 'tot'),
+    land: one(h => h === 'land'), lf: one(h => h.startsWith('leeftijd')),
     vv: one(h => h === 'vv'), co: one(h => /^co[\s-]?vv$/.test(h)),
     nm: one(h => h.startsWith('aantal') && h.includes('moni')), nb: one(h => h.startsWith('aantal') && h.includes('bc')),
     m: many(h => /^moni\s*\d*$/.test(h)), bc: many(h => /^bc/.test(h) && !h.startsWith('aantal'))};
@@ -557,37 +806,37 @@ async function importXlsx(file) {
     if (!g(C.naam) && !g(C.b)) return;
     const slots = (idx, n) => { const a = idx.map(g).filter(Boolean); while (a.length < (parseInt(g(n)) || 0)) a.push(''); return a; };
     const co = g(C.co), noCo = C.co < 0 || ['nee', 'geen', '-', 'x'].includes(co.toLowerCase());
-    list.push({...nv(), naam: g(C.naam), b: g(C.b), d: g(C.d), land: g(C.land), cc: CC[norm(g(C.land))] || '', age: ag(r[C.age]), van: pd(r[C.van]), tot: pd(r[C.tot]), vv: g(C.vv), hasCo: !noCo, co: noCo ? '' : co, moni: slots(C.m, C.nm), bc: slots(C.bc, C.nb)});
+    list.push({...nv(), naam: g(C.naam), b: g(C.b), d: g(C.d), land: g(C.land), lf: normAge(g(C.lf)), vv: g(C.vv), hasCo: !noCo, co: noCo ? '' : co, moni: slots(C.m, C.nm), bc: slots(C.bc, C.nb)});
   });
   if (!list.length) return alert('Geen vakanties gevonden in het bestand.');
   if (!confirm(`${list.length} vakanties gevonden.\n\nOK = toevoegen aan de bestaande lijst.\nAnnuleren = niets doen.`)) return;
   vacs.push(...list); ed(); save();
 }
 
-function calcStats() {
-  const L = {}; vacs.forEach(v => { const l = v.land.trim(); if (!l) return; const k = norm(l); L[k] = L[k] || {l, cc: v.cc || CC[k] || '', n: 0}; L[k].n++; });
-  const lands = Object.values(L).sort((x, y) => y.n - x.n || x.l.localeCompare(y.l)).map(x => [x.l, x.cc, x.n]);
-  const ages = AGES.map(a => [a, vacs.filter(v => v.age === a).length]).filter(x => x[1]);
-  const T = {vac: vacs.length, vol: vacs.reduce((a, v) => a + people(v).length, 0), lands, ages}, sl = [{t: 'ov', ms: 7000}], warn = [];
-  if (ages.length) sl.push({t: 'age', ms: 4000 + 500 * ages.length}); else warn.push('Geen enkele vakantie heeft een leeftijd: de taartgrafiek wordt overgeslagen.');
-  if (lands.length) sl.push({t: 'co', ms: 5000 + 700 * Math.min(8, lands.length)}); else warn.push('Geen enkele vakantie heeft een land: de landenslide wordt overgeslagen.');
-  const far = vacs.find(v => v.far), first = vacs.find(v => v.first), last = vacs.find(v => v.last);
-  if (far) { T.far = {naam: far.naam, b: far.b, land: far.land, cc: far.cc || CC[norm(far.land)] || '', km: Math.round(parseFloat(String(far.km).replace(',', '.')) || 0)}; sl.push({t: 'far', ms: 8500}); } else warn.push('Geen "verste vakantie" gekozen: die slide wordt overgeslagen.');
-  if (first && last && first.van && last.tot) { T.first = {naam: first.naam, b: first.b, dt: first.van}; T.last = {naam: last.naam, b: last.b, dt: last.tot}; sl.push({t: 'tl', ms: 9000}); }
-  else warn.push('Voor de tijdlijn ontbreekt een eerste vertrek of laatste thuiskomst (of de datum ervan): die slide wordt overgeslagen.');
-  return {stats: JSON.parse(JSON.stringify(T)), slides: sl, warn};
+/* ---- presentatie-instellingen (host) ---- */
+const optP = () => ['pf', 'pe', 'pl'].forEach(id => {
+  const s = $('#' + id); if (!s) return; const c = s.value;
+  s.innerHTML = `<option value="">— kies vakantie —</option>` + vacs.map(v => `<option value="${esc(v.id)}">${esc(v.naam || '(naamloos)')} · ${esc(v.b || '?')}</option>`).join('');
+  s.value = c; warnP();
+});
+const curPres = () => ({verste: {id: $('#pf').value, km: $('#pfk').value.trim()}, eerste: {id: $('#pe').value, txt: $('#pet').value.trim()}, laatste: {id: $('#pl').value, txt: $('#plt').value.trim()}});
+const warnP = () => {
+  const w = $('#pw'); if (!w) return; const p = curPres(), m = [];
+  if (!p.verste.id) m.push('verste vakantie'); if (!p.eerste.id) m.push('eerste vertrek'); if (!p.laatste.id) m.push('laatste terugkomst');
+  const nl = vacs.filter(v => !v.land.trim() || !v.lf).length;
+  w.textContent = (m.length ? '⚠️ Nog in te vullen: ' + m.join(', ') + '. ' : '') + (nl ? `⚠️ ${nl} vakanties missen land of leeftijd.` : '');
+};
+function preview() {
+  const o = document.createElement('div'); o.className = 'pv';
+  const x = mk(`<button class="x pvx">✕ sluiten</button>`);
+  document.body.append(o, x);
+  let stop = () => {};
+  const close = () => { stop(); o.remove(); x.remove(); document.removeEventListener('keydown', esc_); };
+  const esc_ = e => { if (e.key === 'Escape') close(); };
+  document.addEventListener('keydown', esc_); x.onclick = close;
+  stop = runPres(o, () => ({A: build().vak, P: curPres()}), 0, close);
 }
-function start(at) {   // at = vast tijdstip van de onthulling (optioneel)
-  const sec = +$('#sec').value || 60, n = Math.round(now());
-  let o = {qr: true};
-  if ($('#intro').checked && vacs.length) {
-    const {stats, slides, warn} = calcStats();
-    if (warn.length && !confirm('Let op:\n' + warn.join('\n') + '\n\nToch starten?')) return;
-    const ms = slides.reduce((a, x) => a + x.ms, 0), rev = at || n + ms + sec * 1000;
-    o = {qr: true, stats, slides, introMs: ms, introAt: rev - sec * 1000 - ms, revealAt: rev};
-  } else o.revealAt = at || n + sec * 1000;
-  db.ref('state').set(o);
-}
+
 function host(u) {
   if (!u) {
     V.innerHTML = `<h1 class="title h">HOST</h1><div class="card"><input id="em" type="email" placeholder="e-mail"><input id="pw" type="password" placeholder="wachtwoord"><button id="go">Inloggen</button></div>`;
@@ -599,23 +848,46 @@ function host(u) {
   <div class="card"><div class="big h">Status: <span id="st"></span></div></div>
   <div class="card"><div class="big h">Bediening</div>
     <div class="row"><button class="b" id="b0">🔦 Scherm donker</button><button class="b" id="b1">📱 Toon QR</button></div>
-    <label class="row" style="gap:8px"><input type="checkbox" id="intro" style="width:auto"> 📊 Statistieken tonen vóór de countdown</label>
-    <div class="row"><input id="sec" type="number" value="60" min="5" style="width:90px"> seconden countdown <button id="b2">🚀 START</button></div>
+    <div class="row"><input id="sec" type="number" value="60" min="5" style="width:90px"> seconden <button id="b2">🚀 START COUNTDOWN</button></div>
     <div class="row"><input id="at" type="datetime-local"><button class="b" id="b3">⏰ Plan op uur</button></div>
-    <p class="dim" style="margin:0">Reset = “Scherm donker”. Handig om te testen.</p></div>
-  <div class="card w" id="sp"></div>
+    <p class="dim" style="margin:0">Reset = “Scherm donker”. Handig om te testen.<br>Staat de presentatie aan, dan loopt die eerst en daarna de countdown. Bij “Plan op uur” start de presentatie vanzelf zodat de countdown (het aantal seconden hierboven) precies op dat uur eindigt.</p></div>
+  <div class="card w" id="pcard"><div class="big h">Presentatie</div>
+    <label class="row" style="justify-content:flex-start;gap:10px"><input type="checkbox" id="pon" style="width:22px;height:22px"> <span>Toon de presentatie op het grote scherm vóór de countdown</span></label>
+    <div class="g">
+      <div class="f"><span>Verste</span><select id="pf"></select></div><div class="f"><span>Afstand</span><input type="text" id="pfk" placeholder="bv. 2150 km"></div>
+      <div class="f"><span>Eerst weg</span><select id="pe"></select></div><div class="f"><span>Vertrek</span><input type="text" id="pet" placeholder="bv. za 3 juli, 7u30"></div>
+      <div class="f"><span>Laatst terug</span><select id="pl"></select></div><div class="f"><span>Terug</span><input type="text" id="plt" placeholder="bv. za 24 juli, 18u"></div>
+    </div>
+    <div class="row" style="justify-content:flex-start"><button class="b sm" id="pv">👁 Voorbeeld op dit toestel</button></div>
+    <div class="dim" id="pw"></div></div>
   <div class="card w"><div class="big h">Vakanties</div>
     <div class="row" style="justify-content:flex-start"><button id="add">➕ Vakantie</button><button class="b sm" id="imp">📥 Excel importeren</button><button class="b sm" id="tgl">⇕ Alles open/dicht</button><button class="b sm" id="now">💾 Opslaan</button><button class="b sm" id="pd">📄 PDF</button><button class="x" id="clr">🗑 Alles wissen</button></div>
     <input id="srch" type="search" placeholder="🔍 Zoek op vakantie, bestemming of naam…">
     <div id="cnt" class="dim"></div><div id="sv" class="dim">Laden…</div></div>
   <div id="ed" style="width:100%;max-width:780px;display:flex;flex-direction:column;gap:8px"></div>
-  <input type="file" id="xl" accept=".xlsx,.xls,.csv" hidden><datalist id="lands">${LANDEN.map(l => `<option value="${l}">`).join('')}</datalist>`;
-  const set = o => db.ref('state').set(o);
-  $('#b0').onclick = () => set({qr: false});
-  $('#b1').onclick = () => set({qr: true});
-  $('#intro').checked = ls.get('intro') !== '0'; $('#intro').onchange = e => ls.set('intro', e.target.checked ? '1' : '0');
-  $('#b2').onclick = () => start();
-  $('#b3').onclick = () => { const t = Date.parse($('#at').value); if (!t) return alert('Kies eerst een tijdstip'); start(t + off); };
+  <input type="file" id="xl" accept=".xlsx,.xls,.csv" hidden>
+  <datalist id="lnd">${COUNTRIES.map(c => `<option value="${esc(c[0])}">`).join('')}</datalist>`;
+  // status bewaren zonder bestaande presentatie-instellingen (state/intro, state/pres) te wissen
+  const upd = o => db.ref('state').update({qr: false, revealAt: null, introAt: null, ...o});
+  $('#b0').onclick = () => upd({});
+  $('#b1').onclick = () => upd({qr: true});
+  $('#b2').onclick = () => {
+    const sec = (+$('#sec').value || 60) * 1000, n = Math.round(now());
+    if (S.intro) upd({qr: true, introAt: n, revealAt: n + PRES_MS + sec}); else upd({qr: true, revealAt: n + sec});
+  };
+  $('#b3').onclick = () => {
+    const t = Date.parse($('#at').value); if (!t) return alert('Kies eerst een tijdstip');
+    const sec = (+$('#sec').value || 60) * 1000, R_ = t + off, n = Math.round(now());
+    if (S.intro) { const ia = Math.max(n, R_ - sec - PRES_MS); upd({qr: true, introAt: ia, revealAt: Math.max(R_, ia + PRES_MS + 5000)}); }
+    else upd({qr: true, revealAt: R_});
+  };
+  // presentatie
+  let pt = null;
+  $('#pon').onchange = e => db.ref('state/intro').set(e.target.checked);
+  $('#pcard').addEventListener('input', e => { if (e.target.id === 'pon') return; warnP(); clearTimeout(pt); pt = setTimeout(() => db.ref('state/pres').set(curPres()), 500); });
+  $('#pcard').addEventListener('pointerdown', optP, true);
+  $('#pv').onclick = preview;
+
   const E = $('#ed');
   $('#add').onclick = () => { const v = nv(); v._o = true; vacs.push(v); q = ''; $('#srch').value = ''; ed(); queue(); E.lastElementChild.scrollIntoView({block: 'center'}); E.lastElementChild.querySelector('input[type=text]').focus(); };
   $('#imp').onclick = () => $('#xl').click();
@@ -623,19 +895,12 @@ function host(u) {
   $('#tgl').onclick = () => { const o = vacs.some(v => !v._o); vacs.forEach(v => v._o = o); ed(); };
   $('#clr').onclick = () => { if (vacs.length && confirm('ALLE vakanties wissen?') && confirm('Zeker? Dit kan je niet ongedaan maken.')) { vacs = []; ed(); save(); } };
   $('#now').onclick = save;
-  $('#sp').onchange = e => {
-    const t = e.target, one = k => vacs.find(v => v[k]);
-    if (t.dataset.sk) { vacs.forEach(v => v[t.dataset.sk] = false); if (t.value !== '') vacs[t.value][t.dataset.sk] = true; statPanel(); queue(); }
-    else if (t.id === 'sk' && one('far')) { one('far').km = t.value; queue(); }
-    else if (t.id === 'sa' && one('first')) { one('first').van = t.value; ed(); queue(); }
-    else if (t.id === 'sz' && one('last')) { one('last').tot = t.value; ed(); queue(); }
-  };
   $('#pd').onclick = async () => { await pdf(build().vak); };
   $('#srch').oninput = e => { q = e.target.value; ed(); };
   E.oninput = e => {
     const {i, k, j} = e.target.dataset; if (i == null || !k) return;
     j != null ? vacs[i][k][j] = e.target.value : vacs[i][k] = e.target.value;
-    $('#h' + i).innerHTML = hdr(vacs[i]); if (['naam', 'b', 'van', 'tot'].includes(k)) statPanel(); queue();
+    $('#h' + i).innerHTML = hdr(vacs[i]); queue();
   };
   E.onclick = e => {
     const a = e.target.closest('[data-act]'); if (!a) return;
@@ -648,9 +913,17 @@ function host(u) {
     ed(); queue();
     if (act === 'add') { const l = E.querySelectorAll(`[data-i="${i}"][data-k="${k}"]`); l[l.length - 1]?.focus(); }
   };
-  db.ref('vakanties').get().then(s => {
-    vacs = Object.entries(s.val() || {}).map(([id, v]) => ({id, naam: v.naam || '', b: v.b || '', d: v.d || '', land: v.land || '', cc: v.cc || '', age: v.age || '', far: !!v.far, first: !!v.first, last: !!v.last, km: v.km || '', van: v.van || '', tot: v.tot || '', vv: v.vv || '', hasCo: !!v.hasCo, co: v.co || '', moni: arr(v.moni), bc: arr(v.bc), _o: false}));
+  db.ref('vakanties').get().then(async s => {
+    vacs = Object.entries(s.val() || {}).map(([id, v]) => ({id, naam: v.naam || '', b: v.b || '', d: v.d || '', land: v.land || '', lf: v.lf || '', vv: v.vv || '', hasCo: !!v.hasCo, co: v.co || '', moni: arr(v.moni), bc: arr(v.bc), _o: false}));
     ed(); st('✅ Geladen'); cur = ''; tick();
+    try {
+      const o = (await db.ref('state').get()).val() || {}, p = o.pres || {};
+      $('#pon').checked = !!o.intro;
+      $('#pf').value = p.verste?.id || ''; $('#pfk').value = p.verste?.km || '';
+      $('#pe').value = p.eerste?.id || ''; $('#pet').value = p.eerste?.txt || '';
+      $('#pl').value = p.laatste?.id || ''; $('#plt').value = p.laatste?.txt || '';
+      warnP();
+    } catch (e) {}
   }).catch(e => st('❌ ' + e.message));
 }
 if (mode === 'host') auth.onAuthStateChanged(host);
