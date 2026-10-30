@@ -24,10 +24,7 @@ button.b,.opt{background:var(--blue)}
 /* sfeer: stralen + hartslag */
 body.ray::before{content:"";position:fixed;inset:-60%;background:repeating-conic-gradient(#ffd21f1c 0 8deg,transparent 8deg 16deg);animation:spin 30s linear infinite;z-index:-1;pointer-events:none}
 @keyframes spin{to{transform:rotate(360deg)}}
-body::after{content:"";position:fixed;inset:0;pointer-events:none;box-shadow:inset 0 0 140px 40px #e8203acc;opacity:0;transition:opacity .8s}
-body.hot::after{opacity:1;animation:beat .5s infinite}
-.vin{animation:vin 1.3s cubic-bezier(.2,.8,.2,1) both}
-@keyframes vin{from{opacity:0;transform:scale(1.15);filter:blur(10px)}}
+body.hot::after{content:"";position:fixed;inset:0;pointer-events:none;box-shadow:inset 0 0 140px 40px #e8203acc;animation:beat .5s infinite}
 @keyframes beat{50%{opacity:.2}}
 .flash{animation:f .9s}@keyframes f{0%{background:#fff;color:#fff}100%{background:transparent}}
 /* onthulling */
@@ -113,8 +110,8 @@ button:disabled{opacity:.4;cursor:not-allowed}
 .p-head{position:absolute;top:0;left:0;right:0;padding:2vmin 3vw;z-index:3;font-size:clamp(1.3rem,4.4vmin,3.4rem);line-height:1.1;color:var(--yel);text-shadow:3px 3px 0 var(--red);opacity:0;transform:translateY(-130%);font-family:Bangers,Impact,sans-serif;letter-spacing:.04em}
 .p-head small{display:block;font-size:.58em;color:#dfe8ff;text-shadow:2px 2px 0 #1e2a6b;letter-spacing:.14em}
 .p-head.on{opacity:1;transform:none;transition:transform .8s cubic-bezier(.2,1.4,.4,1),opacity .4s}
-.sc{position:absolute;inset:0;z-index:1;padding:14vmin 4vw 7vmin;display:flex;flex-direction:column;justify-content:center;align-items:center;animation:scin .9s cubic-bezier(.2,.8,.2,1) .45s both}
-.sc.out{animation:scout .7s ease-in both}
+.sc{position:absolute;inset:0;z-index:1;padding:14vmin 4vw 4vmin;display:flex;flex-direction:column;justify-content:center;align-items:center;animation:scin .7s both}
+.sc.out{animation:scout .6s both}
 @keyframes scin{from{opacity:0;transform:translateX(8vw) scale(.96);filter:blur(10px)}}
 @keyframes scout{to{opacity:0;transform:translateX(-8vw) scale(.96);filter:blur(10px)}}
 .leave>*{animation:scout .5s both}
@@ -218,8 +215,7 @@ button:disabled{opacity:.4;cursor:not-allowed}
 .p-c2 .cd{font-size:clamp(1.1rem,3.6vmin,2.6rem);opacity:.85}
 .p-c2 .cdt{font-size:clamp(1.5rem,5vmin,3.6rem);color:var(--yel);background:#0006;border-radius:99px;padding:.4vmin 2.4vmin}
 .p-road{position:absolute;left:-4vw;right:-4vw;bottom:-2vmin;height:7vmin;border-bottom:.6vmin dashed #ffffff55;overflow:hidden}
-.p-bus{position:absolute;bottom:.8vmin;width:min(20vw,200px);left:0;animation:drive 6s linear infinite;filter:drop-shadow(0 0 10px #ffd21f)}
-.p-bus svg,.p-bus img{width:100%;height:auto;display:block}
+.p-bus{position:absolute;bottom:.4vmin;font-size:clamp(2.4rem,8vmin,6rem);left:0;animation:drive 7s linear infinite}
 @keyframes drive{from{transform:translateX(-12vw)}to{transform:translateX(110vw)}}
 /* outro */
 .p-end{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3vmin;width:100%;height:100%}
@@ -229,14 +225,45 @@ button:disabled{opacity:.4;cursor:not-allowed}
 .p-q2 b{font-weight:400;display:inline-block;animation:slam .55s both}
 .p-q2 .qq{color:var(--yel);display:inline-block;animation:p .5s infinite}
 .pres .rs{z-index:0}
-.p-rays{position:absolute;inset:-60%;background:repeating-conic-gradient(#ffd21f1c 0 8deg,transparent 8deg 16deg);animation:spin 40s linear infinite;opacity:0;transition:opacity 3s;pointer-events:none}
-.pres.clear .p-rays{opacity:1}
-.p-pw{position:absolute;left:4vw;right:4vw;bottom:1.8vmin;height:2.4vmin;border-radius:99px;background:#ffffff14;border:.3vmin solid #ffffff44;z-index:4;overflow:hidden}
-.p-pw i{position:absolute;left:0;top:0;bottom:0;width:0;background:linear-gradient(90deg,#1e6bff,#ffd21f,#e8203a);background-size:92vw 100%;box-shadow:0 0 20px #ffd21f}
-.p-pw span{position:absolute;inset:0;font-size:1.7vmin;line-height:2.4vmin;letter-spacing:.25em;color:#fff;text-shadow:0 0 6px #000}
-.p-pow{position:absolute;z-index:6;pointer-events:none;animation:powin 1.5s both}
-@keyframes powin{0%{transform:scale(0) rotate(calc(var(--r) - 40deg));opacity:0}15%{transform:scale(1.25) rotate(var(--r));opacity:1}30%{transform:scale(1) rotate(var(--r))}80%{transform:scale(1.05) rotate(var(--r));opacity:1}100%{transform:scale(1.15) rotate(var(--r));opacity:0}}
-.pres.end #pst,.pres.end .p-head,.pres.end .p-pw,.pres.end .fogbg,.pres.end .p-rays{opacity:0;transition:opacity 1s ease-in}
+
+/* ===== PRESENTATIE v2 ===== */
+/* zachtere overgangen tussen dia's */
+.sc{animation:scin .9s .35s cubic-bezier(.22,.8,.3,1) both}
+.sc.out{animation:scout .7s ease-in both}
+.leave>*{animation:scout .6s ease-in both}
+.pres{transition:opacity 1.4s ease-in}
+.pres.fadeout{opacity:0}
+/* scherpere bliksem */
+.p-bolt{height:78%;width:34vmin;margin-left:-17vmin;filter:drop-shadow(0 0 4px #ffd21f) drop-shadow(0 0 14px #fff);animation:boltf .9s steps(1,end) both}
+@keyframes boltf{0%{opacity:1}12%{opacity:0}20%{opacity:1}34%{opacity:0}46%{opacity:.9}58%,100%{opacity:0}}
+.p-zap{animation:zap .9s steps(1,end) both}
+@keyframes zap{0%{opacity:0}4%{opacity:.9}9%{opacity:0}16%{opacity:.6}22%{opacity:0}40%{opacity:.25}55%,100%{opacity:0}}
+/* schokgolf */
+.p-shock{position:fixed;width:12vmin;height:12vmin;margin:-6vmin 0 0 -6vmin;border-radius:50%;border:.6vmin solid #fff;box-shadow:0 0 4vmin var(--yel),inset 0 0 4vmin var(--yel);z-index:4;pointer-events:none;animation:shock 1.1s ease-out forwards}
+@keyframes shock{from{transform:scale(.2);opacity:1}to{transform:scale(10);opacity:0}}
+/* comic-burst achter de cijfers */
+.p-stat{position:relative}
+.p-stat::before{content:"";position:absolute;inset:-22% -12%;z-index:-1;background:var(--yel);opacity:.14;clip-path:polygon(50% 0%,59% 14%,75% 6%,76% 24%,94% 25%,86% 40%,100% 50%,86% 60%,94% 75%,76% 76%,75% 94%,59% 86%,50% 100%,41% 86%,25% 94%,24% 76%,6% 75%,14% 60%,0% 50%,14% 40%,6% 25%,24% 24%,25% 6%,41% 14%);animation:bst 1.6s ease-in-out infinite alternate}
+@keyframes bst{to{transform:scale(1.08) rotate(2deg)}}
+/* dia 3: mysterie-kaarten */
+.p-c2{padding:4vmin 2vmin;min-height:30vmin;justify-content:center}
+.p-c2 .cn{min-height:2.3em;display:flex;align-items:center;justify-content:center;text-align:center}
+.p-c2 .cn.rolling{color:#9fb0ff;text-shadow:none;opacity:.8}
+.p-c2 .cd,.p-c2 .cdt{opacity:0}
+.p-c2.lock .cd{opacity:.85;animation:pop .6s both}
+.p-c2.lock .cdt{opacity:1;animation:pop .6s .25s both}
+.p-c2.lock .cn{animation:lk .5s both}
+.p-c2.lock{box-shadow:0 0 6vmin var(--yel)}
+.p-c2.b.lock{box-shadow:0 0 6vmin var(--blue)}
+@keyframes lk{0%{transform:scale(1.5);opacity:.3}60%{transform:scale(.95)}100%{transform:none;opacity:1}}
+/* spanning: hartslag-gloed die weer uitdooft + zachte overgang naar de countdown */
+body.hotout::after{content:"";position:fixed;inset:0;pointer-events:none;box-shadow:inset 0 0 140px 40px #e8203acc;animation:hout 1.4s ease-in both}
+@keyframes hout{to{opacity:0}}
+body.ray::before{animation:spin 30s linear infinite,rayin 2.5s ease-out both}
+@keyframes rayin{from{opacity:0}}
+#v.cin{animation:cin 1.3s cubic-bezier(.2,.9,.3,1) both}
+@keyframes cin{from{opacity:0;transform:scale(.8)}}
+
 @media (prefers-reduced-motion:reduce){*{animation:none!important}}
 </style></head>
 <body><div id="v"></div>
@@ -340,7 +367,7 @@ const CT = {}; COUNTRIES.forEach(([nl, en, ...al]) => [nl, ...al].forEach(k => C
 // betere plek voor bolletjes bij landen met overzeese gebieden / vreemde vorm [lon,lat]
 const CEN = {'France': [2.3, 46.7], 'Norway': [8.5, 61.2], 'United Kingdom': [-2, 53.5], 'Netherlands': [5.4, 52.3], 'Italy': [12.4, 42.8], 'Sweden': [15.5, 60.5], 'Finland': [26, 63.5], 'Spain': [-3.7, 40.3], 'Denmark': [9.4, 56.1], 'Greece': [22.5, 39.3], 'Turkey': [32.5, 39], 'Croatia': [16, 45.2]};
 const SNK = [4.1437, 51.1565];   // Sint-Niklaas [lon,lat]
-const SCN = [0, 10400, 22400, 38400, 50400], PRES_MS = 61000;   // starttijden van de scenes + totale duur (ms)
+const SCN = [0, 11400, 23400, 42400, 57900], PRES_MS = 71900;   // starttijden van de scenes + totale duur (ms)
 const HEROMAP = HERO ? `<image href="${esc(HERO)}" x="-55" y="-25" width="110" height="50"/>` : HEROSVG.replace('<svg ', '<svg x="-55" y="-25" width="110" height="50" overflow="visible" ');
 const mk = h => { const t = document.createElement('template'); t.innerHTML = h.trim(); return t.content.firstElementChild; };
 const lettersH = (t, d0 = 0) => { let n = 0; return t.split(' ').map(w => `<span style="display:inline-block;white-space:nowrap">${[...w].map(c => `<b style="animation-delay:${(d0 + n++ * .06).toFixed(2)}s">${esc(c)}</b>`).join('')}</span>`).join(' '); };
@@ -380,49 +407,53 @@ function runPres(root, getD, e0, onEnd) {
   let dead = false, skip = 0, mapApi = null; const T = [];
   const q = s => root.querySelector(s);
   const later = (ms, fn) => { const m = ms - skip; if (m <= 0) { if (!dead) fn(); return; } T.push(setTimeout(() => { if (!dead) fn(); }, m)); };
+  const lfx = (ms, fn) => { if (ms > skip) later(ms, fn); };   // voor tijdelijke effecten: niet herhalen voor wie later binnenkomt
   const D = () => { const g = getD(); return pdata(g.A, g.P); };
   const on = s => { const e = q(s); if (e) e.classList.add('on'); };
   const geoP = loadGeo();
   const cu = (el, to, ms, f) => { if (!el) return; const t0 = performance.now(); const st = t => { if (dead) return; const k = Math.min(1, (t - t0) / ms); el.textContent = f(Math.round(to * (1 - Math.pow(1 - k, 3)))); if (k < 1) requestAnimationFrame(st); }; requestAnimationFrame(st); };
 
-  root.classList.add('pres'); root.classList.remove('clear', 'end');
-  root.innerHTML = `<div class="fogbg">${[[10, 30, 26], [80, 20, 31], [45, 75, 23], [90, 85, 29], [15, 90, 34]].map(([x, y, d]) => `<i style="--x:${x}%;--y:${y}%;--d:${d}s"></i>`).join('')}</div><div class="p-rays"></div><div class="p-head">KAZOU ZOMER 2027<small>bij Waas en Dender</small></div><div id="pst"></div><div class="p-pw"><i></i><span class="h">HELDENKRACHT LAADT OP</span></div>`;
+  const shock = el => {
+    const r = el ? el.getBoundingClientRect() : null, d = document.createElement('div'); d.className = 'p-shock';
+    d.style.left = (r ? r.left + r.width / 2 : innerWidth / 2) + 'px'; d.style.top = (r ? r.top + r.height / 2 : innerHeight / 2) + 'px';
+    root.append(d); setTimeout(() => d.remove(), 1200);
+  };
+  const streaks = (n, rl) => { for (let j = 0; j < n; j++) { const l = document.createElement('i'); l.className = 'sl' + (rl ? ' r' : ''); l.style.top = (8 + Math.random() * 84) + 'vh'; l.style.width = (25 + Math.random() * 35) + 'vw'; l.style.animationDelay = (Math.random() * .35) + 's'; root.append(l); setTimeout(() => l.remove(), 1900); } };
+  const heroPass = (rl, top) => {
+    const d = document.createElement('div'); d.className = 'fly' + (rl ? ' rl' : '');
+    d.style.top = (top || 36) + 'vh'; d.style.width = 'min(60vw,420px)'; d.style.animationDuration = '1.7s';
+    d.innerHTML = `<div class="fi">${HERO ? `<img src="${esc(HERO)}" alt="">` : HEROSVG}</div>`;
+    root.append(d); setTimeout(() => d.remove(), 1900); streaks(6, rl);
+  };
+
+  root.classList.add('pres'); root.classList.remove('clear');
+  root.innerHTML = `<div class="fogbg">${[[10, 30, 26], [80, 20, 31], [45, 75, 23], [90, 85, 29], [15, 90, 34]].map(([x, y, d]) => `<i style="--x:${x}%;--y:${y}%;--d:${d}s"></i>`).join('')}</div><div class="p-head">KAZOU ZOMER 2027<small>bij Waas en Dender</small></div><div id="pst"></div>`;
   const pst = q('#pst');
-  const pow = (t, x, y, rot, sz) => {
-    sz = sz || 26; const pts = [];
-    for (let i = 0; i < 20; i++) { const a = i / 20 * Math.PI * 2, r = i % 2 ? 62 : 96; pts.push(`${(Math.cos(a) * r).toFixed(1)},${(Math.sin(a) * r).toFixed(1)}`); }
-    const e = mk(`<svg class="p-pow" style="left:${x}%;top:${y}%;--r:${rot || -8}deg;width:${sz}vmin;margin:-${sz / 2}vmin 0 0 -${sz / 2}vmin" viewBox="-100 -100 200 200"><polygon points="${pts.join(' ')}" fill="#ffd21f" stroke="#e8203a" stroke-width="7" stroke-linejoin="round"/><text class="h" y="14" font-size="40" text-anchor="middle" fill="#e8203a" stroke="#fff" stroke-width="2.5" paint-order="stroke">${t}</text></svg>`);
-    root.append(e); setTimeout(() => e.remove(), 1600);
-  };
-  const swoosh = rl => {
-    const d = document.createElement('div'); d.className = 'fly' + (rl ? ' rl' : ''); d.style.top = (rl ? 58 : 30) + 'vh'; d.style.width = 'min(62vw,440px)'; d.style.animationDuration = '1.8s';
-    d.innerHTML = `<div class="fi">${HERO ? `<img src="${esc(HERO)}" alt="">` : HEROSVG}</div>`; root.append(d);
-    for (let j = 0; j < 6; j++) { const l = document.createElement('i'); l.className = 'sl' + (rl ? ' r' : ''); l.style.top = (12 + Math.random() * 70) + 'vh'; l.style.width = (20 + Math.random() * 30) + 'vw'; l.style.animationDelay = (Math.random() * .4) + 's'; root.append(l); setTimeout(() => l.remove(), 2000); }
-    setTimeout(() => d.remove(), 2000);
-  };
-  { const pi = q('.p-pw i'); pi.style.width = (e0 / PRES_MS * 100) + '%'; setTimeout(() => { if (!dead) { pi.style.transition = `width ${PRES_MS - e0}ms linear`; pi.style.width = '100%'; } }, 60); }
-  const show = (h, c) => { const o = q('#pst .sc'); if (o) { o.classList.add('out'); setTimeout(() => o.remove(), 800); } const d = mk(`<div class="sc ${c || ''}">${h}</div>`); pst.append(d); return d; };
+  const show = (h, c) => { const o = q('#pst .sc'); if (o) { o.classList.add('out'); setTimeout(() => o.remove(), 750); streaks(7, true); } const d = mk(`<div class="sc ${c || ''}">${h}</div>`); pst.append(d); return d; };
   const zap = () => {
+    const B = '58,0 44,62 62,66 36,128 56,133 28,198 47,202 18,262 30,300', Rt = '36,128 14,158 24,162 6,196', a = 'vector-effect="non-scaling-stroke"';
     const w = document.createElement('div');
-    w.innerHTML = `<div class="p-zap"></div><svg class="p-bolt" viewBox="0 0 100 300" preserveAspectRatio="none"><polyline points="55,0 38,90 62,100 30,200 52,208 20,300" fill="none" stroke="#fff" stroke-width="5" stroke-linejoin="round"/></svg>`;
+    w.innerHTML = `<div class="p-zap"></div><svg class="p-bolt" viewBox="0 0 100 300" preserveAspectRatio="none"><g fill="none" stroke-linejoin="miter" stroke-miterlimit="10"><polyline points="${B}" stroke="#ffd21f" stroke-width="7" ${a}/><polyline points="${Rt}" stroke="#ffd21f" stroke-width="4" ${a}/><polyline points="${B}" stroke="#fff" stroke-width="2.5" ${a}/><polyline points="${Rt}" stroke="#fff" stroke-width="1.5" ${a}/></g></svg>`;
     [...w.children].forEach(c => { root.append(c); setTimeout(() => c.remove(), 1000); });
     pst.classList.add('shake'); setTimeout(() => pst.classList.remove('shake'), 700);
-    pow('ZAP!', 72, 30, 10, 30);
+    shock(); rays(14, root);
   };
 
   /* --- intro: Kazou zomer 2027 bij Waas en Dender --- */
   const sIntro = () => {
     pst.append(mk(`<div class="p-intro h"><div class="p-i1">KAZOU ZOMER 2027</div><div class="p-i2"><span class="bij">bij</span><span class="waas">WAAS</span><span class="en">en</span><span class="dender">DENDER</span></div><div class="p-i3">Het aftellen kan bijna beginnen!</div></div>`));
     later(300, () => on('.p-i1'));
-    later(3000, () => on('.p-i2 .bij'));
-    later(3300, () => on('.p-i2 .waas'));
-    later(4700, () => on('.p-i2 .en'));
-    later(5300, () => { on('.p-i2 .dender'); later(420, zap); });
-    later(6200, () => root.classList.add('clear'));
-    later(6900, () => on('.p-i3'));
-    later(9400, () => { const i = q('.p-intro'); if (i) i.classList.add('gone'); });
-    later(9800, () => on('.p-head'));
-    later(10300, () => { const i = q('.p-intro'); if (i) i.remove(); });
+    later(3200, () => on('.p-i2 .bij'));
+    later(3500, () => on('.p-i2 .waas'));
+    later(5000, () => on('.p-i2 .en'));
+    later(5600, () => on('.p-i2 .dender'));
+    lfx(6020, zap);
+    later(6700, () => root.classList.add('clear'));
+    later(7200, () => on('.p-i3'));
+    lfx(9900, () => heroPass(false, 32));
+    later(10500, () => { const i = q('.p-intro'); if (i) i.classList.add('gone'); });
+    later(10900, () => on('.p-head'));
+    later(11300, () => { const i = q('.p-intro'); if (i) i.remove(); });
   };
 
   /* --- dia 1: aantallen + taartdiagram --- */
@@ -433,26 +464,28 @@ function runPres(root, getD, e0, onEnd) {
       sl.map(s => `<circle class="pc" data-i="${s.i}" r="70" fill="none" stroke="${AGC[s.i]}" stroke-width="40" transform="rotate(-90)" stroke-dasharray="0 ${C}" stroke-dashoffset="${-s.o * C}" style="transition:stroke-dasharray .9s ease"/>`).join('') +
       sl.map(s => { const a = (s.o + s.f / 2) * 2 * Math.PI - Math.PI / 2; return `<text class="pl" data-i="${s.i}" x="${(70 * Math.cos(a)).toFixed(1)}" y="${(70 * Math.sin(a) + 6).toFixed(1)}">${s.x.n}</text>`; }).join('') +
       `<text y="-2" font-size="22" fill="#ffd21f">PER</text><text y="20" font-size="22" fill="#ffd21f">LEEFTIJD</text>`;
-    sl.forEach((s, k) => later(150 + k * 350, () => {
+    sl.forEach((s, k) => later(150 + k * 450, () => {
       const c = svg.querySelector(`.pc[data-i="${s.i}"]`), t = svg.querySelector(`.pl[data-i="${s.i}"]`);
       if (c) c.style.strokeDasharray = `${Math.max(0, s.f * C - 2)} ${C}`;
       later(600, () => { if (t) t.style.opacity = 1; });
     }));
     const leg = q('.p-leg');
     leg.innerHTML = d.ages.map((x, i) => `<div class="p-li" style="--c:${AGC[i]}"><i></i>${x.a} jaar <b>${x.n}</b></div>`).join('');
-    leg.querySelectorAll('.p-li').forEach((e, i) => later(500 + i * 250, () => e.classList.add('on')));
+    leg.querySelectorAll('.p-li').forEach((e, i) => later(500 + i * 300, () => e.classList.add('on')));
   };
   const s1 = () => {
     on('.p-head'); root.classList.add('clear'); const i0 = q('.p-intro'); if (i0) i0.remove();
     const d = D();
     const sc = show(`<div class="p-s1"><div class="p-stats">
-      <div class="p-stat" id="pa"><div class="sn h">0</div><div class="sl3 h">superhelden-vrijwilligers gaan mee</div></div>
-      <div class="p-stat" id="pb"><div class="sn h">0</div><div class="sl3 h">vakantie-missies in totaal</div></div></div>
+      <div class="p-stat" id="pa"><div class="sn h">0</div><div class="sl3 h">vrijwilligers gaan mee</div></div>
+      <div class="p-stat" id="pb"><div class="sn h">0</div><div class="sl3 h">vakanties in totaal</div></div></div>
       <div class="p-piebox"><svg viewBox="-110 -110 220 220"></svg><div class="p-leg"></div></div></div>`);
     const w = sc.firstElementChild;
-    later(1200, () => { on('#pa'); pow('POW!', 30, 34, -10); cu(q('#pa .sn'), d.vol, 2400, n => n.toLocaleString('nl-BE')); });
-    later(4200, () => { on('#pb'); pow('BAM!', 22, 72, 8); cu(q('#pb .sn'), d.n, 1800, n => n); });
-    later(7000, () => { w.classList.add('pie'); drawPie(d); pow('WHAM!', 78, 26, 8); });
+    later(700, () => { on('#pa'); cu(q('#pa .sn'), d.vol, 2200, n => n.toLocaleString('nl-BE')); });
+    lfx(2950, () => shock(q('#pa')));
+    later(3200, () => { on('#pb'); cu(q('#pb .sn'), d.n, 1400, n => n); });
+    lfx(4650, () => shock(q('#pb')));
+    later(5600, () => { w.classList.add('pie'); drawPie(d); });
   };
 
   /* --- dia 2: kaart van Europa + verste reis --- */
@@ -493,15 +526,15 @@ function runPres(root, getD, e0, onEnd) {
     requestAnimationFrame(st);
   };
   const s2 = () => {
-    on('.p-head'); root.classList.add('clear'); mapApi = null; swoosh(false);
-    const d = D(), mx = d.cs[0] ? d.cs[0].n : 1, gap = Math.min(450, 4200 / Math.max(1, d.cs.length));
-    const sc = show(`<div class="p-s2"><div class="p-map"></div><div class="p-side"><div class="p-sh h">Waar vliegen we naartoe?</div><div class="p-bars"></div></div></div>`);
+    on('.p-head'); root.classList.add('clear'); mapApi = null;
+    const d = D(), mx = d.cs[0] ? d.cs[0].n : 1, gap = Math.min(500, 5000 / Math.max(1, d.cs.length));
+    const sc = show(`<div class="p-s2"><div class="p-map"></div><div class="p-side"><div class="p-sh h">Waar trekken we naartoe?</div><div class="p-bars"></div></div></div>`);
     const wrap = sc.firstElementChild, mp = wrap.querySelector('.p-map'), side = wrap.querySelector('.p-side'), bars = wrap.querySelector('.p-bars');
     const rows = d.cs.slice(0, 8).map(c => { const r = mk(`<div class="p-bar"><span class="bl h">${esc(c.nl)}</span><div class="p-bt"><i></i></div><b class="bn h">0</b></div>`); bars.append(r); return r; });
     if (d.cs.length > 8) bars.append(mk(`<div class="p-more">+ ${d.cs.length - 8} andere landen</div>`));
     if (!d.cs.length) bars.append(mk(`<div class="p-more">nog geen landen ingevuld</div>`));
     const done = [];
-    d.cs.forEach((c, i) => later(1300 + i * gap, () => {
+    d.cs.forEach((c, i) => later(800 + i * gap, () => {
       const r = rows[i]; if (r) { r.classList.add('on'); r.querySelector('i').style.width = (c.n / mx * 100) + '%'; cu(r.querySelector('.bn'), c.n, 900, n => n); }
       done.push(c); if (mapApi) mapApi.hit(c);
     }));
@@ -510,44 +543,81 @@ function runPres(root, getD, e0, onEnd) {
       if (!feats) { wrap.classList.add('nomap'); mp.remove(); return; }
       mapApi = drawMap(mp, feats, d); done.forEach(c => mapApi.hit(c));
     });
-    // verste reis
-    later(10500, () => {
+    // verste reis: eerst spanning ("???"), dan de held vliegt, dan de onthulling
+    later(9000, () => {
       const f = d.far; side.classList.add('leave');
-      later(550, () => {
+      const en = f.v && f.v.land ? (CT[norm(f.v.land)] || {}).en : null;
+      later(650, () => {
         side.classList.remove('leave');
-        if (!f.v) { side.innerHTML = `<div class="p-sh h">Verste missie</div><div class="p-far"><div class="fn h">nog niet ingevuld</div></div>`; return; }
+        side.innerHTML = `<div class="p-sh h">Wie reist er het verst?</div><div class="p-far"><div class="fn h"><span class="dots">???</span></div></div>`;
+        if (mapApi && en && mapApi.pe[en]) { mp.classList.add('far'); mapApi.pe[en].classList.add('tgt'); }
+        rays(10, root);
+      });
+      later(1400, () => { if (mapApi && en && mapApi.pe[en]) flyArc(mapApi, en); });
+      later(4300, () => {
+        if (!f.v) { side.innerHTML = `<div class="p-sh h">De verste reis</div><div class="p-far"><div class="fn h">nog niet ingevuld</div></div>`; return; }
         const m = String(f.t).replace(/\./g, '').replace(',', '.').match(/\d+(\.\d+)?/), kmN = m ? +m[0] : null;
-        side.innerHTML = `<div class="p-sh h">Verste missie</div><div class="p-far"><div class="fn h">${esc(f.v.naam)}</div><div class="fd">${esc(f.v.b)}${f.v.land ? ' · ' + esc(f.v.land) : ''}</div><div class="km h">${kmN == null ? esc(f.t) : '0 km'}</div></div>`;
+        side.innerHTML = `<div class="p-sh h">De verste reis</div><div class="p-far"><div class="fn h">${esc(f.v.naam)}</div><div class="fd">${esc(f.v.b)}${f.v.land ? ' · ' + esc(f.v.land) : ''}</div><div class="km h">${kmN == null ? esc(f.t) : '0 km'}</div></div>`;
+        shock(side.querySelector('.p-far')); rays(14, root);
         if (kmN != null) later(500, () => cu(side.querySelector('.km'), kmN, 2400, n => n.toLocaleString('nl-BE') + ' km'));
       });
-      const en = f.v && f.v.land ? (CT[norm(f.v.land)] || {}).en : null;
-      if (mapApi && en && mapApi.pe[en]) { mp.classList.add('far'); mapApi.pe[en].classList.add('tgt'); later(300, () => { flyArc(mapApi, en); pow('ZOEF!', 22, 20, -10); }); }
     });
+    lfx(18300, () => heroPass(true, 55));
   };
 
-  /* --- dia 3: eerste vertrek + laatste terugkomst --- */
+  /* --- dia 3: eerste vertrek + laatste terugkomst (met spannende "rollende" onthulling) --- */
   const s3 = () => {
     on('.p-head'); root.classList.add('clear');
     const d = D();
-    const card = (o, ico, lab, cls, fb) => { const t = o.t || (fb && o.v && o.v.d) || ''; return `<div class="p-c2 ${cls}"><div class="ck h">${lab}</div><div class="cn h">${o.v ? esc(o.v.naam) : 'nog niet ingevuld'}</div>${o.v ? `<div class="cd">📍 ${esc(o.v.b)}</div>` : ''}${t ? `<div class="cdt h">${esc(t)}</div>` : ''}</div>`; };
-    show(`<div class="p-s3"><div class="p-sn h">📍 Alle vakanties vertrekken in <b>Sint-Niklaas</b></div><div class="p-cards">${card(d.first, '🛫', 'Als eerste op pad', 'l', true)}${card(d.last, '🏁', 'Als laatste terug in Sint-Niklaas', 'r b', false)}</div><div class="p-road"><span class="p-bus">🚌</span></div></div>`);
+    const card = (o, lab, cls) => `<div class="p-c2 ${cls}"><div class="ck h">${lab}</div><div class="cn h ${o.v ? 'rolling' : ''}">${o.v ? '???' : 'nog niet ingevuld'}</div></div>`;
+    show(`<div class="p-s3"><div class="p-sn h">Alle vakanties vertrekken in <b>Sint-Niklaas</b></div><div class="p-cards">${card(d.first, 'Eerste missie vertrekt', 'l')}${card(d.last, 'Laatste held veilig thuis', 'r b')}</div></div>`);
+    const lock = (sel, o, fb, big) => {
+      const c = q(sel); if (!c || !o.v) return;
+      const n = c.querySelector('.cn'), t = o.t || (fb && o.v.d) || '';
+      n.classList.remove('rolling'); n.textContent = o.v.naam;
+      c.insertAdjacentHTML('beforeend', `<div class="cd">${esc(o.v.b)}</div>${t ? `<div class="cdt h">${esc(t)}</div>` : ''}`);
+      c.classList.add('lock'); shock(c);
+      if (big) { document.body.classList.remove('hot'); zap(); } else rays(12, root);
+    };
+    const roll = (sel, o, ms, fb, big) => {
+      const c = q(sel), n = c && c.querySelector('.cn'); if (!n || !o.v) return;
+      const pool = d.L.map(v => v.naam).filter(Boolean), t0 = performance.now(); let last = '';
+      const step = () => {
+        if (dead) return;
+        const k = Math.min(1, (performance.now() - t0) / ms);
+        if (k >= 1) { lock(sel, o, fb, big); return; }
+        let w; do { w = pool[Math.random() * pool.length | 0]; } while (pool.length > 1 && w === last);
+        last = w; n.textContent = w;
+        T.push(setTimeout(step, 60 + 420 * k * k * k));
+      };
+      step();
+    };
     later(500, () => on('.p-sn'));
-    later(1800, () => on('.p-c2.l'));
-    later(5500, () => on('.p-c2.r'));
+    later(1500, () => on('.p-c2.l'));
+    later(2700, () => roll('.p-c2.l', d.first, 3200, true, false));     // onthulling na ±5,9 s
+    later(6800, () => on('.p-c2.r'));
+    later(8200, () => { if (d.last.v) document.body.classList.add('hot'); roll('.p-c2.r', d.last, 4200, false, true); });   // langere spanning, bliksem bij de onthulling
   };
 
   /* --- slot: de vraag --- */
   const s4 = () => {
     on('.p-head'); root.classList.add('clear');
     show(`<div class="p-end"><div class="p-q1 h">Nu blijft er nog 1 vraag over…</div><div class="p-q2 h"></div></div>`);
-    later(300, () => on('.p-q1'));
-    later(2800, () => {
+    later(500, () => on('.p-q1'));
+    later(3600, () => document.body.classList.add('hot'));
+    later(4200, () => {
       const e = q('.p-q2'); if (!e) return;
       e.innerHTML = lettersH('Welke vakantie heb jij deze') + ' ' + `<span style="display:inline-block;white-space:nowrap">${[...'zomer'].map((c, i) => `<b style="animation-delay:${((23 + i) * .06).toFixed(2)}s">${c}</b>`).join('')}<span class="qq">???</span></span>`;
       rays(16, root);
     });
-    later(5500, () => document.body.classList.add('hot'));
-    later(7600, () => { const f = document.createElement('div'); f.className = 'fl'; document.body.append(f); setTimeout(() => f.remove(), 800); });
+    for (let i = 0; i < 12; i++) lfx(7000 + i * 330, () => {   // het beeld begint steeds harder te trillen
+      const e = q('.p-q2'); if (!e) return;
+      e.classList.add('trem'); e.style.setProperty('--a', (1 + i * .8).toFixed(1) + 'px'); e.style.setProperty('--sc', (1 + i * .015).toFixed(3));
+      rays(2 + (i / 3 | 0), root);
+    });
+    lfx(11300, () => { const e = q('.p-q2'); if (e) e.classList.remove('trem'); zap(); rays(24, root); });
+    lfx(11900, () => heroPass(false, 40));
+    later(12600, () => { document.body.classList.remove('hot'); document.body.classList.add('hotout'); root.classList.add('fadeout'); });   // zacht naar de countdown
   };
 
   const SC = [sIntro, s1, s2, s3, s4];
@@ -555,7 +625,7 @@ function runPres(root, getD, e0, onEnd) {
   SC.forEach((fn, i) => { if (i > ci) later(SCN[i] - e0, fn); });
   skip = e0 - SCN[ci]; SC[ci](); skip = 0;
   later(PRES_MS - e0, () => { if (onEnd) onEnd(); });
-  return () => { dead = true; T.forEach(clearTimeout); document.body.classList.remove('hot'); };
+  return () => { dead = true; T.forEach(clearTimeout); document.body.classList.remove('hot', 'hotout'); };
 }
 
 firebase.initializeApp(CFG);
@@ -609,6 +679,7 @@ const R = {
   /* ---- Projectiescherm: …/#screen ---- */
   screen: p => {
     document.body.classList.toggle('ray', p === 'count' || p === 'reveal');
+    V.classList.toggle('cin', p === 'count');
     if (p === 'intro') {
       V.innerHTML = `<div class="pres" id="pres"></div>`;
       VAKP.then(() => { if (cur === 'intro' && !STOP) STOP = runPres($('#pres'), () => ({A: VAK, P: S.pres}), Math.max(0, now() - S.introAt)); });
