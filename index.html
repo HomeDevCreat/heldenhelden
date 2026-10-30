@@ -287,6 +287,33 @@ const TITLE = "ZOMERHELDEN";
 const LOGO = "logo.png";   // zet je logo als logo.png naast index.html (of plak hier een data-URI). Leeg laten = geen logo.
 /* ========================================================================= */
 
+/* ====== GELUIDEN: HIER KAN JE ALLES VERVANGEN ======
+   url: '' = ingebouwd synth-geluid. Vul een bestand of link in (bv. 'sounds/tick.mp3') en dat wordt gebruikt.
+   vol: volume 0 tot 1 (0 = uit). Muziek: zet url voor je eigen nummer (loopt, stopt zacht op het einde). */
+const MUSIC_INTENSITY = [.12, .25, .4, .62, .82, 1];   // spanning van de ingebouwde muziek per scene (0 tot 1)
+const SOUNDS = {
+  music:    {url: '', vol: .55},  // spannende achtergrondmuziek tijdens de hele presentatie
+  pop:      {url: '', vol: .7},   // iets verschijnt (tekst, kaartjes)
+  count:    {url: '', vol: .6},   // tik tijdens het optellen van getallen (toonhoogte stijgt)
+  countEnd: {url: '', vol: .7},   // ding als het getal klaar is
+  blip:     {url: '', vol: .6},   // land op de kaart / taartstuk
+  impact:   {url: '', vol: .8},   // dreun bij een onthulling
+  swoosh:   {url: '', vol: .6},   // wissel tussen dia's
+  fly:      {url: '', vol: .7},   // superheld vliegt voorbij
+  flyArc:   {url: '', vol: .7},   // held vliegt over de kaart
+  swell:    {url: '', vol: .6},   // intro: titel in de mist
+  fog:      {url: '', vol: .6},   // intro: WAAS
+  drop:     {url: '', vol: .6},   // intro: DENDER valt neer
+  slam:     {url: '', vol: .8},   // zware klap
+  thunder:  {url: '', vol: .8},   // bliksem
+  riser:    {url: '', vol: .7},   // oplopende spanning
+  mystery:  {url: '', vol: .6},   // mysterieus (???)
+  heart:    {url: '', vol: .7},   // hartslag
+  roll:     {url: '', vol: .5},   // namen rollen als gokkast
+  lock:     {url: '', vol: .8},   // naam vergrendeld
+  stinger:  {url: '', vol: .7},   // dramatisch akkoord
+  head:     {url: '', vol: .6}    // titelbalk komt binnen
+};
 const $ = s => document.querySelector(s);
 const ls = {get:k=>{try{return localStorage.getItem(k)}catch(e){return null}}, set:(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}}};
 const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
@@ -346,6 +373,96 @@ const slug = s => norm(s).replace(/[^a-z0-9]/g, '');
 const arr = x => Object.values(x || []);
 const lazy = (u, g) => new Promise((ok, no) => { if (window[g]) return ok(); const t = document.createElement('script'); t.src = u; t.onload = ok; t.onerror = no; document.head.append(t); });
 const JSPDF = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js', SHEETJS = 'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js';
+
+/* ================= GELUID-ENGINE (synth + eigen bestanden) ================= */
+let BUS = null, GAIN = 1, MUTED = false, NB = null;
+const AX = () => { AC = AC || new AudioContext(); if (!BUS) { const m = AC.createGain(), k = AC.createDynamicsCompressor(); m.connect(k); k.connect(AC.destination); BUS = {m, s: m}; } return AC; };
+const nbuf = c => NB || (NB = (() => { const b = c.createBuffer(1, c.sampleRate * 2, c.sampleRate), d = b.getChannelData(0); for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1; return b; })());
+const tone = ({f = 440, f2, type = 'sine', at = 0, d = .2, v = .3, a = .004, lp, lp2, det = 0, out}) => {
+  const c = AX(), t = c.currentTime + at, o = c.createOscillator(), g = c.createGain(); o.type = type; o.frequency.setValueAtTime(f, t); if (f2) o.frequency.exponentialRampToValueAtTime(f2, t + d); o.detune.value = det;
+  g.gain.setValueAtTime(.0001, t); g.gain.exponentialRampToValueAtTime(Math.max(.0002, v * GAIN), t + a); g.gain.exponentialRampToValueAtTime(.0001, t + d);
+  if (lp) { const F = c.createBiquadFilter(); F.frequency.setValueAtTime(lp, t); if (lp2) F.frequency.exponentialRampToValueAtTime(lp2, t + d); o.connect(F); F.connect(g); } else o.connect(g);
+  g.connect(out || BUS.s); o.start(t); o.stop(t + d + .05);
+};
+const noise = ({at = 0, d = .3, v = .3, a = .004, type = 'bandpass', f = 1000, f2, q = 1, out}) => {
+  const c = AX(), t = c.currentTime + at, s = c.createBufferSource(), F = c.createBiquadFilter(), g = c.createGain(); s.buffer = nbuf(c); s.loop = true; F.type = type; F.Q.value = q; F.frequency.setValueAtTime(f, t); if (f2) F.frequency.exponentialRampToValueAtTime(f2, t + d);
+  g.gain.setValueAtTime(.0001, t); g.gain.exponentialRampToValueAtTime(Math.max(.0002, v * GAIN), t + a); g.gain.exponentialRampToValueAtTime(.0001, t + d);
+  s.connect(F); F.connect(g); g.connect(out || BUS.s); s.start(t, Math.random()); s.stop(t + d + .05);
+};
+const SYNTH = {
+  pop: () => { tone({f: 380, f2: 820, d: .12, v: .35}); tone({f: 1200, f2: 1700, d: .08, v: .1, at: .02, type: 'triangle'}); },
+  count: o => { const f = 480 * Math.pow(2, (o.p || 0) * 2.2); tone({f, type: 'triangle', d: .07, v: .25}); tone({f: f * 2, d: .04, v: .07}); noise({d: .02, v: .04, type: 'highpass', f: 6000}); },
+  countEnd: () => { [784, 1175, 1568, 2349].forEach((f, i) => tone({f, at: i * .055, d: 1, v: .2})); tone({f: 110, f2: 50, d: .5, v: .5}); noise({d: .5, v: .07, type: 'highpass', f: 7000, a: .06}); },
+  blip: o => { const f = 520 * Math.pow(2, (o.p || 0) * 1.6); tone({f, type: 'square', d: .1, v: .09, lp: 3500}); tone({f: f * 1.5, d: .14, v: .12, at: .03}); },
+  impact: () => { tone({f: 140, f2: 38, d: .7, v: .75}); noise({d: .3, v: .35, type: 'lowpass', f: 1200, f2: 150, a: .002}); },
+  swoosh: () => noise({d: .7, v: .28, a: .22, f: 350, f2: 3500, q: 1.2}),
+  fly: () => { noise({d: .9, v: .3, a: .45, f: 300, f2: 2200, q: 1.5}); noise({at: .85, d: .9, v: .3, a: .05, f: 2200, f2: 250, q: 1.5}); tone({f: 140, f2: 520, type: 'sawtooth', d: .9, v: .06, a: .45, lp: 1200}); tone({at: .85, f: 520, f2: 120, type: 'sawtooth', d: .9, v: .06, a: .05, lp: 1200}); },
+  flyArc: () => { noise({d: 2.8, v: .18, a: 2.4, f: 250, f2: 4200, q: 2}); tone({f: 160, f2: 1100, type: 'sawtooth', d: 2.8, v: .07, a: 2.4, lp: 900, lp2: 5000}); for (let i = 0; i < 10; i++) tone({f: 1200 + i * 220, at: .3 + i * .25, d: .15, v: .05, type: 'triangle'}); },
+  swell: () => { noise({d: 2.4, v: .22, a: 2, f: 200, f2: 2600, q: .8}); tone({f: 110, f2: 220, type: 'sawtooth', d: 2.4, v: .07, a: 2, lp: 600, lp2: 2400}); },
+  fog: () => { [220, 277.18, 329.63, 440].forEach((f, i) => tone({f, type: 'sawtooth', d: 2.4, v: .05, a: 1.1, lp: 400, lp2: 2500, det: i * 4 - 6})); noise({d: 2, v: .1, a: 1, f: 2500, f2: 900, q: .7}); },
+  drop: () => { tone({f: 2000, f2: 180, d: .42, v: .18}); noise({d: .42, v: .22, a: .2, f: 3500, f2: 300, q: 1}); },
+  slam: () => { tone({f: 100, f2: 28, d: 1.1, v: .9}); tone({f: 55, f2: 30, type: 'sawtooth', d: .9, v: .18, lp: 300}); noise({d: .5, v: .45, type: 'lowpass', f: 900, f2: 100, a: .002}); },
+  thunder: () => { noise({d: .12, v: .5, type: 'highpass', f: 2500, a: .001}); noise({at: .16, d: .1, v: .4, type: 'highpass', f: 2500, a: .001}); noise({at: .05, d: 2.2, v: .55, type: 'lowpass', f: 500, f2: 60, a: .02}); tone({f: 60, f2: 25, d: 1.6, v: .7}); },
+  riser: o => { const d = o.d || 3.5; noise({d, v: .28, a: d * .92, f: 250, f2: 6000, q: 2}); tone({f: 90, f2: 900, type: 'sawtooth', d, v: .1, a: d * .92, lp: 600, lp2: 5000}); tone({f: 60, f2: 120, d, v: .3, a: d * .9}); },
+  mystery: () => { tone({f: 110, type: 'sawtooth', d: 2.2, v: .22, a: 1, lp: 300, lp2: 700}); tone({f: 155.6, type: 'sawtooth', d: 2.2, v: .18, a: 1, lp: 300, lp2: 700, det: 7}); tone({f: 73, f2: 69, d: 2.2, v: .3, a: 1}); },
+  heart: () => { tone({f: 80, f2: 42, d: .16, v: .8}); tone({f: 70, f2: 38, d: .18, v: .6, at: .17}); },
+  roll: o => { const f = 300 * Math.pow(2, (o.p || 0) * 1.8); tone({f, type: 'triangle', d: .05, v: .2}); noise({d: .025, v: .12, type: 'highpass', f: 3500, a: .001}); },
+  lock: () => { tone({f: 130, f2: 45, d: .6, v: .7}); noise({d: .25, v: .3, f: 2800, q: 3, a: .001}); [1047, 1568, 2093].forEach((f, i) => tone({f, at: .05 + i * .04, d: 1, v: .17})); },
+  stinger: () => { [220, 261.63, 329.63, 440].forEach((f, i) => tone({f, type: 'sawtooth', d: 1.6, v: .13, a: .01, lp: 3000, lp2: 300, det: i * 3 - 4})); tone({f: 55, f2: 40, d: 1.2, v: .6}); },
+  head: () => { noise({d: .5, v: .2, a: .1, f: 600, f2: 4000, q: 1.5}); tone({f: 200, f2: 600, type: 'triangle', d: .3, v: .2}); tone({f: 90, f2: 50, d: .4, v: .4, at: .3}); }
+};
+const sfx = (name, o = {}) => {
+  const S = SOUNDS[name]; if (!S || MUTED || !S.vol) return;
+  try {
+    if (S.url) { const a = new Audio(S.url); a.volume = Math.min(1, S.vol * (o.v ?? 1)); if (o.p !== undefined && S.pitch !== false) { a.preservesPitch = false; a.playbackRate = .8 + o.p * .8; } a.play().catch(() => {}); return; }
+    AX(); if (AC.state !== 'running') return;
+    GAIN = S.vol * (o.v ?? 1); SYNTH[name] && SYNTH[name](o);
+  } catch (e) {}
+};
+const interp = t => { const I = MUSIC_INTENSITY, p = [...SCN, PRES_MS]; for (let i = 0; i < p.length - 1; i++) if (t < p[i + 1]) return I[i] + (I[i + 1] - I[i]) * Math.max(0, (t - p[i]) / (p[i + 1] - p[i])); return I[I.length - 1]; };
+const music = (() => {
+  let timer = null, file = null, cleanup = null, going = false;
+  const stop = (fade = .5) => {
+    if (!going) return; going = false; clearInterval(timer);
+    if (file) { const f = file; file = null; let k = 10; const v0 = f.volume, iv = setInterval(() => { k--; f.volume = Math.max(0, v0 * k / 10); if (k <= 0) { clearInterval(iv); f.pause(); } }, fade * 100); }
+    if (cleanup) { cleanup(fade); cleanup = null; }
+  };
+  const start = (getI, e0 = 0) => {
+    stop(0); const S = SOUNDS.music; if (!S || !S.vol) return; going = true;
+    try {
+      if (S.url) { file = new Audio(S.url); file.loop = true; file.volume = Math.min(1, S.vol); file.muted = MUTED; file.addEventListener('loadedmetadata', () => { try { if (e0 && file.duration > e0 / 1000) file.currentTime = e0 / 1000; } catch (e) {} }); file.play().catch(() => {}); return; }
+      const c = AX(), out = c.createGain(); out.gain.value = .0001; out.connect(BUS.m); out.gain.setTargetAtTime(S.vol, c.currentTime, .6);
+      const dl = c.createBiquadFilter(); dl.type = 'lowpass'; dl.frequency.value = 200; const dg = c.createGain(); dg.gain.value = .08; dl.connect(dg); dg.connect(out);
+      const dr = [55, 55.35, 82.41, 110.3].map(f => { const o = c.createOscillator(); o.type = 'sawtooth'; o.frequency.value = f; o.connect(dl); o.start(); return o; });
+      const SP = 60 / 100 / 4, ROOT = [55, 43.65, 49, 41.2], PENT = [1, 1.2, 1.333, 1.5, 1.8, 2, 2.4, 3], ARP = [0, 2, 4, 2, 3, 5, 4, 2, 0, 3, 5, 6, 5, 4, 2, 3];
+      let nx = c.currentTime + .1, n = 0;
+      const step = (n, at, I) => {
+        GAIN = 1; const bar = (n >> 4) & 3, s = n & 15, r = ROOT[bar];
+        if (s === 0) [1, 1.5, 2, 3].forEach((m, i) => tone({f: r * 4 * m, type: 'sawtooth', at, d: SP * 14, a: SP * 5, v: .05 + .04 * I, lp: 500 + I * 1500, lp2: 300, det: i * 3 - 4, out}));
+        if (s === 0 || s === 3 || (I > .55 && (s === 8 || s === 11))) tone({f: s % 8 === 0 ? 120 : 95, f2: 42, at, d: .28, v: (s % 8 === 0 ? .55 : .4) * (.5 + .5 * I), out});
+        if (I > .12 && s % 2 === 0) tone({f: r * 2, type: 'sawtooth', at, d: SP * 1.8, v: .09 + .08 * I, lp: 250 + I * 900, lp2: 120, out});
+        if (I > .35) tone({f: r * 4 * PENT[ARP[s]] * (I > .75 && bar % 2 ? 2 : 1), type: 'triangle', at, d: SP * 1.4, v: .04 + .05 * I, out});
+        if (I > .5 && (s % 2 === 1 || I > .8)) noise({at, d: .04, v: .05 + .05 * I, type: 'highpass', f: 7000, a: .002, out});
+        if (I > .85 && s >= 12) noise({at, d: .1, v: .08, f: 2500, q: .8, a: .002, out});
+      };
+      timer = setInterval(() => {
+        if (c.state !== 'running') { nx = c.currentTime + .1; return; }
+        const I = Math.max(0, Math.min(1, getI())), t = c.currentTime;
+        dl.frequency.setTargetAtTime(180 + I * 1100, t, .3); dg.gain.setTargetAtTime(.06 + .09 * I, t, .3);
+        while (nx < t + .3) { step(n++, nx - t, I); nx += SP; }
+      }, 70);
+      cleanup = fade => { const t = c.currentTime; out.gain.cancelScheduledValues(t); out.gain.setTargetAtTime(.0001, t, Math.max(.05, fade / 4)); setTimeout(() => { dr.forEach(o => { try { o.stop(); } catch (e) {} }); out.disconnect(); }, fade * 1000 + 500); };
+    } catch (e) {}
+  };
+  return {start, stop, mute: m => { if (file) file.muted = m; }};
+})();
+const unlockSound = () => { try { AX(); AC.state !== 'running' && AC.resume(); } catch (e) {} };
+['pointerdown', 'keydown', 'touchend'].forEach(ev => addEventListener(ev, unlockSound, {passive: true}));
+addEventListener('keydown', e => { if (/INPUT|TEXTAREA|SELECT/.test(e.target.tagName) || (e.key !== 'm' && e.key !== 'M')) return; MUTED = !MUTED; try { AX(); BUS.m.gain.value = MUTED ? 0 : 1; } catch (x) {} music.mute(MUTED); });
+if (location.hash.slice(1) === 'screen') {
+  const hint = document.createElement('button'); hint.textContent = '🔊 Klik hier voor geluid (M = mute)'; hint.style.cssText = 'position:fixed;left:10px;bottom:10px;z-index:99;font-size:1rem;opacity:.7;padding:8px 14px'; hint.onclick = unlockSound;
+  setInterval(() => { hint.style.display = AC && AC.state === 'running' ? 'none' : ''; if (!hint.isConnected && document.body) document.body.append(hint); }, 500);
+}
 
 /* ================= PRESENTATIE: data + hulpfuncties ================= */
 const AGES = ['7-8', '9-10', '11-12', '13-14', '15-16', '17-18'];
@@ -410,10 +527,13 @@ function runPres(root, getD, e0, onEnd) {
   const lfx = (ms, fn) => { if (ms > skip) later(ms, fn); };   // voor tijdelijke effecten: niet herhalen voor wie later binnenkomt
   const D = () => { const g = getD(); return pdata(g.A, g.P); };
   const on = s => { const e = q(s); if (e) e.classList.add('on'); };
+  const sf = (n, o) => { if (!skip && !dead) sfx(n, o); };   // geen geluid voor gemiste momenten
+  const snd = (ms, n, o) => later(ms, () => sf(n, o));
   const geoP = loadGeo();
-  const cu = (el, to, ms, f) => { if (!el) return; const t0 = performance.now(); const st = t => { if (dead) return; const k = Math.min(1, (t - t0) / ms); el.textContent = f(Math.round(to * (1 - Math.pow(1 - k, 3)))); if (k < 1) requestAnimationFrame(st); }; requestAnimationFrame(st); };
+  const cu = (el, to, ms, f, sv) => { if (!el) return; sv = sv ?? 1; const t0 = performance.now(); let lv = -1, lt = 0; const st = t => { if (dead) return; const k = Math.min(1, (t - t0) / ms), val = Math.round(to * (1 - Math.pow(1 - k, 3))); el.textContent = f(val); if (val !== lv && k < 1 && t - lt > 55) { lv = val; lt = t; sf('count', {p: k, v: sv}); } if (k < 1) requestAnimationFrame(st); else if (sv > .5) sf('countEnd', {v: sv}); }; requestAnimationFrame(st); };
 
-  const shock = el => {
+  const shock = (el, mute) => {
+    if (!mute) sf('impact');
     const r = el ? el.getBoundingClientRect() : null, d = document.createElement('div'); d.className = 'p-shock';
     d.style.left = (r ? r.left + r.width / 2 : innerWidth / 2) + 'px'; d.style.top = (r ? r.top + r.height / 2 : innerHeight / 2) + 'px';
     root.append(d); setTimeout(() => d.remove(), 1200);
@@ -423,36 +543,37 @@ function runPres(root, getD, e0, onEnd) {
     const d = document.createElement('div'); d.className = 'fly' + (rl ? ' rl' : '');
     d.style.top = (top || 36) + 'vh'; d.style.width = 'min(60vw,420px)'; d.style.animationDuration = '1.7s';
     d.innerHTML = `<div class="fi">${HERO ? `<img src="${esc(HERO)}" alt="">` : HEROSVG}</div>`;
-    root.append(d); setTimeout(() => d.remove(), 1900); streaks(6, rl);
+    root.append(d); setTimeout(() => d.remove(), 1900); streaks(6, rl); sf('fly');
   };
 
   root.classList.add('pres'); root.classList.remove('clear');
+  const tm0 = performance.now(); music.start(() => interp(e0 + performance.now() - tm0), e0);
   root.innerHTML = `<div class="fogbg">${[[10, 30, 26], [80, 20, 31], [45, 75, 23], [90, 85, 29], [15, 90, 34]].map(([x, y, d]) => `<i style="--x:${x}%;--y:${y}%;--d:${d}s"></i>`).join('')}</div><div class="p-head">KAZOU ZOMER 2027<small>bij Waas en Dender</small></div><div id="pst"></div>`;
   const pst = q('#pst');
-  const show = (h, c) => { const o = q('#pst .sc'); if (o) { o.classList.add('out'); setTimeout(() => o.remove(), 750); streaks(7, true); } const d = mk(`<div class="sc ${c || ''}">${h}</div>`); pst.append(d); return d; };
+  const show = (h, c) => { const o = q('#pst .sc'); if (o) { o.classList.add('out'); setTimeout(() => o.remove(), 750); streaks(7, true); sf('swoosh', {v: .8}); } const d = mk(`<div class="sc ${c || ''}">${h}</div>`); pst.append(d); return d; };
   const zap = () => {
     const B = '58,0 44,62 62,66 36,128 56,133 28,198 47,202 18,262 30,300', Rt = '36,128 14,158 24,162 6,196', a = 'vector-effect="non-scaling-stroke"';
     const w = document.createElement('div');
     w.innerHTML = `<div class="p-zap"></div><svg class="p-bolt" viewBox="0 0 100 300" preserveAspectRatio="none"><g fill="none" stroke-linejoin="miter" stroke-miterlimit="10"><polyline points="${B}" stroke="#ffd21f" stroke-width="7" ${a}/><polyline points="${Rt}" stroke="#ffd21f" stroke-width="4" ${a}/><polyline points="${B}" stroke="#fff" stroke-width="2.5" ${a}/><polyline points="${Rt}" stroke="#fff" stroke-width="1.5" ${a}/></g></svg>`;
     [...w.children].forEach(c => { root.append(c); setTimeout(() => c.remove(), 1000); });
     pst.classList.add('shake'); setTimeout(() => pst.classList.remove('shake'), 700);
-    shock(); rays(14, root);
+    sf('thunder'); shock(null, true); rays(14, root);
   };
 
   /* --- intro: Kazou zomer 2027 bij Waas en Dender --- */
   const sIntro = () => {
     pst.append(mk(`<div class="p-intro h"><div class="p-i1">KAZOU ZOMER 2027</div><div class="p-i2"><span class="bij">bij</span><span class="waas">WAAS</span><span class="en">en</span><span class="dender">DENDER</span></div><div class="p-i3">Het aftellen kan bijna beginnen!</div></div>`));
-    later(300, () => on('.p-i1'));
-    later(3200, () => on('.p-i2 .bij'));
-    later(3500, () => on('.p-i2 .waas'));
-    later(5000, () => on('.p-i2 .en'));
-    later(5600, () => on('.p-i2 .dender'));
+    later(300, () => on('.p-i1')); snd(300, 'swell');
+    later(3200, () => on('.p-i2 .bij')); snd(3200, 'pop');
+    later(3500, () => on('.p-i2 .waas')); snd(3500, 'fog');
+    later(5000, () => on('.p-i2 .en')); snd(5000, 'pop', {p: .5});
+    later(5600, () => on('.p-i2 .dender')); snd(5600, 'drop'); snd(6020, 'slam');
     lfx(6020, zap);
     later(6700, () => root.classList.add('clear'));
-    later(7200, () => on('.p-i3'));
+    later(7200, () => on('.p-i3')); snd(7200, 'pop', {p: .8});
     lfx(9900, () => heroPass(false, 32));
-    later(10500, () => { const i = q('.p-intro'); if (i) i.classList.add('gone'); });
-    later(10900, () => on('.p-head'));
+    later(10500, () => { const i = q('.p-intro'); if (i) i.classList.add('gone'); }); snd(10500, 'swoosh');
+    later(10900, () => on('.p-head')); snd(10900, 'head');
     later(11300, () => { const i = q('.p-intro'); if (i) i.remove(); });
   };
 
@@ -465,6 +586,7 @@ function runPres(root, getD, e0, onEnd) {
       sl.map(s => { const a = (s.o + s.f / 2) * 2 * Math.PI - Math.PI / 2; return `<text class="pl" data-i="${s.i}" x="${(70 * Math.cos(a)).toFixed(1)}" y="${(70 * Math.sin(a) + 6).toFixed(1)}">${s.x.n}</text>`; }).join('') +
       `<text y="-2" font-size="22" fill="#ffd21f">PER</text><text y="20" font-size="22" fill="#ffd21f">LEEFTIJD</text>`;
     sl.forEach((s, k) => later(150 + k * 450, () => {
+      sf('blip', {p: k / 5});
       const c = svg.querySelector(`.pc[data-i="${s.i}"]`), t = svg.querySelector(`.pl[data-i="${s.i}"]`);
       if (c) c.style.strokeDasharray = `${Math.max(0, s.f * C - 2)} ${C}`;
       later(600, () => { if (t) t.style.opacity = 1; });
@@ -481,11 +603,11 @@ function runPres(root, getD, e0, onEnd) {
       <div class="p-stat" id="pb"><div class="sn h">0</div><div class="sl3 h">vakanties in totaal</div></div></div>
       <div class="p-piebox"><svg viewBox="-110 -110 220 220"></svg><div class="p-leg"></div></div></div>`);
     const w = sc.firstElementChild;
-    later(700, () => { on('#pa'); cu(q('#pa .sn'), d.vol, 2200, n => n.toLocaleString('nl-BE')); });
+    snd(700, 'pop', {p: .3}); later(700, () => { on('#pa'); cu(q('#pa .sn'), d.vol, 2200, n => n.toLocaleString('nl-BE')); });
     lfx(2950, () => shock(q('#pa')));
-    later(3200, () => { on('#pb'); cu(q('#pb .sn'), d.n, 1400, n => n); });
+    snd(3200, 'pop', {p: .5}); later(3200, () => { on('#pb'); cu(q('#pb .sn'), d.n, 1400, n => n); });
     lfx(4650, () => shock(q('#pb')));
-    later(5600, () => { w.classList.add('pie'); drawPie(d); });
+    snd(5600, 'swoosh'); later(5600, () => { w.classList.add('pie'); drawPie(d); });
   };
 
   /* --- dia 2: kaart van Europa + verste reis --- */
@@ -535,7 +657,7 @@ function runPres(root, getD, e0, onEnd) {
     if (!d.cs.length) bars.append(mk(`<div class="p-more">nog geen landen ingevuld</div>`));
     const done = [];
     d.cs.forEach((c, i) => later(800 + i * gap, () => {
-      const r = rows[i]; if (r) { r.classList.add('on'); r.querySelector('i').style.width = (c.n / mx * 100) + '%'; cu(r.querySelector('.bn'), c.n, 900, n => n); }
+      sf('blip', {p: Math.min(1, i / 8)}); const r = rows[i]; if (r) { r.classList.add('on'); r.querySelector('i').style.width = (c.n / mx * 100) + '%'; cu(r.querySelector('.bn'), c.n, 900, n => n, .3); }
       done.push(c); if (mapApi) mapApi.hit(c);
     }));
     geoP.then(feats => {
@@ -545,20 +667,20 @@ function runPres(root, getD, e0, onEnd) {
     });
     // verste reis: eerst spanning ("???"), dan de held vliegt, dan de onthulling
     later(9000, () => {
-      const f = d.far; side.classList.add('leave');
+      const f = d.far; side.classList.add('leave'); sf('swoosh');
       const en = f.v && f.v.land ? (CT[norm(f.v.land)] || {}).en : null;
       later(650, () => {
         side.classList.remove('leave');
         side.innerHTML = `<div class="p-sh h">Wie reist er het verst?</div><div class="p-far"><div class="fn h"><span class="dots">???</span></div></div>`;
         if (mapApi && en && mapApi.pe[en]) { mp.classList.add('far'); mapApi.pe[en].classList.add('tgt'); }
-        rays(10, root);
+        rays(10, root); sf('mystery');
       });
-      later(1400, () => { if (mapApi && en && mapApi.pe[en]) flyArc(mapApi, en); });
+      later(1400, () => { sf('flyArc'); if (mapApi && en && mapApi.pe[en]) flyArc(mapApi, en); });
       later(4300, () => {
         if (!f.v) { side.innerHTML = `<div class="p-sh h">De verste reis</div><div class="p-far"><div class="fn h">nog niet ingevuld</div></div>`; return; }
         const m = String(f.t).replace(/\./g, '').replace(',', '.').match(/\d+(\.\d+)?/), kmN = m ? +m[0] : null;
         side.innerHTML = `<div class="p-sh h">De verste reis</div><div class="p-far"><div class="fn h">${esc(f.v.naam)}</div><div class="fd">${esc(f.v.b)}${f.v.land ? ' · ' + esc(f.v.land) : ''}</div><div class="km h">${kmN == null ? esc(f.t) : '0 km'}</div></div>`;
-        shock(side.querySelector('.p-far')); rays(14, root);
+        shock(side.querySelector('.p-far')); sf('stinger'); rays(14, root);
         if (kmN != null) later(500, () => cu(side.querySelector('.km'), kmN, 2400, n => n.toLocaleString('nl-BE') + ' km'));
       });
     });
@@ -576,8 +698,8 @@ function runPres(root, getD, e0, onEnd) {
       const n = c.querySelector('.cn'), t = o.t || (fb && o.v.d) || '';
       n.classList.remove('rolling'); n.textContent = o.v.naam;
       c.insertAdjacentHTML('beforeend', `<div class="cd">${esc(o.v.b)}</div>${t ? `<div class="cdt h">${esc(t)}</div>` : ''}`);
-      c.classList.add('lock'); shock(c);
-      if (big) { document.body.classList.remove('hot'); zap(); } else rays(12, root);
+      c.classList.add('lock'); sf('lock'); shock(c);
+      if (big) { document.body.classList.remove('hot'); sf('stinger'); zap(); } else rays(12, root);
     };
     const roll = (sel, o, ms, fb, big) => {
       const c = q(sel), n = c && c.querySelector('.cn'); if (!n || !o.v) return;
@@ -587,15 +709,16 @@ function runPres(root, getD, e0, onEnd) {
         const k = Math.min(1, (performance.now() - t0) / ms);
         if (k >= 1) { lock(sel, o, fb, big); return; }
         let w; do { w = pool[Math.random() * pool.length | 0]; } while (pool.length > 1 && w === last);
-        last = w; n.textContent = w;
+        last = w; n.textContent = w; sf('roll', {p: k});
         T.push(setTimeout(step, 60 + 420 * k * k * k));
       };
       step();
     };
-    later(500, () => on('.p-sn'));
-    later(1500, () => on('.p-c2.l'));
+    later(500, () => on('.p-sn')); snd(500, 'pop');
+    later(1500, () => on('.p-c2.l')); snd(1500, 'swoosh');
     later(2700, () => roll('.p-c2.l', d.first, 3200, true, false));     // onthulling na ±5,9 s
-    later(6800, () => on('.p-c2.r'));
+    later(6800, () => on('.p-c2.r')); snd(6800, 'swoosh');
+    if (d.last.v) { let t = 8200, g = 560; while (t < 12400) { snd(t, 'heart'); t += g; g = Math.max(300, g - 30); } }
     later(8200, () => { if (d.last.v) document.body.classList.add('hot'); roll('.p-c2.r', d.last, 4200, false, true); });   // langere spanning, bliksem bij de onthulling
   };
 
@@ -603,21 +726,25 @@ function runPres(root, getD, e0, onEnd) {
   const s4 = () => {
     on('.p-head'); root.classList.add('clear');
     show(`<div class="p-end"><div class="p-q1 h">Nu blijft er nog 1 vraag over…</div><div class="p-q2 h"></div></div>`);
-    later(500, () => on('.p-q1'));
+    later(500, () => on('.p-q1')); snd(500, 'pop');
     later(3600, () => document.body.classList.add('hot'));
+    { let t = 3600, g = 700; while (t < 11300) { snd(t, 'heart'); t += g; g = Math.max(260, g - 35); } }
+    for (let i = 0; i < 14; i++) snd(4200 + i * 120, 'roll', {p: i / 14});
+    snd(5900, 'slam');
     later(4200, () => {
       const e = q('.p-q2'); if (!e) return;
       e.innerHTML = lettersH('Welke vakantie heb jij deze') + ' ' + `<span style="display:inline-block;white-space:nowrap">${[...'zomer'].map((c, i) => `<b style="animation-delay:${((23 + i) * .06).toFixed(2)}s">${c}</b>`).join('')}<span class="qq">???</span></span>`;
       rays(16, root);
     });
+    snd(7000, 'riser', {d: 4.3});
     for (let i = 0; i < 12; i++) lfx(7000 + i * 330, () => {   // het beeld begint steeds harder te trillen
       const e = q('.p-q2'); if (!e) return;
       e.classList.add('trem'); e.style.setProperty('--a', (1 + i * .8).toFixed(1) + 'px'); e.style.setProperty('--sc', (1 + i * .015).toFixed(3));
       rays(2 + (i / 3 | 0), root);
     });
-    lfx(11300, () => { const e = q('.p-q2'); if (e) e.classList.remove('trem'); zap(); rays(24, root); });
+    lfx(11300, () => { const e = q('.p-q2'); if (e) e.classList.remove('trem'); sf('stinger'); zap(); rays(24, root); });
     lfx(11900, () => heroPass(false, 40));
-    later(12600, () => { document.body.classList.remove('hot'); document.body.classList.add('hotout'); root.classList.add('fadeout'); });   // zacht naar de countdown
+    later(12600, () => { document.body.classList.remove('hot'); document.body.classList.add('hotout'); root.classList.add('fadeout'); music.stop(1.6); });   // zacht naar de countdown
   };
 
   const SC = [sIntro, s1, s2, s3, s4];
@@ -625,7 +752,7 @@ function runPres(root, getD, e0, onEnd) {
   SC.forEach((fn, i) => { if (i > ci) later(SCN[i] - e0, fn); });
   skip = e0 - SCN[ci]; SC[ci](); skip = 0;
   later(PRES_MS - e0, () => { if (onEnd) onEnd(); });
-  return () => { dead = true; T.forEach(clearTimeout); document.body.classList.remove('hot', 'hotout'); };
+  return () => { dead = true; music.stop(.5); T.forEach(clearTimeout); document.body.classList.remove('hot', 'hotout'); };
 }
 
 firebase.initializeApp(CFG);
