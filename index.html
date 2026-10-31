@@ -235,6 +235,7 @@ button:disabled{opacity:.4;cursor:not-allowed}
 .p-q2.boom.trem{animation:trem var(--sp,.09s) linear infinite}
 .p-flash{position:fixed;inset:0;background:#fff;z-index:9999;pointer-events:none;animation:pflash 2.8s both}
 @keyframes pflash{0%{opacity:0}2%{opacity:1}6%{opacity:.55}9%{opacity:1}50%{opacity:1}100%{opacity:0}}
+.p-q2{font-size:clamp(2.2rem,9vmin,6.5rem);max-width:88vw;overflow-wrap:anywhere}
 
 .pres .rs{z-index:0}
 
@@ -303,6 +304,8 @@ const LOGO = "logo.png";   // zet je logo als logo.png naast index.html (of plak
 /* ====== GELUIDEN: HIER KAN JE ALLES VERVANGEN ======
    url: '' = ingebouwd synth-geluid. Vul een bestand of link in (bv. 'sounds/tick.mp3') en dat wordt gebruikt.
    vol: volume 0 tot 1 (0 = uit). Muziek: zet url voor je eigen nummer (loopt, stopt zacht op het einde). */
+/* RISER-DELAY in seconden: wachttijd voor de riser begint (de riser eindigt altijd op hetzelfde moment) */
+const RISER_DELAY = {pres: 1, count: 1.5};   // pres = einde van de presentatie, count = countdown (laatste 10 s)
 const MUSIC_INTENSITY = [.12, .25, .4, .62, .82, 1];   // spanning van de ingebouwde muziek per scene (0 tot 1)
 const SOUNDS = {
   music:    {url: 'muziek.mp3', vol: .55},  // spannende achtergrondmuziek tijdens de hele presentatie
@@ -314,7 +317,7 @@ const SOUNDS = {
   swoosh:   {url: '', vol: .6},   // wissel tussen dia's
   fly:      {url: '', vol: .7},   // superheld vliegt voorbij
   flyArc:   {url: '', vol: .7},   // held vliegt over de kaart
-  swell:    {url: 'drop.mp3', vol: .6},   // intro: titel in de mist
+  swell:    {url: 'swell.mp3', vol: .6},   // intro: titel in de mist
   fog:      {url: '', vol: .6},   // intro: WAAS
   drop:     {url: 'drop.mp3', vol: .6},   // intro: DENDER valt neer
   slam:     {url: '', vol: .8},   // zware klap
@@ -466,7 +469,7 @@ const music = (() => {
         {t: 2800, f: at => rise(at, 3.2, 1)},
         {t: 6020, f: at => hit(at, 1)},
         {t: 9900, f: at => hit(at, .6)},
-        {t: SCN[4] + 4700, f: at => { rise(at, 9, 1.1); GAIN = 1; [110, 116.5, 164.8, 174.6].forEach((f, i) => T_({f, type: 'sawtooth', at, d: 9.2, a: 8.5, v: .07, lp: 300, lp2: 2500, det: i * 6})); }},
+        {t: SCN[4] + 4700 + RISER_DELAY.pres * 1000, f: at => { rise(at, 9 - RISER_DELAY.pres, 1.1); GAIN = 1; [110, 116.5, 164.8, 174.6].forEach((f, i) => T_({f, type: 'sawtooth', at, d: 9.2 - RISER_DELAY.pres, a: 8.5 - RISER_DELAY.pres, v: .07, lp: 300, lp2: 2500, det: i * 6})); }},
         {t: SCN[4] + 13350, f: at => out.gain.setTargetAtTime(.02, c.currentTime + at, .02)},
         {t: SCN[4] + 13700, f: at => { out.gain.setTargetAtTime(S.vol, c.currentTime + at, .02); hit(at, 1.4); }}
       ];
@@ -475,7 +478,7 @@ const music = (() => {
         GAIN = 1; const bar = (n >> 4) & 3, s = n & 15, r = ROOT[bar];
         const fin = ms >= SCN[4] ? ms - SCN[4] : -1, tr = ms >= 0 && ms < SCN[1] ? ms / SCN[1] : -1;
         if (tr > .1) { T_({f: r * 2, type: 'sawtooth', at, d: SP * .8, v: .05 + .12 * tr, lp: 160 + tr * 500, lp2: 90}); if (s % 2) N_({at, d: .03, v: .03 + .05 * tr, type: 'highpass', f: 9000, a: .002}); }
-        if (fin >= 4700) { const k = Math.min(1, (fin - 4700) / 9000); T_({f: r * 8 * (1 + k), type: 'square', at, d: SP * .9, v: .025 + .05 * k, lp: 1500 + k * 2500}); N_({at, d: .05, v: .04 + .12 * k, type: 'highpass', f: 6000, a: .002}); }
+        if (fin >= 4700 + RISER_DELAY.pres * 1000) { const k = Math.min(1, (fin - 4700 - RISER_DELAY.pres * 1000) / (9000 - RISER_DELAY.pres * 1000)); T_({f: r * 8 * (1 + k), type: 'square', at, d: SP * .9, v: .025 + .05 * k, lp: 1500 + k * 2500}); N_({at, d: .05, v: .04 + .12 * k, type: 'highpass', f: 6000, a: .002}); }
         if (s === 0) [1, 1.5, 2, 3].forEach((m, i) => tone({f: r * 4 * m, type: 'sawtooth', at, d: SP * 14, a: SP * 5, v: .05 + .04 * I, lp: 500 + I * 1500, lp2: 300, det: i * 3 - 4, out}));
         if (!(fin >= 4700) && (s === 0 || s === 3 || (I > .55 && (s === 8 || s === 11)))) tone({f: s % 8 === 0 ? 120 : 95, f2: 42, at, d: .28, v: (s % 8 === 0 ? .55 : .4) * (.5 + .5 * I), out});
         if (I > .12 && s % 2 === 0) tone({f: r * 2, type: 'sawtooth', at, d: SP * 1.8, v: .09 + .08 * I, lp: 250 + I * 900, lp2: 120, out});
@@ -509,7 +512,7 @@ const countSound = s => {   // geluid van de countdown op het grote scherm
   if (s > 10) { sfx('tick', {p: s % 2, v: .6}); return; }
   sfx('cdTick', {p: (10 - s) / 9, v: 1 + (10 - s) * .06});
   if (s <= 3) sfx('heart');
-  if (s === 10) sfx('riser', {d: 10});
+  if (s === 10) setTimeout(() => sfx('riser', {d: 10 - RISER_DELAY.count}), RISER_DELAY.count * 1000);
 };
 const unlockSound = () => { try { AX(); AC.state !== 'running' && AC.resume(); preload(); } catch (e) {} };
 setTimeout(preload, 0);
@@ -795,14 +798,14 @@ function runPres(root, getD, e0, onEnd) {
       if (!skip) { shock(e); rays(26, root); }
     });
     snd(4700, 'slam'); snd(4700, 'stinger');
-    snd(4700, 'riser', {d: 9});
+    snd(4700 + RISER_DELAY.pres * 1000, 'riser', {d: 9 - RISER_DELAY.pres});
     { let t = 5100, g = 800; while (t < 13500) { snd(t, 'heart'); t += g; g = Math.max(260, g - 40); } }
     // trilt steeds sneller (kortere trilduur) én steeds harder
     for (let i = 0; i < 28; i++) lfx(5300 + i * 295, () => {
       const e = q('.p-q2'); if (!e) return;
       e.classList.add('trem');
       e.style.setProperty('--sp', (0.09 - 0.07 * Math.pow(i / 27, 0.8)).toFixed(3) + 's');
-      e.style.setProperty('--a', (1 + i * .34).toFixed(1) + 'px'); e.style.setProperty('--sc', (1 + i * .006).toFixed(3));
+      e.style.setProperty('--a', (1 + i * .34).toFixed(1) + 'px'); e.style.setProperty('--sc', (1 + i * .004).toFixed(3));
       rays(2 + (i / 6 | 0), root);
     });
     // 13,6 s bliksem, 13,7 s witte flash over alles
