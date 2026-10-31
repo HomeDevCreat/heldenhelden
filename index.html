@@ -151,7 +151,7 @@ button:disabled{opacity:.4;cursor:not-allowed}
 .p-stat .sl3{font-size:clamp(1.2rem,4.2vmin,3rem)}
 .p-piebox{opacity:0;transform:scale(.5) rotate(-40deg);transition:all 1s cubic-bezier(.2,1.3,.4,1);display:flex;flex-direction:column;align-items:center;gap:2vmin}
 .p-s1.pie .p-piebox{opacity:1;transform:none}
-.p-piebox svg{width:min(40vw,52vmin);height:auto;overflow:visible}
+.p-piebox svg{width:min(46vw,72vmin);height:auto;overflow:visible}
 .p-piebox text{font-family:Bangers,Impact,sans-serif;text-anchor:middle}
 .p-piebox .pl{opacity:0;transition:opacity .5s;fill:#fff;stroke:#0a0c1c;stroke-width:3px;paint-order:stroke;font-size:18px}
 .p-leg{display:grid;grid-template-columns:repeat(3,auto);gap:1vmin 2vw;justify-content:center;text-align:left}
@@ -185,14 +185,14 @@ button:disabled{opacity:.4;cursor:not-allowed}
 .arc{fill:none;stroke:#fff;stroke-width:3.5;stroke-linecap:round;filter:drop-shadow(0 0 5px #ffd21f)}
 .hero{filter:drop-shadow(0 0 6px #ffd21f)}
 .p-side{display:flex;flex-direction:column;gap:1.4vmin;align-items:stretch;text-align:left;min-width:0}
-.p-bars{display:flex;flex-direction:column;gap:1.4vmin}
+.p-bars{display:flex;flex-direction:column;gap:min(1.4vmin,calc(12vmin/var(--rn,8)))}
 .p-sh{font-size:clamp(1.6rem,5.2vmin,3.6rem);color:var(--yel);text-shadow:3px 3px 0 var(--red);margin-bottom:1vmin;text-align:center;line-height:1.05}
-.p-bar{display:grid;grid-template-columns:minmax(0,30%) 1fr auto;gap:1.2vmin;align-items:center;opacity:0;transform:translateX(6vw);transition:all .6s cubic-bezier(.2,1.2,.4,1)}
+.p-bar{display:grid;grid-template-columns:minmax(0,38%) 1fr auto;gap:1.2vmin;align-items:center;opacity:0;transform:translateX(6vw);transition:all .6s cubic-bezier(.2,1.2,.4,1)}
 .p-bar.on{opacity:1;transform:none}
-.p-bar .bl{font-size:clamp(1.1rem,3.4vmin,2.4rem);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.p-bt{height:3.6vmin;background:#ffffff14;border-radius:99px;overflow:hidden}
+.p-bar .bl{font-size:min(3.4vmin,calc(34vmin/var(--rn,8)));white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.p-bt{height:min(3.6vmin,calc(30vmin/var(--rn,8)));background:#ffffff14;border-radius:99px;overflow:hidden}
 .p-bt i{display:block;height:100%;width:0;border-radius:99px;background:linear-gradient(90deg,var(--yel),var(--red));transition:width 1.1s cubic-bezier(.2,.9,.3,1)}
-.p-bar .bn{font-size:clamp(1.3rem,4vmin,2.8rem);color:var(--yel);min-width:2.2ch;text-align:right}
+.p-bar .bn{font-size:min(4vmin,calc(38vmin/var(--rn,8)));color:var(--yel);min-width:2.2ch;text-align:right}
 .p-more{font-size:clamp(.9rem,2.6vmin,1.6rem);opacity:.7;text-align:center}
 .p-far{display:flex;flex-direction:column;gap:1.6vmin;align-items:center;text-align:center;animation:pop .8s both;background:#ffffff12;border:.5vmin solid var(--red);border-radius:2.2vmin;padding:3vmin;box-shadow:0 0 50px #e8203a55}
 .p-far .fn{font-size:clamp(2rem,7.5vmin,5.5rem);line-height:1;text-shadow:0 0 18px var(--yel),4px 4px 0 var(--red);overflow-wrap:anywhere}
@@ -264,6 +264,7 @@ body.ray::before{animation:spin 30s linear infinite,rayin 2.5s ease-out both}
 #v.cin{animation:cin 1.3s cubic-bezier(.2,.9,.3,1) both}
 @keyframes cin{from{opacity:0;transform:scale(.8)}}
 
+.p-leg{display:none}
 @media (prefers-reduced-motion:reduce){*{animation:none!important}}
 </style></head>
 <body><div id="v"></div>
@@ -305,7 +306,7 @@ const SOUNDS = {
   fog:      {url: '', vol: .6},   // intro: WAAS
   drop:     {url: '', vol: .6},   // intro: DENDER valt neer
   slam:     {url: '', vol: .8},   // zware klap
-  thunder:  {url: 'thunder.mp3', vol: .8},   // bliksem
+  thunder:  {url: 'thunder.mp3', vol: .8, skip: 0},   // bliksem
   riser:    {url: '', vol: .7},   // oplopende spanning
   mystery:  {url: '', vol: .6},   // mysterieus (???)
   heart:    {url: '', vol: .7},   // hartslag
@@ -313,6 +314,8 @@ const SOUNDS = {
   lock:     {url: '', vol: .8},   // naam vergrendeld
   stinger:  {url: '', vol: .7},   // dramatisch akkoord
   head:     {url: '', vol: .6}    // titelbalk komt binnen
+  , tick:     {url: '', vol: .5}    // countdown: rustige tik
+  , cdTick:   {url: '', vol: .7}    // countdown: spannende tik (laatste 10 s)
 };
 const $ = s => document.querySelector(s);
 const ls = {get:k=>{try{return localStorage.getItem(k)}catch(e){return null}}, set:(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}}};
@@ -362,7 +365,7 @@ function fly(n = 3) {
     d.className = 'fly' + (rl ? ' rl' : k === 2 ? ' c' : ''); d.style.top = [38, 34, 62][k] + 'vh'; d.style.width = `min(${[70, 85, 75][k]}vw,${[460, 560, 500][k]}px)`; d.style.animationDuration = '1.6s';
     d.innerHTML = `<div class="fi">${HERO ? `<img src="${esc(HERO)}" alt="" onerror="this.remove()">` : HEROSVG}</div>`; document.body.append(d);
     for (let j = 0; j < 6; j++) { const l = document.createElement('i'); l.className = 'sl' + (rl ? ' r' : ''); l.style.top = (12 + Math.random() * 70) + 'vh'; l.style.width = (20 + Math.random() * 30) + 'vw'; l.style.animationDelay = (Math.random() * .4) + 's'; document.body.append(l); setTimeout(() => l.remove(), 2000); }
-    if (mode !== 'screen') { whoosh(); buzz([200, 40, 300]); }
+    if (mode !== 'screen') buzz([200, 40, 300]); else sfx('fly');
     setTimeout(() => d.remove(), 1800);
   }, i * 1150);
 }
@@ -376,6 +379,7 @@ const JSPDF = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.
 
 /* ================= GELUID-ENGINE (synth + eigen bestanden) ================= */
 let BUS = null, GAIN = 1, MUTED = false, NB = null;
+const BUFS = {}, PRE = {};
 const AX = () => { AC = AC || new AudioContext(); if (!BUS) { const m = AC.createGain(), k = AC.createDynamicsCompressor(); m.connect(k); k.connect(AC.destination); BUS = {m, s: m}; } return AC; };
 const nbuf = c => NB || (NB = (() => { const b = c.createBuffer(1, c.sampleRate * 2, c.sampleRate), d = b.getChannelData(0); for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1; return b; })());
 const tone = ({f = 440, f2, type = 'sine', at = 0, d = .2, v = .3, a = .004, lp, lp2, det = 0, out}) => {
@@ -409,17 +413,23 @@ const SYNTH = {
   roll: o => { const f = 300 * Math.pow(2, (o.p || 0) * 1.8); tone({f, type: 'triangle', d: .05, v: .2}); noise({d: .025, v: .12, type: 'highpass', f: 3500, a: .001}); },
   lock: () => { tone({f: 130, f2: 45, d: .6, v: .7}); noise({d: .25, v: .3, f: 2800, q: 3, a: .001}); [1047, 1568, 2093].forEach((f, i) => tone({f, at: .05 + i * .04, d: 1, v: .17})); },
   stinger: () => { [220, 261.63, 329.63, 440].forEach((f, i) => tone({f, type: 'sawtooth', d: 1.6, v: .13, a: .01, lp: 3000, lp2: 300, det: i * 3 - 4})); tone({f: 55, f2: 40, d: 1.2, v: .6}); },
+  tick: o => { tone({f: 1500 + (o.p || 0) * 350, type: 'square', d: .03, v: .08, lp: 4000}); noise({d: .02, v: .05, type: 'highpass', f: 5000}); },
+  cdTick: o => { const p = o.p || 0; tone({f: 700 + p * 900, type: 'square', d: .08, v: .14, lp: 3500}); tone({f: 90, f2: 50, d: .2, v: .5 * (.5 + p)}); noise({d: .03, v: .1, type: 'highpass', f: 6000}); },
   head: () => { noise({d: .5, v: .2, a: .1, f: 600, f2: 4000, q: 1.5}); tone({f: 200, f2: 600, type: 'triangle', d: .3, v: .2}); tone({f: 90, f2: 50, d: .4, v: .4, at: .3}); }
 };
 const sfx = (name, o = {}) => {
   const S = SOUNDS[name]; if (!S || MUTED || !S.vol) return;
   try {
-    if (S.url) { const a = new Audio(S.url); a.volume = Math.min(1, S.vol * (o.v ?? 1)); if (o.p !== undefined && S.pitch !== false) { a.preservesPitch = false; a.playbackRate = .8 + o.p * .8; } a.play().catch(() => {}); return; }
+    if (S.url) {
+      const b = BUFS[name], vv = S.vol * (o.v ?? 1), pr = o.p !== undefined && S.pitch !== false ? .8 + o.p * .8 : 1;
+      if (b && b.duration) { AX(); if (AC.state !== 'running') return; const s = AC.createBufferSource(), g = AC.createGain(); s.buffer = b; s.playbackRate.value = pr; g.gain.value = vv; s.connect(g); g.connect(BUS.s); s.start(0, S.skip || 0); return; }
+      const a = (PRE[name] || new Audio(S.url)).cloneNode(); a.volume = Math.min(1, vv); if (pr !== 1) { a.preservesPitch = false; a.playbackRate = pr; } if (S.skip) a.currentTime = S.skip; a.play().catch(() => {}); return;
+    }
     AX(); if (AC.state !== 'running') return;
     GAIN = S.vol * (o.v ?? 1); SYNTH[name] && SYNTH[name](o);
   } catch (e) {}
 };
-const interp = t => { const I = MUSIC_INTENSITY, p = [...SCN, PRES_MS]; for (let i = 0; i < p.length - 1; i++) if (t < p[i + 1]) return I[i] + (I[i + 1] - I[i]) * Math.max(0, (t - p[i]) / (p[i + 1] - p[i])); return I[I.length - 1]; };
+const interp = t => { if (t >= SCN[4]) { const r = t - SCN[4]; return r < 3000 ? .3 : Math.min(1, .3 + (r - 3000) / 7300 * .7); } const I = MUSIC_INTENSITY, p = [...SCN, PRES_MS]; for (let i = 0; i < p.length - 1; i++) if (t < p[i + 1]) return I[i] + (I[i + 1] - I[i]) * Math.max(0, (t - p[i]) / (p[i + 1] - p[i])); return I[I.length - 1]; };
 const music = (() => {
   let timer = null, file = null, cleanup = null, going = false;
   const stop = (fade = .5) => {
@@ -427,7 +437,7 @@ const music = (() => {
     if (file) { const f = file; file = null; let k = 10; const v0 = f.volume, iv = setInterval(() => { k--; f.volume = Math.max(0, v0 * k / 10); if (k <= 0) { clearInterval(iv); f.pause(); } }, fade * 100); }
     if (cleanup) { cleanup(fade); cleanup = null; }
   };
-  const start = (getI, e0 = 0) => {
+  const start = (getI, e0 = 0, getT = () => -1e9) => {
     stop(0); const S = SOUNDS.music; if (!S || !S.vol) return; going = true;
     try {
       if (S.url) { file = new Audio(S.url); file.loop = true; file.volume = Math.min(1, S.vol); file.muted = MUTED; file.addEventListener('loadedmetadata', () => { try { if (e0 && file.duration > e0 / 1000) file.currentTime = e0 / 1000; } catch (e) {} }); file.play().catch(() => {}); return; }
@@ -436,10 +446,26 @@ const music = (() => {
       const dr = [55, 55.35, 82.41, 110.3].map(f => { const o = c.createOscillator(); o.type = 'sawtooth'; o.frequency.value = f; o.connect(dl); o.start(); return o; });
       const SP = 60 / 100 / 4, ROOT = [55, 43.65, 49, 41.2], PENT = [1, 1.2, 1.333, 1.5, 1.8, 2, 2.4, 3], ARP = [0, 2, 4, 2, 3, 5, 4, 2, 0, 3, 5, 6, 5, 4, 2, 3];
       let nx = c.currentTime + .1, n = 0;
-      const step = (n, at, I) => {
+      const T_ = o => tone({...o, out}), N_ = o => noise({...o, out});
+      const hit = (at, k) => { GAIN = 1; T_({f: 75, f2: 28, at, d: 2.6, v: .9 * k}); [55, 55.6, 82.4, 110, 165].forEach((f, i) => T_({f, type: 'sawtooth', at, d: 3, a: .02, v: .16 * k, lp: 2600, lp2: 140, det: i * 5 - 10})); N_({at, d: 2.2, v: .4 * k, type: 'lowpass', f: 3500, f2: 200, a: .003}); N_({at, d: 2.8, v: .12 * k, type: 'highpass', f: 5000, a: .003}); };
+      const rise = (at, d, k) => { GAIN = 1; N_({at, d, v: .3 * k, a: d * .95, f: 200, f2: 8000, q: 2}); T_({f: 80, f2: 1400, at, type: 'sawtooth', d, v: .1 * k, a: d * .95, lp: 500, lp2: 6000}); T_({f: 55, f2: 220, at, d, v: .25 * k, a: d * .95}); };
+      const ev = [   // vaste momenten in de presentatie (ms): trailer-intro en finale
+        {t: 0, f: at => { GAIN = 1; [55, 110, 82.4].forEach((f, i) => T_({f, type: 'sawtooth', at, d: 3.2, a: 3, v: .14, lp: 100, lp2: 900, det: i * 4})); }},
+        {t: 2800, f: at => rise(at, 3.2, 1)},
+        {t: 6020, f: at => hit(at, 1)},
+        {t: 9900, f: at => hit(at, .6)},
+        {t: SCN[4] + 4200, f: at => { rise(at, 7.1, 1.1); GAIN = 1; [110, 116.5, 164.8, 174.6].forEach((f, i) => T_({f, type: 'sawtooth', at, d: 7.2, a: 6.5, v: .07, lp: 300, lp2: 2500, det: i * 6})); }},
+        {t: SCN[4] + 10950, f: at => out.gain.setTargetAtTime(.02, c.currentTime + at, .02)},
+        {t: SCN[4] + 11300, f: at => { out.gain.setTargetAtTime(S.vol, c.currentTime + at, .02); hit(at, 1.4); }}
+      ];
+      const done = ev.map(x => x.t < getT() - 150);
+      const step = (n, at, I, ms) => {
         GAIN = 1; const bar = (n >> 4) & 3, s = n & 15, r = ROOT[bar];
+        const fin = ms >= SCN[4] ? ms - SCN[4] : -1, tr = ms >= 0 && ms < SCN[1] ? ms / SCN[1] : -1;
+        if (tr > .1) { T_({f: r * 2, type: 'sawtooth', at, d: SP * .8, v: .05 + .12 * tr, lp: 160 + tr * 500, lp2: 90}); if (s % 2) N_({at, d: .03, v: .03 + .05 * tr, type: 'highpass', f: 9000, a: .002}); }
+        if (fin >= 4000) { const k = Math.min(1, (fin - 4000) / 7300); T_({f: r * 8 * (1 + k), type: 'square', at, d: SP * .9, v: .025 + .05 * k, lp: 1500 + k * 2500}); N_({at, d: .05, v: .04 + .12 * k, type: 'highpass', f: 6000, a: .002}); }
         if (s === 0) [1, 1.5, 2, 3].forEach((m, i) => tone({f: r * 4 * m, type: 'sawtooth', at, d: SP * 14, a: SP * 5, v: .05 + .04 * I, lp: 500 + I * 1500, lp2: 300, det: i * 3 - 4, out}));
-        if (s === 0 || s === 3 || (I > .55 && (s === 8 || s === 11))) tone({f: s % 8 === 0 ? 120 : 95, f2: 42, at, d: .28, v: (s % 8 === 0 ? .55 : .4) * (.5 + .5 * I), out});
+        if (!(fin >= 3000) && (s === 0 || s === 3 || (I > .55 && (s === 8 || s === 11)))) tone({f: s % 8 === 0 ? 120 : 95, f2: 42, at, d: .28, v: (s % 8 === 0 ? .55 : .4) * (.5 + .5 * I), out});
         if (I > .12 && s % 2 === 0) tone({f: r * 2, type: 'sawtooth', at, d: SP * 1.8, v: .09 + .08 * I, lp: 250 + I * 900, lp2: 120, out});
         if (I > .35) tone({f: r * 4 * PENT[ARP[s]] * (I > .75 && bar % 2 ? 2 : 1), type: 'triangle', at, d: SP * 1.4, v: .04 + .05 * I, out});
         if (I > .5 && (s % 2 === 1 || I > .8)) noise({at, d: .04, v: .05 + .05 * I, type: 'highpass', f: 7000, a: .002, out});
@@ -447,16 +473,34 @@ const music = (() => {
       };
       timer = setInterval(() => {
         if (c.state !== 'running') { nx = c.currentTime + .1; return; }
-        const I = Math.max(0, Math.min(1, getI())), t = c.currentTime;
+        const I = Math.max(0, Math.min(1, getI())), t = c.currentTime, ms = getT();
+        ev.forEach((x, i) => { if (!done[i] && x.t - ms < 300) { done[i] = true; x.f(Math.max(0, (x.t - ms) / 1000)); } });
         dl.frequency.setTargetAtTime(180 + I * 1100, t, .3); dg.gain.setTargetAtTime(.06 + .09 * I, t, .3);
-        while (nx < t + .3) { step(n++, nx - t, I); nx += SP; }
+        while (nx < t + .3) { step(n++, nx - t, I, ms + (nx - t) * 1000); nx += SP; }
       }, 70);
       cleanup = fade => { const t = c.currentTime; out.gain.cancelScheduledValues(t); out.gain.setTargetAtTime(.0001, t, Math.max(.05, fade / 4)); setTimeout(() => { dr.forEach(o => { try { o.stop(); } catch (e) {} }); out.disconnect(); }, fade * 1000 + 500); };
     } catch (e) {}
   };
   return {start, stop, mute: m => { if (file) file.muted = m; }};
 })();
-const unlockSound = () => { try { AX(); AC.state !== 'running' && AC.resume(); } catch (e) {} };
+const preload = () => {   // geluidsbestanden vooraf laden en decoderen = geen vertraging bij afspelen
+  if (!/^#(screen|host)$/.test(location.hash)) return;
+  Object.entries(SOUNDS).forEach(([n, S]) => {
+    if (!S.url || n === 'music' || n in BUFS) return; BUFS[n] = null;
+    try { PRE[n] = new Audio(S.url); PRE[n].preload = 'auto'; } catch (e) {}
+    try { AX(); fetch(S.url).then(r => r.arrayBuffer()).then(b => AC.decodeAudioData(b)).then(b => { BUFS[n] = b; }).catch(() => {}); } catch (e) {}
+  });
+};
+const countSound = s => {   // geluid van de countdown op het grote scherm
+  if (s <= 0) return;
+  if (s > 30) { if (s % 10 === 0) sfx('tick', {p: 0}); return; }
+  if (s > 10) { sfx('tick', {p: s % 2, v: .6}); return; }
+  sfx('cdTick', {p: (10 - s) / 9, v: 1 + (10 - s) * .06});
+  if (s <= 3) sfx('heart');
+  if (s === 10) sfx('riser', {d: 10});
+};
+const unlockSound = () => { try { AX(); AC.state !== 'running' && AC.resume(); preload(); } catch (e) {} };
+setTimeout(preload, 0);
 ['pointerdown', 'keydown', 'touchend'].forEach(ev => addEventListener(ev, unlockSound, {passive: true}));
 addEventListener('keydown', e => { if (/INPUT|TEXTAREA|SELECT/.test(e.target.tagName) || (e.key !== 'm' && e.key !== 'M')) return; MUTED = !MUTED; try { AX(); BUS.m.gain.value = MUTED ? 0 : 1; } catch (x) {} music.mute(MUTED); });
 if (location.hash.slice(1) === 'screen') {
@@ -547,7 +591,7 @@ function runPres(root, getD, e0, onEnd) {
   };
 
   root.classList.add('pres'); root.classList.remove('clear');
-  const tm0 = performance.now(); music.start(() => interp(e0 + performance.now() - tm0), e0);
+  const tm0 = performance.now(); music.start(() => interp(e0 + performance.now() - tm0), e0, () => e0 + performance.now() - tm0);
   root.innerHTML = `<div class="fogbg">${[[10, 30, 26], [80, 20, 31], [45, 75, 23], [90, 85, 29], [15, 90, 34]].map(([x, y, d]) => `<i style="--x:${x}%;--y:${y}%;--d:${d}s"></i>`).join('')}</div><div class="p-head">KAZOU ZOMER 2027<small>bij Waas en Dender</small></div><div id="pst"></div>`;
   const pst = q('#pst');
   const show = (h, c) => { const o = q('#pst .sc'); if (o) { o.classList.add('out'); setTimeout(() => o.remove(), 750); streaks(7, true); sf('swoosh', {v: .8}); } const d = mk(`<div class="sc ${c || ''}">${h}</div>`); pst.append(d); return d; };
@@ -584,12 +628,13 @@ function runPres(root, getD, e0, onEnd) {
     svg.innerHTML = `<circle r="70" fill="none" stroke="#ffffff14" stroke-width="40"/>` +
       sl.map(s => `<circle class="pc" data-i="${s.i}" r="70" fill="none" stroke="${AGC[s.i]}" stroke-width="40" transform="rotate(-90)" stroke-dasharray="0 ${C}" stroke-dashoffset="${-s.o * C}" style="transition:stroke-dasharray .9s ease"/>`).join('') +
       sl.map(s => { const a = (s.o + s.f / 2) * 2 * Math.PI - Math.PI / 2; return `<text class="pl" data-i="${s.i}" x="${(70 * Math.cos(a)).toFixed(1)}" y="${(70 * Math.sin(a) + 6).toFixed(1)}">${s.x.n}</text>`; }).join('') +
+      sl.map(s => { const a = (s.o + s.f / 2) * 2 * Math.PI - Math.PI / 2, ca = Math.cos(a); return '<text class="pl" data-i="' + s.i + '" x="' + (112 * ca).toFixed(1) + '" y="' + (112 * Math.sin(a) + 5).toFixed(1) + '" style="font-size:16px;text-anchor:' + (ca > .25 ? 'start' : ca < -.25 ? 'end' : 'middle') + '">' + s.x.a + ' jaar</text>'; }).join('') +
       `<text y="-2" font-size="22" fill="#ffd21f">PER</text><text y="20" font-size="22" fill="#ffd21f">LEEFTIJD</text>`;
     sl.forEach((s, k) => later(150 + k * 450, () => {
       sf('blip', {p: k / 5});
       const c = svg.querySelector(`.pc[data-i="${s.i}"]`), t = svg.querySelector(`.pl[data-i="${s.i}"]`);
       if (c) c.style.strokeDasharray = `${Math.max(0, s.f * C - 2)} ${C}`;
-      later(600, () => { if (t) t.style.opacity = 1; });
+      later(600, () => { svg.querySelectorAll('.pl[data-i="' + s.i + '"]').forEach(e => e.style.opacity = 1); });
     }));
     const leg = q('.p-leg');
     leg.innerHTML = d.ages.map((x, i) => `<div class="p-li" style="--c:${AGC[i]}"><i></i>${x.a} jaar <b>${x.n}</b></div>`).join('');
@@ -601,7 +646,7 @@ function runPres(root, getD, e0, onEnd) {
     const sc = show(`<div class="p-s1"><div class="p-stats">
       <div class="p-stat" id="pa"><div class="sn h">0</div><div class="sl3 h">vrijwilligers gaan mee</div></div>
       <div class="p-stat" id="pb"><div class="sn h">0</div><div class="sl3 h">vakanties in totaal</div></div></div>
-      <div class="p-piebox"><svg viewBox="-110 -110 220 220"></svg><div class="p-leg"></div></div></div>`);
+      <div class="p-piebox"><svg viewBox="-175 -135 350 270"></svg><div class="p-leg"></div></div></div>`);
     const w = sc.firstElementChild;
     snd(700, 'pop', {p: .3}); later(700, () => { on('#pa'); cu(q('#pa .sn'), d.vol, 2200, n => n.toLocaleString('nl-BE')); });
     lfx(2950, () => shock(q('#pa')));
@@ -652,8 +697,8 @@ function runPres(root, getD, e0, onEnd) {
     const d = D(), mx = d.cs[0] ? d.cs[0].n : 1, gap = Math.min(500, 5000 / Math.max(1, d.cs.length));
     const sc = show(`<div class="p-s2"><div class="p-map"></div><div class="p-side"><div class="p-sh h">Waar trekken we naartoe?</div><div class="p-bars"></div></div></div>`);
     const wrap = sc.firstElementChild, mp = wrap.querySelector('.p-map'), side = wrap.querySelector('.p-side'), bars = wrap.querySelector('.p-bars');
-    const rows = d.cs.slice(0, 8).map(c => { const r = mk(`<div class="p-bar"><span class="bl h">${esc(c.nl)}</span><div class="p-bt"><i></i></div><b class="bn h">0</b></div>`); bars.append(r); return r; });
-    if (d.cs.length > 8) bars.append(mk(`<div class="p-more">+ ${d.cs.length - 8} andere landen</div>`));
+    bars.style.setProperty('--rn', Math.max(1, d.cs.length)); const rows = d.cs.map(c => { const r = mk(`<div class="p-bar"><span class="bl h">${esc(c.nl)}</span><div class="p-bt"><i></i></div><b class="bn h">0</b></div>`); bars.append(r); return r; });
+    
     if (!d.cs.length) bars.append(mk(`<div class="p-more">nog geen landen ingevuld</div>`));
     const done = [];
     d.cs.forEach((c, i) => later(800 + i * gap, () => {
@@ -692,7 +737,7 @@ function runPres(root, getD, e0, onEnd) {
     on('.p-head'); root.classList.add('clear');
     const d = D();
     const card = (o, lab, cls) => `<div class="p-c2 ${cls}"><div class="ck h">${lab}</div><div class="cn h ${o.v ? 'rolling' : ''}">${o.v ? '???' : 'nog niet ingevuld'}</div></div>`;
-    show(`<div class="p-s3"><div class="p-sn h">Alle vakanties vertrekken in <b>Sint-Niklaas</b></div><div class="p-cards">${card(d.first, 'Eerste missie vertrekt', 'l')}${card(d.last, 'Laatste held veilig thuis', 'r b')}</div></div>`);
+    show(`<div class="p-s3"><div class="p-sn h" style="font-size:clamp(2.4rem,9vmin,6rem)">🎒 ⛺ 🌞</div><div class="p-road"><div class="p-bus"><span style="display:inline-block;transform:scaleX(-1)">🚌</span></div></div><div class="p-cards">${card(d.first, 'Eerste missie vertrekt', 'l')}${card(d.last, 'Laatste held veilig thuis', 'r b')}</div></div>`);
     const lock = (sel, o, fb, big) => {
       const c = q(sel); if (!c || !o.v) return;
       const n = c.querySelector('.cn'), t = o.t || (fb && o.v.d) || '';
@@ -781,7 +826,7 @@ db.ref('namen').on('value', s => {
 window.addEventListener('hashchange', () => location.reload());
 
 let AC;
-const beep = (f = 880, d = .12) => { try { AC = AC || new AudioContext(); const o = AC.createOscillator(), g = AC.createGain(); o.frequency.value = f; g.gain.value = .15; o.connect(g); g.connect(AC.destination); o.start(); o.stop(AC.currentTime + d); } catch (e) {} };
+const beep = () => {};   // geluid op gsm's staat uit (alleen het grote scherm heeft geluid)
 const buzz = p => { try { navigator.vibrate && navigator.vibrate(p); } catch (e) {} };
 
 function tick() {
@@ -794,7 +839,7 @@ function tick() {
     el.textContent = s >= 100 ? Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0') : s;
     el.classList.toggle('pulse', s <= 10);
     document.body.classList.toggle('hot', s <= 10);
-    if (s !== lastS) { lastS = s; if (s <= 10 && s > 0 && mode !== 'host' && mode !== 'screen') { beep(500 + (10 - s) * 70); buzz(60); } }
+    if (s !== lastS) { lastS = s; if (mode === 'screen') countSound(s); else if (s <= 10 && s > 0 && mode !== 'host') buzz(60); }
   }
   hostStatus(p);
 }
@@ -806,6 +851,9 @@ const R = {
   /* ---- Projectiescherm: …/#screen ---- */
   screen: p => {
     document.body.classList.toggle('ray', p === 'count' || p === 'reveal');
+    if (p === 'count') music.start(() => { const s = Math.max(0, (S.revealAt - now()) / 1000); return s > 30 ? .25 : .25 + .75 * (1 - s / 30); }); else if (p !== 'intro') music.stop(p === 'reveal' ? .2 : .4);
+    if (p === 'qr') sfx('pop'); if (p === 'count') sfx('swoosh');
+    if (p === 'reveal') { sfx('slam'); sfx('stinger'); sfx('countEnd'); }
     V.classList.toggle('cin', p === 'count');
     if (p === 'intro') {
       V.innerHTML = `<div class="pres" id="pres"></div>`;
