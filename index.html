@@ -592,6 +592,15 @@ function runPres(root, getD, e0, onEnd) {
 
   root.classList.add('pres'); root.classList.remove('clear');
   const tm0 = performance.now(); music.start(() => interp(e0 + performance.now() - tm0), e0, () => e0 + performance.now() - tm0);
+  const EX = [];   // extra geluiden uit de sound-studio: starten/stoppen op een tijdstip (s) van de presentatie
+  EXTRAS.forEach(e => {
+    if (!e.data) return; decodeExtra(e).catch(() => {});
+    const st = (+e.start || 0) * 1000, sp = e.stop === '' || e.stop == null || isNaN(+e.stop) ? null : +e.stop * 1000; let h = null;
+    if (sp !== null && sp <= e0) return;
+    const go = off => playExtra(e, off).then(x => { if (!x) return; if (dead) { x.stop(.1); return; } h = x; EX.push(x); });
+    if (st >= e0) T.push(setTimeout(() => go(0), st - e0)); else go((e0 - st) / 1000);
+    if (sp !== null) T.push(setTimeout(() => { if (h) h.stop(.4); }, Math.max(0, sp - e0)));
+  });
   root.innerHTML = `<div class="fogbg">${[[10, 30, 26], [80, 20, 31], [45, 75, 23], [90, 85, 29], [15, 90, 34]].map(([x, y, d]) => `<i style="--x:${x}%;--y:${y}%;--d:${d}s"></i>`).join('')}</div><div class="p-head">KAZOU ZOMER 2027<small>bij Waas en Dender</small></div><div id="pst"></div>`;
   const pst = q('#pst');
   const show = (h, c) => { const o = q('#pst .sc'); if (o) { o.classList.add('out'); setTimeout(() => o.remove(), 750); streaks(7, true); sf('swoosh', {v: .8}); } const d = mk(`<div class="sc ${c || ''}">${h}</div>`); pst.append(d); return d; };
@@ -797,7 +806,7 @@ function runPres(root, getD, e0, onEnd) {
   SC.forEach((fn, i) => { if (i > ci) later(SCN[i] - e0, fn); });
   skip = e0 - SCN[ci]; SC[ci](); skip = 0;
   later(PRES_MS - e0, () => { if (onEnd) onEnd(); });
-  return () => { dead = true; music.stop(.5); T.forEach(clearTimeout); document.body.classList.remove('hot', 'hotout'); };
+  return () => { dead = true; music.stop(.5); EX.forEach(h => h.stop(.3)); T.forEach(clearTimeout); document.body.classList.remove('hot', 'hotout'); };
 }
 
 firebase.initializeApp(CFG);
@@ -998,6 +1007,99 @@ async function pdf(A) {
   d.save('zomerhelden-overzicht.pdf');
 }
 
+/* ================= SOUND-STUDIO (host): geluiden beluisteren, vervangen en extra geluiden plannen ================= */
+const DEF = JSON.parse(JSON.stringify(SOUNDS));
+let SDB = {}, EXTRAS = [], SSUB = false, TM = false, TX = null; const EBUF = {};
+const SDESC = {music: 'Achtergrondmuziek (loopt tijdens de presentatie)', pop: 'Iets verschijnt', count: 'Tik tijdens optellen (toonhoogte stijgt)', countEnd: 'Ding als een getal klaar is', blip: 'Land op kaart / taartstuk', impact: 'Dreun bij onthulling', swoosh: 'Wissel tussen dia\'s', fly: 'Held vliegt voorbij', flyArc: 'Held vliegt over de kaart', swell: 'Intro: titel in de mist', fog: 'Intro: WAAS', drop: 'Intro: DENDER valt neer', slam: 'Zware klap', thunder: 'Bliksem', riser: 'Oplopende spanning', mystery: 'Mysterieus (???)', heart: 'Hartslag', roll: 'Namen rollen (gokkast)', lock: 'Naam vergrendeld', stinger: 'Dramatisch akkoord', head: 'Titelbalk komt binnen', tick: 'Countdown: rustige tik', cdTick: 'Countdown: laatste 10 s'};
+const sst = t => { const e = $('#sst'); if (e) e.textContent = t; };
+const readFile = f => new Promise((ok, no) => { const r = new FileReader(); r.onload = () => ok(r.result); r.onerror = no; r.readAsDataURL(f); });
+const decodeExtra = async e => { const c = EBUF[e.id]; if (c && c.k === e.data.length) return c.b; AX(); const b = await AC.decodeAudioData(await (await fetch(e.data)).arrayBuffer()); EBUF[e.id] = {k: e.data.length, b}; return b; };
+const playExtra = async (e, off) => {   // speelt een extra geluid; geeft {stop(fade)} terug
+  try {
+    AX(); if (AC.state !== 'running') return null;
+    const b = await decodeExtra(e), s = AC.createBufferSource(), g = AC.createGain();
+    s.buffer = b; s.loop = !!e.loop; g.gain.value = e.vol ?? .8; s.connect(g); g.connect(BUS.s); s.start(0, b.duration ? (off || 0) % b.duration : 0);
+    return {stop: (f = .3) => { try { const t = AC.currentTime; g.gain.cancelScheduledValues(t); g.gain.setValueAtTime(g.gain.value, t); g.gain.linearRampToValueAtTime(0, t + f); s.stop(t + f + .05); } catch (x) {} }};
+  } catch (x) { return null; }
+};
+const applySounds = v => {
+  SDB = v || {};
+  const ov = SDB.over || {};
+  Object.keys(SOUNDS).forEach(n => {
+    const d = DEF[n], o = ov[n], S = SOUNDS[n], old = S.url;
+    S.url = o && o.data ? o.data : d.url; S.vol = o && o.vol != null ? o.vol : d.vol; S.skip = o && o.skip != null ? o.skip : (d.skip || 0);
+    if (S.url !== old) { delete BUFS[n]; delete PRE[n]; }
+  });
+  EXTRAS = Object.entries(SDB.extra || {}).map(([id, e]) => ({...e, id}));
+  try { preload(); } catch (e) {}
+  studioRefresh();
+};
+const subSounds = () => { if (SSUB) return; SSUB = true; db.ref('sounds').on('value', s => applySounds(s.val()), e => { SSUB = false; sst('❌ Geen toegang tot "sounds": ' + e.message + ' (pas je Firebase-regels aan)'); }); };
+if (mode === 'screen') subSounds();
+const pickFile = cb => { const i = document.createElement('input'); i.type = 'file'; i.accept = 'audio/*'; i.onchange = () => { const f = i.files[0]; if (f) cb(f); }; i.click(); };
+const saveOver = async (n, f) => {
+  if (f.size > 6e6) return sst('❌ Bestand te groot (max ± 6 MB). Gebruik een kleinere mp3.');
+  sst('⏳ Uploaden…');
+  try { await db.ref('sounds/over/' + n).update({data: await readFile(f), file: f.name, vol: SOUNDS[n].vol, skip: SOUNDS[n].skip || 0}); sst('✅ ' + n + ' vervangen door ' + f.name); } catch (e) { sst('❌ ' + e.message); }
+};
+const addExtra = async f => {
+  if (f.size > 6e6) return sst('❌ Bestand te groot (max ± 6 MB). Gebruik een kleinere mp3.');
+  sst('⏳ Uploaden…');
+  try { await db.ref('sounds/extra/x' + Date.now().toString(36)).set({name: f.name.replace(/\.[^.]+$/, ''), file: f.name, data: await readFile(f), start: 0, stop: '', vol: .8, loop: false}); sst('✅ Extra geluid toegevoegd: ' + f.name); } catch (e) { sst('❌ ' + e.message); }
+};
+const srow = n => {
+  const S = SOUNDS[n], o = (SDB.over || {})[n] || {};
+  return '<div class="sr"><button class="b sm" data-a="play" data-n="' + n + '">▶</button><div class="sd"><b class="h">' + n + '</b> <small>' + esc(SDESC[n] || '') + '</small><br><small class="dim">' + (o.data ? '📁 ' + esc(o.file || 'eigen bestand') : 'ingebouwd') + '</small></div>' +
+    '<label class="sv">vol <input type="range" min="0" max="1" step=".05" value="' + S.vol + '" data-a="vol" data-n="' + n + '"></label>' +
+    '<label class="sv">skip s <input type="number" min="0" step=".05" value="' + (S.skip || 0) + '" data-a="skip" data-n="' + n + '" style="width:72px"></label>' +
+    '<button class="b sm" data-a="up" data-n="' + n + '">⬆️ eigen geluid</button>' + (o.data || o.vol != null || o.skip ? '<button class="x" data-a="reset" data-n="' + n + '" title="terug naar standaard">↺</button>' : '') + '</div>';
+};
+const xrow = e => {
+  const id = ' data-a="xf" data-id="' + e.id + '"';
+  return '<div class="sr"><button class="b sm" data-a="xplay" data-id="' + e.id + '">▶</button><div class="sd"><input type="text" value="' + esc(e.name || '') + '"' + id + ' data-k="name" style="width:100%"><small class="dim">📁 ' + esc(e.file || '') + '</small></div>' +
+    '<label class="sv">start (s) <input type="number" min="0" step=".1" value="' + (e.start || 0) + '"' + id + ' data-k="start" style="width:80px"></label>' +
+    '<label class="sv">stop (s) <input type="number" min="0" step=".1" value="' + (e.stop === '' || e.stop == null ? '' : e.stop) + '" placeholder="einde"' + id + ' data-k="stop" style="width:80px"></label>' +
+    '<label class="sv">vol <input type="range" min="0" max="1" step=".05" value="' + (e.vol ?? .8) + '"' + id + ' data-k="vol"></label>' +
+    '<label class="sv"><input type="checkbox" ' + (e.loop ? 'checked' : '') + id + ' data-k="loop"> loop</label><button class="x" data-a="xdel" data-id="' + e.id + '">🗑</button></div>';
+};
+function studioRender() {
+  const stb = $('#stb'); if (!stb) return;
+  const sc = SCN.map((t, i) => ['Intro', 'Dia 1', 'Dia 2', 'Dia 3', 'Finale'][i] + ' ' + (t / 1000) + ' s').join(' · ') + ' · einde ' + (PRES_MS / 1000) + ' s';
+  stb.innerHTML = '<p class="dim" style="margin:0">▶ = beluisteren. ⬆️ = vervangen door je eigen bestand (mp3/wav/ogg, max ± 6 MB). Alles wordt opgeslagen en gebruikt door het grote scherm. Het grote scherm moet één keer aangeklikt zijn voor geluid.</p>' +
+    '<div class="row" style="justify-content:flex-start"><button class="b sm" data-a="pv">👁 Voorbeeld presentatie</button></div>' +
+    '<div class="big h" style="font-size:1.4rem">Geluiden in de presentatie</div>' + Object.keys(SOUNDS).map(srow).join('') +
+    '<div class="big h" style="font-size:1.4rem;margin-top:10px">Extra geluiden</div><p class="dim" style="margin:0">Start en stop in seconden sinds het begin van de presentatie: ' + sc + '. Stop leeg = tot het einde van het bestand (met loop: tot het einde van de presentatie).</p>' +
+    EXTRAS.map(xrow).join('') + '<div class="row" style="justify-content:flex-start"><button class="b sm" data-a="xadd">➕ Extra geluid toevoegen</button></div>';
+}
+function studioRefresh() { const a = document.activeElement; if (a && a.closest && a.closest('#stb') && a.tagName === 'INPUT' && a.type !== 'range') return; studioRender(); }
+function studio() {
+  subSounds();
+  const st_ = document.createElement('style');
+  st_.textContent = '.sr{display:flex;flex-wrap:wrap;gap:8px;align-items:center;border-top:1px solid #fff2;padding:6px 0}.sd{flex:1 1 200px;min-width:0}.sv{font-size:.85rem;display:flex;gap:6px;align-items:center}.sr input{padding:6px 8px;font-size:.95rem}.sr input[type=range]{padding:0;width:90px}';
+  document.head.append(st_);
+  const stb = $('#stb');
+  $('#sto').onclick = () => { stb.style.display = stb.style.display === 'none' ? '' : 'none'; };
+  stb.onclick = e => {
+    const b = e.target.closest('[data-a]'); if (!b || b.tagName === 'INPUT') return;
+    const {a, n, id} = b.dataset; unlockSound();
+    const go = fn => { try { AC.resume().then(fn, fn); } catch (x) { fn(); } };
+    if (a === 'play') go(() => { if (n === 'music') { if (TM) { music.stop(.3); TM = false; } else { music.start(() => .6); TM = true; } } else sfx(n, {p: .5, d: 3.5}); });
+    else if (a === 'up') pickFile(f => saveOver(n, f));
+    else if (a === 'reset') db.ref('sounds/over/' + n).remove();
+    else if (a === 'xadd') pickFile(addExtra);
+    else if (a === 'xdel') { if (confirm('Dit extra geluid verwijderen?')) db.ref('sounds/extra/' + id).remove(); }
+    else if (a === 'xplay') go(() => { if (TX) { TX.stop(.2); TX = null; return; } const x = EXTRAS.find(y => y.id === id); if (x) playExtra(x, 0).then(h => { TX = h; }); });
+    else if (a === 'pv') preview();
+  };
+  stb.onchange = e => {
+    const t = e.target, {a, n, id, k} = t.dataset;
+    if (a === 'vol') { SOUNDS[n].vol = +t.value; db.ref('sounds/over/' + n).update({vol: +t.value}); }
+    else if (a === 'skip') { SOUNDS[n].skip = +t.value || 0; db.ref('sounds/over/' + n).update({skip: +t.value || 0}); }
+    else if (a === 'xf') db.ref('sounds/extra/' + id).update({[k]: k === 'loop' ? t.checked : k === 'name' ? t.value : k === 'vol' ? +t.value : (t.value === '' ? '' : +t.value)});
+  };
+  studioRender();
+}
+
 /* ---------------- HOST ---------------- */
 const fmtS = s => s >= 100 ? Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0') : s + ' s';
 function hostStatus(p) {
@@ -1132,6 +1234,7 @@ function host(u) {
     </div>
     <div class="row" style="justify-content:flex-start"><button class="b sm" id="pv">👁 Voorbeeld op dit toestel</button></div>
     <div class="dim" id="pw"></div></div>
+  <div class="card w" id="studio"><div class="row" style="justify-content:space-between"><div class="big h">🎧 Sound-studio</div><button class="b sm" id="sto">open / dicht</button></div><div id="sst" class="dim"></div><div id="stb" style="display:none"></div></div>
   <div class="card w"><div class="big h">Vakanties</div>
     <div class="row" style="justify-content:flex-start"><button id="add">➕ Vakantie</button><button class="b sm" id="imp">📥 Excel importeren</button><button class="b sm" id="tgl">⇕ Alles open/dicht</button><button class="b sm" id="now">💾 Opslaan</button><button class="b sm" id="pd">📄 PDF</button><button class="x" id="clr">🗑 Alles wissen</button></div>
     <input id="srch" type="search" placeholder="🔍 Zoek op vakantie, bestemming of naam…">
@@ -1159,6 +1262,7 @@ function host(u) {
   $('#pcard').addEventListener('input', e => { if (e.target.id === 'pon') return; warnP(); clearTimeout(pt); pt = setTimeout(() => db.ref('state/pres').set(curPres()), 500); });
   $('#pcard').addEventListener('pointerdown', optP, true);
   $('#pv').onclick = preview;
+  studio();
 
   const E = $('#ed');
   $('#add').onclick = () => { const v = nv(); v._o = true; vacs.push(v); q = ''; $('#srch').value = ''; ed(); queue(); E.lastElementChild.scrollIntoView({block: 'center'}); E.lastElementChild.querySelector('input[type=text]').focus(); };
