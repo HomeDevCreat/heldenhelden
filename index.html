@@ -233,8 +233,8 @@ button:disabled{opacity:.4;cursor:not-allowed}
 .p-q2.boom{animation:boomin .55s cubic-bezier(.2,1.2,.4,1) both}
 @keyframes boomin{0%{transform:scale(3.2);opacity:0;filter:blur(14px)}55%{transform:scale(.9);opacity:1;filter:none}100%{transform:none;opacity:1}}
 .p-q2.boom.trem{animation:trem var(--sp,.09s) linear infinite}
-.p-flash{position:fixed;inset:0;background:#fff;z-index:9999;pointer-events:none;animation:pflash 2.8s both}
-@keyframes pflash{0%{opacity:0}2%{opacity:1}6%{opacity:.55}9%{opacity:1}50%{opacity:1}100%{opacity:0}}
+.p-flash{position:fixed;inset:0;background:#fff;z-index:9999;pointer-events:none;animation:pflash 3.6s both}
+@keyframes pflash{0%{opacity:0}2%{opacity:1}6%{opacity:.55}9%{opacity:1}62%{opacity:1}100%{opacity:0}}
 .p-q2{font-size:clamp(2.2rem,9vmin,6.5rem);max-width:88vw;overflow-wrap:anywhere}
 
 .pres .rs{z-index:0}
@@ -275,7 +275,7 @@ body.hotout::after{content:"";position:fixed;inset:0;pointer-events:none;box-sha
 body.ray::before{animation:spin 30s linear infinite,rayin 2.5s ease-out both}
 @keyframes rayin{from{opacity:0}}
 #v.cin{animation:cin 1.3s cubic-bezier(.2,.9,.3,1) both}
-@keyframes cin{from{opacity:0;transform:scale(.8)}}
+@keyframes cin{from{transform:scale(.8)}}
 
 .p-leg{display:none}
 @media (prefers-reduced-motion:reduce){*{animation:none!important}}
@@ -305,7 +305,7 @@ const LOGO = "logo.png";   // zet je logo als logo.png naast index.html (of plak
    url: '' = ingebouwd synth-geluid. Vul een bestand of link in (bv. 'sounds/tick.mp3') en dat wordt gebruikt.
    vol: volume 0 tot 1 (0 = uit). Muziek: zet url voor je eigen nummer (loopt, stopt zacht op het einde). */
 /* RISER-DELAY in seconden: wachttijd voor de riser begint (de riser eindigt altijd op hetzelfde moment) */
-const RISER_DELAY = {pres: 1, count: 1.5};   // pres = einde van de presentatie, count = countdown (laatste 10 s)
+const RISER_DELAY = {pres: 0.4, count: 2};   // pres = einde van de presentatie, count = countdown (laatste 10 s)
 const MUSIC_INTENSITY = [.12, .25, .4, .62, .82, 1];   // spanning van de ingebouwde muziek per scene (0 tot 1)
 const SOUNDS = {
   music:    {url: 'muziek.mp3', vol: .55},  // spannende achtergrondmuziek tijdens de hele presentatie
@@ -640,14 +640,22 @@ function runPres(root, getD, e0, onEnd) {
   const drawPie = d => {
     const svg = q('.p-piebox svg'), tot = d.ages.reduce((a, x) => a + x.n, 0), C = 2 * Math.PI * 70; let acc = 0;
     const sl = d.ages.map((x, i) => { const f = tot ? x.n / tot : 0, o = acc; acc += f; return {x, i, f, o}; }).filter(s => s.f > 0);
+    // labels buiten de taart: per kant uit elkaar geduwd zodat ze nooit over elkaar staan
+    sl.forEach(s => { s.a = (s.o + s.f / 2) * 2 * Math.PI - Math.PI / 2; s.right = Math.cos(s.a) >= 0; s.ly = 118 * Math.sin(s.a); s.inside = s.f >= .06; });
+    [true, false].forEach(side => {
+      const g = sl.filter(s => s.right === side).sort((p, r) => p.ly - r.ly), GAP = 22;
+      for (let k = 1; k < g.length; k++) if (g[k].ly - g[k - 1].ly < GAP) g[k].ly = g[k - 1].ly + GAP;
+      if (g.length) { const over = g[g.length - 1].ly - 122; if (over > 0) g.forEach(s => s.ly -= over); }
+      for (let k = g.length - 2; k >= 0; k--) if (g[k + 1].ly - g[k].ly < GAP) g[k].ly = g[k + 1].ly - GAP;
+    });
     svg.innerHTML = `<circle r="70" fill="none" stroke="#ffffff14" stroke-width="40"/>` +
       sl.map(s => `<circle class="pc" data-i="${s.i}" r="70" fill="none" stroke="${AGC[s.i]}" stroke-width="40" transform="rotate(-90)" stroke-dasharray="0 ${C}" stroke-dashoffset="${-s.o * C}" style="transition:stroke-dasharray .9s ease"/>`).join('') +
-      sl.map(s => { const a = (s.o + s.f / 2) * 2 * Math.PI - Math.PI / 2; return `<text class="pl" data-i="${s.i}" x="${(70 * Math.cos(a)).toFixed(1)}" y="${(70 * Math.sin(a) + 6).toFixed(1)}">${s.x.n}</text>`; }).join('') +
-      sl.map(s => { const a = (s.o + s.f / 2) * 2 * Math.PI - Math.PI / 2, ca = Math.cos(a); return '<text class="pl" data-i="' + s.i + '" x="' + (112 * ca).toFixed(1) + '" y="' + (112 * Math.sin(a) + 5).toFixed(1) + '" style="font-size:16px;text-anchor:' + (ca > .25 ? 'start' : ca < -.25 ? 'end' : 'middle') + '">' + s.x.a + ' jaar</text>'; }).join('') +
+      sl.filter(s => s.inside).map(s => `<text class="pl" data-i="${s.i}" x="${(70 * Math.cos(s.a)).toFixed(1)}" y="${(70 * Math.sin(s.a) + 6).toFixed(1)}">${s.x.n}</text>`).join('') +
+      sl.map(s => { const sx = s.right ? 1 : -1; return `<polyline class="pl" data-i="${s.i}" points="${(92 * Math.cos(s.a)).toFixed(1)},${(92 * Math.sin(s.a)).toFixed(1)} ${(100 * sx)},${s.ly.toFixed(1)}" style="fill:none;stroke:#fff;stroke-width:1.5px"/><text class="pl" data-i="${s.i}" x="${106 * sx}" y="${(s.ly + 5).toFixed(1)}" style="font-size:16px;text-anchor:${s.right ? 'start' : 'end'}">${s.x.a} jaar${s.inside ? '' : ' (' + s.x.n + ')'}</text>`; }).join('') +
       `<text y="-2" font-size="22" fill="#ffd21f">PER</text><text y="20" font-size="22" fill="#ffd21f">LEEFTIJD</text>`;
     sl.forEach((s, k) => later(150 + k * 450, () => {
       sf('blip', {p: k / 5});
-      const c = svg.querySelector(`.pc[data-i="${s.i}"]`), t = svg.querySelector(`.pl[data-i="${s.i}"]`);
+      const c = svg.querySelector(`.pc[data-i="${s.i}"]`);
       if (c) c.style.strokeDasharray = `${Math.max(0, s.f * C - 2)} ${C}`;
       later(600, () => { svg.querySelectorAll('.pl[data-i="' + s.i + '"]').forEach(e => e.style.opacity = 1); });
     }));
@@ -752,7 +760,7 @@ function runPres(root, getD, e0, onEnd) {
     on('.p-head'); root.classList.add('clear');
     const d = D();
     const card = (o, lab, cls) => `<div class="p-c2 ${cls}"><div class="ck h">${lab}</div><div class="cn h ${o.v ? 'rolling' : ''}">${o.v ? '???' : 'nog niet ingevuld'}</div></div>`;
-    show(`<div class="p-s3"><div class="p-sn h" style="font-size:clamp(2.4rem,9vmin,6rem)">🎒 ⛺ 🌞</div><div class="p-road"><div class="p-bus"><span style="display:inline-block;transform:scaleX(-1)">🚌</span></div></div><div class="p-cards">${card(d.first, 'Eerste missie vertrekt', 'l')}${card(d.last, 'Laatste held veilig thuis', 'r b')}</div></div>`);
+    show(`<div class="p-s3"><div class="p-sn h" style="font-size:clamp(1.8rem,6.5vmin,4.4rem)">Wie vertrekt er <b>eerst</b> en wie komt er <b>laatst</b> thuis?</div><div class="p-road"><div class="p-bus"><span style="display:inline-block;transform:scaleX(-1)">🚌</span></div></div><div class="p-cards">${card(d.first, 'Eerste missie vertrekt', 'l')}${card(d.last, 'Laatste held veilig thuis', 'r b')}</div></div>`);
     const lock = (sel, o, fb, big) => {
       const c = q(sel); if (!c || !o.v) return;
       const n = c.querySelector('.cn'), t = o.t || (fb && o.v.d) || '';
@@ -810,7 +818,7 @@ function runPres(root, getD, e0, onEnd) {
     });
     // 13,6 s bliksem, 13,7 s witte flash over alles
     lfx(13600, () => { document.body.classList.remove('hot'); zap(true); });
-    lfx(13700, () => { const f = document.createElement('div'); f.className = 'p-flash'; document.body.append(f); setTimeout(() => f.remove(), 3000); });
+    lfx(13700, () => { const f = document.createElement('div'); f.className = 'p-flash'; document.body.append(f); setTimeout(() => f.remove(), 4000); });
     later(14600, () => music.stop(.8));
   };
 
