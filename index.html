@@ -232,6 +232,7 @@ button:disabled{opacity:.4;cursor:not-allowed}
 @keyframes mysout{to{opacity:.22;filter:blur(2px)}}
 .p-q2.boom{animation:boomin .55s cubic-bezier(.2,1.2,.4,1) both}
 @keyframes boomin{0%{transform:scale(3.2);opacity:0;filter:blur(14px)}55%{transform:scale(.9);opacity:1;filter:none}100%{transform:none;opacity:1}}
+.p-q2.boom.trem{animation:trem var(--sp,.09s) linear infinite}
 .p-flash{position:fixed;inset:0;background:#fff;z-index:9999;pointer-events:none;animation:pflash 2.8s both}
 @keyframes pflash{0%{opacity:0}2%{opacity:1}6%{opacity:.55}9%{opacity:1}50%{opacity:1}100%{opacity:0}}
 
@@ -313,9 +314,9 @@ const SOUNDS = {
   swoosh:   {url: '', vol: .6},   // wissel tussen dia's
   fly:      {url: '', vol: .7},   // superheld vliegt voorbij
   flyArc:   {url: '', vol: .7},   // held vliegt over de kaart
-  swell:    {url: '', vol: .6},   // intro: titel in de mist
+  swell:    {url: 'drop.mp3', vol: .6},   // intro: titel in de mist
   fog:      {url: '', vol: .6},   // intro: WAAS
-  drop:     {url: '', vol: .6},   // intro: DENDER valt neer
+  drop:     {url: 'drop.mp3', vol: .6},   // intro: DENDER valt neer
   slam:     {url: '', vol: .8},   // zware klap
   thunder:  {url: 'thunder.mp3', vol: .8, skip: 0},   // bliksem
   riser:    {url: 'riser.mp3', vol: .7},   // oplopende spanning
@@ -440,7 +441,7 @@ const sfx = (name, o = {}) => {
     GAIN = S.vol * (o.v ?? 1); SYNTH[name] && SYNTH[name](o);
   } catch (e) {}
 };
-const interp = t => { if (t >= SCN[4]) { const r = t - SCN[4]; return r < 4000 ? .3 : Math.min(1, .3 + (r - 4000) / 10000 * .7); } const I = MUSIC_INTENSITY, p = [...SCN, PRES_MS]; for (let i = 0; i < p.length - 1; i++) if (t < p[i + 1]) return I[i] + (I[i + 1] - I[i]) * Math.max(0, (t - p[i]) / (p[i + 1] - p[i])); return I[I.length - 1]; };
+const interp = t => { if (t >= SCN[4]) { const r = t - SCN[4]; return r < 4700 ? .3 : Math.min(1, .3 + (r - 4700) / 9000 * .7); } const I = MUSIC_INTENSITY, p = [...SCN, PRES_MS]; for (let i = 0; i < p.length - 1; i++) if (t < p[i + 1]) return I[i] + (I[i + 1] - I[i]) * Math.max(0, (t - p[i]) / (p[i + 1] - p[i])); return I[I.length - 1]; };
 const music = (() => {
   let timer = null, file = null, cleanup = null, going = false;
   const stop = (fade = .5) => {
@@ -465,18 +466,18 @@ const music = (() => {
         {t: 2800, f: at => rise(at, 3.2, 1)},
         {t: 6020, f: at => hit(at, 1)},
         {t: 9900, f: at => hit(at, .6)},
-        {t: SCN[4] + 4000, f: at => { rise(at, 10, 1.1); GAIN = 1; [110, 116.5, 164.8, 174.6].forEach((f, i) => T_({f, type: 'sawtooth', at, d: 10.2, a: 9.5, v: .07, lp: 300, lp2: 2500, det: i * 6})); }},
-        {t: SCN[4] + 13650, f: at => out.gain.setTargetAtTime(.02, c.currentTime + at, .02)},
-        {t: SCN[4] + 14000, f: at => { out.gain.setTargetAtTime(S.vol, c.currentTime + at, .02); hit(at, 1.4); }}
+        {t: SCN[4] + 4700, f: at => { rise(at, 9, 1.1); GAIN = 1; [110, 116.5, 164.8, 174.6].forEach((f, i) => T_({f, type: 'sawtooth', at, d: 9.2, a: 8.5, v: .07, lp: 300, lp2: 2500, det: i * 6})); }},
+        {t: SCN[4] + 13350, f: at => out.gain.setTargetAtTime(.02, c.currentTime + at, .02)},
+        {t: SCN[4] + 13700, f: at => { out.gain.setTargetAtTime(S.vol, c.currentTime + at, .02); hit(at, 1.4); }}
       ];
       const done = ev.map(x => x.t < getT() - 150);
       const step = (n, at, I, ms) => {
         GAIN = 1; const bar = (n >> 4) & 3, s = n & 15, r = ROOT[bar];
         const fin = ms >= SCN[4] ? ms - SCN[4] : -1, tr = ms >= 0 && ms < SCN[1] ? ms / SCN[1] : -1;
         if (tr > .1) { T_({f: r * 2, type: 'sawtooth', at, d: SP * .8, v: .05 + .12 * tr, lp: 160 + tr * 500, lp2: 90}); if (s % 2) N_({at, d: .03, v: .03 + .05 * tr, type: 'highpass', f: 9000, a: .002}); }
-        if (fin >= 4000) { const k = Math.min(1, (fin - 4000) / 10000); T_({f: r * 8 * (1 + k), type: 'square', at, d: SP * .9, v: .025 + .05 * k, lp: 1500 + k * 2500}); N_({at, d: .05, v: .04 + .12 * k, type: 'highpass', f: 6000, a: .002}); }
+        if (fin >= 4700) { const k = Math.min(1, (fin - 4700) / 9000); T_({f: r * 8 * (1 + k), type: 'square', at, d: SP * .9, v: .025 + .05 * k, lp: 1500 + k * 2500}); N_({at, d: .05, v: .04 + .12 * k, type: 'highpass', f: 6000, a: .002}); }
         if (s === 0) [1, 1.5, 2, 3].forEach((m, i) => tone({f: r * 4 * m, type: 'sawtooth', at, d: SP * 14, a: SP * 5, v: .05 + .04 * I, lp: 500 + I * 1500, lp2: 300, det: i * 3 - 4, out}));
-        if (!(fin >= 4000) && (s === 0 || s === 3 || (I > .55 && (s === 8 || s === 11)))) tone({f: s % 8 === 0 ? 120 : 95, f2: 42, at, d: .28, v: (s % 8 === 0 ? .55 : .4) * (.5 + .5 * I), out});
+        if (!(fin >= 4700) && (s === 0 || s === 3 || (I > .55 && (s === 8 || s === 11)))) tone({f: s % 8 === 0 ? 120 : 95, f2: 42, at, d: .28, v: (s % 8 === 0 ? .55 : .4) * (.5 + .5 * I), out});
         if (I > .12 && s % 2 === 0) tone({f: r * 2, type: 'sawtooth', at, d: SP * 1.8, v: .09 + .08 * I, lp: 250 + I * 900, lp2: 120, out});
         if (I > .35) tone({f: r * 4 * PENT[ARP[s]] * (I > .75 && bar % 2 ? 2 : 1), type: 'triangle', at, d: SP * 1.4, v: .04 + .05 * I, out});
         if (I > .5 && (s % 2 === 1 || I > .8)) noise({at, d: .04, v: .05 + .05 * I, type: 'highpass', f: 7000, a: .002, out});
@@ -539,7 +540,7 @@ const CT = {}; COUNTRIES.forEach(([nl, en, ...al]) => [nl, ...al].forEach(k => C
 // betere plek voor bolletjes bij landen met overzeese gebieden / vreemde vorm [lon,lat]
 const CEN = {'France': [2.3, 46.7], 'Norway': [8.5, 61.2], 'United Kingdom': [-2, 53.5], 'Netherlands': [5.4, 52.3], 'Italy': [12.4, 42.8], 'Sweden': [15.5, 60.5], 'Finland': [26, 63.5], 'Spain': [-3.7, 40.3], 'Denmark': [9.4, 56.1], 'Greece': [22.5, 39.3], 'Turkey': [32.5, 39], 'Croatia': [16, 45.2]};
 const SNK = [4.1437, 51.1565];   // Sint-Niklaas [lon,lat]
-const SCN = [0, 11400, 23400, 42400, 57900], PRES_MS = 73300;   // starttijden van de scenes + totale duur (ms)
+const SCN = [0, 11400, 23400, 42400, 57900], PRES_MS = 73000;   // starttijden van de scenes + totale duur (ms)
 const HEROMAP = HERO ? `<image href="${esc(HERO)}" x="-55" y="-25" width="110" height="50"/>` : HEROSVG.replace('<svg ', '<svg x="-55" y="-25" width="110" height="50" overflow="visible" ');
 const mk = h => { const t = document.createElement('template'); t.innerHTML = h.trim(); return t.content.firstElementChild; };
 const lettersH = (t, d0 = 0) => { let n = 0; return t.split(' ').map(w => `<span style="display:inline-block;white-space:nowrap">${[...w].map(c => `<b style="animation-delay:${(d0 + n++ * .06).toFixed(2)}s">${esc(c)}</b>`).join('')}</span>`).join(' '); };
@@ -784,25 +785,30 @@ function runPres(root, getD, e0, onEnd) {
     on('.p-head'); root.classList.add('clear');
     show(`<div class="p-end"><div class="p-q1 h mys">En nu blijft er nog 1 vraag over…</div><div class="p-q2 h"></div></div>`);
     later(500, () => on('.p-q1')); snd(500, 'mystery');
-    later(3300, () => { const e = q('.p-q1'); if (e) e.classList.add('fade'); });
-    later(4000, () => {
+    later(3700, () => { const e = q('.p-q1'); if (e) e.classList.add('fade'); });
+    // 4,7 s: de vraag staat er in één keer
+    later(4700, () => {
       const e = q('.p-q2'); if (!e) return;
       e.innerHTML = 'Welke vakantie heb jij deze zomer<span class="qq">???</span>';
       e.classList.add('boom');
       document.body.classList.add('hot');
       if (!skip) { shock(e); rays(26, root); }
     });
-    snd(4000, 'slam'); snd(4000, 'stinger');
-    snd(4000, 'riser', {d: 10});
-    { let t = 4400, g = 800; while (t < 13800) { snd(t, 'heart'); t += g; g = Math.max(260, g - 40); } }
-    for (let i = 0; i < 28; i++) lfx(4600 + i * 330, () => {
+    snd(4700, 'slam'); snd(4700, 'stinger');
+    snd(4700, 'riser', {d: 9});
+    { let t = 5100, g = 800; while (t < 13500) { snd(t, 'heart'); t += g; g = Math.max(260, g - 40); } }
+    // trilt steeds sneller (kortere trilduur) én steeds harder
+    for (let i = 0; i < 28; i++) lfx(5300 + i * 295, () => {
       const e = q('.p-q2'); if (!e) return;
-      e.classList.add('trem'); e.style.setProperty('--a', (1 + i * .34).toFixed(1) + 'px'); e.style.setProperty('--sc', (1 + i * .006).toFixed(3));
+      e.classList.add('trem');
+      e.style.setProperty('--sp', (0.09 - 0.07 * Math.pow(i / 27, 0.8)).toFixed(3) + 's');
+      e.style.setProperty('--a', (1 + i * .34).toFixed(1) + 'px'); e.style.setProperty('--sc', (1 + i * .006).toFixed(3));
       rays(2 + (i / 6 | 0), root);
     });
-    lfx(13900, () => { document.body.classList.remove('hot'); zap(true); });
-    lfx(14000, () => { const f = document.createElement('div'); f.className = 'p-flash'; document.body.append(f); setTimeout(() => f.remove(), 3000); });
-    later(14900, () => music.stop(.8));
+    // 13,6 s bliksem, 13,7 s witte flash over alles
+    lfx(13600, () => { document.body.classList.remove('hot'); zap(true); });
+    lfx(13700, () => { const f = document.createElement('div'); f.className = 'p-flash'; document.body.append(f); setTimeout(() => f.remove(), 3000); });
+    later(14600, () => music.stop(.8));
   };
 
   const SC = [sIntro, s1, s2, s3, s4];
